@@ -33,3 +33,6 @@ fp-info-cache
 
 # Compiled CPython
 *.pyc
+
+# Kicad8 Backups
+/**/*-backups/*.zip
