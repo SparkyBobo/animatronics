@@ -1,0 +1,25 @@
+# Created by https://www.toptal.com/developers/gitignore/api/circuitpython
+# Edit at https://www.toptal.com/developers/gitignore?templates=circuitpython
+
+### CircuitPython ###
+.Trashes
+.metadata_never_index
+.fseventsd/
+boot_out.txt
+
+# Ignore lib files, which come from others
+/**/lib/*.mpy
+/**/lib/*.py
+/**/lib/**/*.mpy
+/**/lib/**/*.py
+
+### Images ###
+*.uf2
+
+### VSCode ###
+/**/.vscode/*
+
+
+
+
+# End of https://www.toptal.com/developers/gitignore/api/circuitpython
