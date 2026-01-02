@@ -1,6 +1,6 @@
 # MIDI Playback
 
-## Overview 
+## Overview
 
 The DaBones use a combination of System Common and System Real-Time messages with MIDI channel 0 for
 playback of locally stored MIDI files.
@@ -8,7 +8,7 @@ playback of locally stored MIDI files.
 For details regarding files, see [MIDI Files](./midi_file.md).
 For details regarding file transfers, see [MIDI File Transfers](./midi_file_transfer.md).
 
-## Messages 
+## Messages
 
 When used in with MIDI files, MIDI messages can signal start, stop and timing information for a song.
 These messages include:
@@ -38,7 +38,7 @@ is reset to 0 when a new song is played.
 ### Song Select
 
 The song Select specifies which sequence or song is to be played. It only works for songs 0-127. For higher
-song number use the system exclusive message Open File for file selection. 
+song number use the system exclusive message Open File for file selection.
 
 ### Tune Request
 

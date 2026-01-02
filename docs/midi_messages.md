@@ -1,6 +1,6 @@
 # MIDI Messages
 
-## Overview 
+## Overview
 
 The DaBones use MIDI messages, with one MIDI channels for each "instrument", i.e., character or song element.
 The messages can be played live as you would play any other instrument to control the song elements.
@@ -33,7 +33,7 @@ Status|Data Byte(s)|Description
 11111111||Reset. Reset all receivers in the system to power-up status.
 11110000||System Exclusive. System exclusive messages are used to transfer MIDI files between song elements and select files for playback. For details regarding file transfers, see [MIDI File Transfers](./midi_file_transfer.md).
 
-For a details regarding playback, see [MIDI Playback](./midi_playback.md). 
+For a details regarding playback, see [MIDI Playback](./midi_playback.md).
 
 ## Song Element Control
 

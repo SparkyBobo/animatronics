@@ -1,11 +1,11 @@
 # MIDI Playback
 
-## Overview 
+## Overview
 
 The DaBones use a combination of System Common and System Real-Time messages with MIDI channel 0 for
 playback of locally stored MIDI files. The timing related messages and file sections include:
 
-## Messages 
+## Messages
 
 Status|Data Byte(s)|Description
 ------|------------|-----------
@@ -46,12 +46,12 @@ bit 15|bits 14 thru 0
 -----|-----
 0|ticks per quarter-note
 
-ticks per quarter-note represent the number of delta time "ticks" which make up a quarter-note. 
+ticks per quarter-note represent the number of delta time "ticks" which make up a quarter-note.
 For instance, if division is 96, then a time interval of an eighth-note between two events in the file would be 48.
 
 ### Time Signature
 
-The time signature is expressed as four numbers. nn and dd represent the numerator and denominator of the time signature as it would be notated. The denominator is a negative power of two: 2 represents a quarter-note, 3 represents an eighth-note, etc. The cc parameter expresses the number of MIDI clocks in a metronome click. The bb parameter expresses the number of notated 32nd-notes in a MIDI quarter-note (24 MIDI clocks). This was added because there are already multiple programs which allow a user to specify that what MIDI thinks of as a quarter-note (24 clocks) is to be 
+The time signature is expressed as four numbers. nn and dd represent the numerator and denominator of the time signature as it would be notated. The denominator is a negative power of two: 2 represents a quarter-note, 3 represents an eighth-note, etc. The cc parameter expresses the number of MIDI clocks in a metronome click. The bb parameter expresses the number of notated 32nd-notes in a MIDI quarter-note (24 MIDI clocks). This was added because there are already multiple programs which allow a user to specify that what MIDI thinks of as a quarter-note (24 clocks) is to be
 notated as, or related to in terms of, something else.
 
 e.g., 04 02 24 08 = 4/4 time; 24 MIDI clocks/click, 8 32nd notes/ 24 MIDI clocks (24 MIDI clocks = 1 crotchet = 1 beat)

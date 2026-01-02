@@ -1,6 +1,6 @@
 # MIDI Files
 
-## Overview 
+## Overview
 
 The DaBones use MIDI format 1 with multiple tracks, one for each "instrument", i.e., character or song element.
 A file may contain all song elements or a single element. The file can be transfered to a song element and played
@@ -15,7 +15,7 @@ more human and less mechanical. Files are used for final playback during a song.
 DaBones MIDI file name are standardized to provide organized but human readable names making it easy
 to load a file and understand what it contains fron the file name.
 
-File names start with the unique sequence number for the song followed by an underscore. For example, 
+File names start with the unique sequence number for the song followed by an underscore. For example,
 song `00 06` would start with "0006_". This makes it easy for the sequence to load the file for a given
 song by searching the file list of a song number.
 
@@ -42,7 +42,7 @@ bit 15|bits 14 thru 0
 -----|-----
 0|ticks per quarter-note
 
-ticks per quarter-note represent the number of delta time "ticks" which make up a quarter-note. 
+ticks per quarter-note represent the number of delta time "ticks" which make up a quarter-note.
 For instance, if division is 96, then a time interval of an eighth-note between two events in the file would be 48.
 
 ## Track 0: Metadata
@@ -84,7 +84,7 @@ For a list of MIDI channels, see [MIDI Channels](./midi_channel.md)
 
 ### FF 58 04 nn dd cc bb: time signature
 
-The time signature is expressed as four numbers. nn and dd represent the numerator and denominator of the time signature as it would be notated. The denominator is a negative power of two: 2 represents a quarter-note, 3 represents an eighth-note, etc. The cc parameter expresses the number of MIDI clocks in a metronome click. The bb parameter expresses the number of notated 32nd-notes in a MIDI quarter-note (24 MIDI clocks). This was added because there are already multiple programs which allow a user to specify that what MIDI thinks of as a quarter-note (24 clocks) is to be 
+The time signature is expressed as four numbers. nn and dd represent the numerator and denominator of the time signature as it would be notated. The denominator is a negative power of two: 2 represents a quarter-note, 3 represents an eighth-note, etc. The cc parameter expresses the number of MIDI clocks in a metronome click. The bb parameter expresses the number of notated 32nd-notes in a MIDI quarter-note (24 MIDI clocks). This was added because there are already multiple programs which allow a user to specify that what MIDI thinks of as a quarter-note (24 clocks) is to be
 notated as, or related to in terms of, something else.
 
 e.g., 04 02 24 08 = 4/4 time; 24 MIDI clocks/click, 8 32nd notes/ 24 MIDI clocks (24 MIDI clocks = 1 crotchet = 1 beat)
