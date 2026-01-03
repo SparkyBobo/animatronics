@@ -2,7 +2,7 @@
 
 ## Overview
 
-The DaBones use MIDI channels to target individual song elements, with one MIDI channels for each "instrument", i.e., character or song element. The song elements are:
+The DaBones use MIDI channels to target individual song elements, with one MIDI channel for each "instrument", i.e., character or song element. The song elements are:
 
 Channel|Element
 -----|-----
