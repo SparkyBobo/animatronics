@@ -1,0 +1,56 @@
+"""
+DaBones
+
+Midi pipeline tests.
+
+Copyright (c) 2026 Sparky Bobo
+"""
+
+"""
+DaBones
+
+Audio pipeline tests.
+
+Copyright (c) 2026 Sparky Bobo
+"""
+
+from dabones.contracts.performance import *
+from dabones.contracts.service import Service, ServiceResult
+from dabones.characters.joey import Joey
+from dabones.show.context import ShowContext
+from dabones.hardware.debug import *
+
+class TestService(Service):
+    def __init__(self, context: ShowContext, messages: list[PerformanceMessage]) -> None:
+        context.add_service(self)
+        self.context = context
+        self.messages = messages
+        self.index = 0
+
+    def service(self) -> ServiceResult:
+        if (self.index < len(self.messages)):
+            message = self.messages[self.index]
+            self.index += 1
+            self.context.show_dispatcher.process(message)
+            return ServiceResult.ACTIVITY
+        return ServiceResult.EXIT
+    
+
+def test_e2e_joey():
+    messages = [ 
+        PerformanceLoadSongMessage(song=1, timecode=-1),
+        PerformanceSongStartMessage(timecode=-1),
+        PerformanceClockMessage(0),
+        PerformanceClockMessage(5003),
+        PerformanceClockMessage(5008),
+        PerformanceClockMessage(5013),
+        PerformanceClockMessage(5019),
+        PerformanceClockMessage(5023),
+        PerformanceClockMessage(5028),
+        PerformanceClockMessage(5033),
+        PerformanceSongStopMessage(timecode=-1),
+    ]
+    context = ShowContext()
+    TestService(context, messages)
+    Joey(context)
+    context.run()

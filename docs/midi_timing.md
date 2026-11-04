@@ -5,6 +5,8 @@
 The DaBones use a combination of System Common and System Real-Time messages with MIDI channel 0 for
 playback of locally stored MIDI files. The timing related messages and file sections include:
 
+Timing precision enables show elements to perform motion lookahead and predictive planning: by knowing the exact timing of each Timing Clock, show elements can calculate when to start motions so they reach their target positions exactly when MIDI events occur. For details on motion planning, see [System Architecture](./midi_architecture.md).
+
 ## Messages
 
 Status|Data Byte(s)|Description

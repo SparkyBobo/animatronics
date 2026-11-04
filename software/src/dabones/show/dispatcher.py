@@ -1,0 +1,39 @@
+"""
+DaBones
+
+Processes messages for show.
+
+Copyright (c) 2026 Sparky Bobo
+"""
+
+from dabones.contracts.performance import *
+from dabones.show.status import ShowStatusProcessor
+
+import logging
+logger = logging.getLogger(__name__)
+
+class ShowDispatcher:
+    """Processes messages for show."""
+
+    def __init__(self) -> None:
+        """Initialize show processor."""
+        logger.info("Initialize ShowProcessor.")
+        self.handlers = []
+
+    def subscribe(self, handler: PerformanceMessageProcessor):
+        """Subscribe a PerformanceMessageProcessor."""
+        if handler not in self.handlers:
+            self.handlers.append(handler)
+
+    def unsubscribe(self, handler: PerformanceMessageProcessor):
+        """Unsubscribe a PerformanceMessageProcessor: handler."""
+        self.handlers.remove(handler)      
+
+    def process(self, message:PerformanceMessage) -> PerformanceMessageResult:
+        """Dispatch message to all subscribers."""
+        for handler in self.handlers:
+            result = handler.process(message)
+            if result == PerformanceMessageResult.TERMINATE:
+                return result
+        return result
+    

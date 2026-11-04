@@ -15,9 +15,10 @@ to help show where each song element will be for every moment in the song. While
 unnatural, this is acceptable during programming where it's more important to define the states than
 the process of achieving the state.
 
-## Song Playback
+## File Playback Mode: Song Synchronization
 
 When used with MIDI files, MIDI messages can signal start, stop, and timing information for a song.
+In **File Playback Mode**, the master controller sends these system messages to coordinate playback across all show elements.
 These messages include:
 
 Status|Data Byte(s)|Description
@@ -35,12 +36,16 @@ Status|Data Byte(s)|Description
 
 For details regarding playback, see [MIDI Playback](./midi_playback.md).
 
-## Song Element Control
+## Real-Time Mode: Song Element Control
 
-MIDI messages, with one MIDI channel for each "instrument", i.e., character or song element, the messages can be played live as you would play any other instrument to control the song elements.
+In **Real-Time Mode**, MIDI messages are sent directly to show elements to control them interactively. Each show element listens on its assigned MIDI channel and responds immediately to incoming Note On/Off, Control Change, and Program Change messages.
 Much like a live MIDI stream might be used to control instruments. In this mode, each song element will
 respond to its MIDI channel and messages the same as it would during playback, except the element is not
 able to anticipate the next event, e.g., the swing of the drum stick appears more mechanical and less human.
+
+Real-Time Mode is used for design iteration, testing, and troubleshooting. For production shows, use File Playback Mode instead, which provides predictive motion planning for smooth, choreographed execution.
+
+For details on the two operational modes and their use cases, see [System Architecture](./midi_architecture.md).
 
 Status|Data Byte(s)|Description
 ------|------------|-----------

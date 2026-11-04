@@ -1,25 +1,49 @@
-# Created by https://www.toptal.com/developers/gitignore/api/circuitpython
-# Edit at https://www.toptal.com/developers/gitignore?templates=circuitpython
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
 
-### CircuitPython ###
-.Trashes
-.metadata_never_index
-.fseventsd/
-boot_out.txt
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
 
-# Ignore lib files, which come from others
-/**/lib/*.mpy
-/**/lib/*.py
-/**/lib/**/*.mpy
-/**/lib/**/*.py
+# Test, lint, and type-check caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.pyre/
+.tox/
+.nox/
+.hypothesis/
 
-### Images ###
-*.uf2
+# Coverage and test reports
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+junit.xml
 
-### VSCode ###
-/**/.vscode/*
+# Build and packaging artifacts
+build/
+dist/
+*.egg-info/
+.eggs/
+wheels/
 
+# Local environment and secrets
+.env
+.env.*
+!.env.example
 
+# Python application logs and local databases
+*.log
+*.sqlite3
 
-
-# End of https://www.toptal.com/developers/gitignore/api/circuitpython
+# Editor and operating-system files
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db

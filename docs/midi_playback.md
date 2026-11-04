@@ -3,8 +3,11 @@
 ## Overview
 
 The DaBones use a combination of System Common and System Real-Time messages with MIDI channel 0 for
-playback of locally stored MIDI files.
+playback of locally stored MIDI files. In this **File Playback Mode**, the master controller broadcasts synchronization messages (Song Select, Timing Clock, Song Position Pointer), and each show element independently executes its track using predictive motion planning.
 
+Each show element performs motion lookahead: it scans upcoming MIDI events in its file and calculates when motions must start based on motion duration curves (lookup tables). This allows smooth, natural choreography where physical actions land precisely on musical beats.
+
+For details on system architecture and the two operational modes, see [System Architecture](./midi_architecture.md).
 For details regarding files, see [MIDI Files](./midi_file.md).
 For details regarding file transfers, see [MIDI File Transfers](./midi_file_transfer.md).
 
