@@ -8,6 +8,7 @@ Copyright (c) 2026 Sparky Bobo
 
 import dabones.behavior.base
 import dabones.contracts.midi
+import dabones.contracts.performance
 import dabones.contracts.planner
 import dabones.contracts.service
 
