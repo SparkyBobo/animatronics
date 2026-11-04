@@ -6,9 +6,9 @@ Beats deployment.
 Copyright (c) 2026 Sparky Bobo
 """
 
-from dabones.characters.beats import Beats
-from dabones.show.context import ShowContext
+import dabones.characters.beats
+import dabones.show.context
 
-context = ShowContext()
-performer = Beats(context)
+context = dabones.show.context.ShowContext()
+performer = dabones.characters.beats.Beats(context)
 context.run()

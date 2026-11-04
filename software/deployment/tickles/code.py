@@ -6,9 +6,9 @@ Tickles deployment.
 Copyright (c) 2026 Sparky Bobo
 """
 
-from dabones.characters.tickles import Tickles
-from dabones.show.context import ShowContext
+import dabones.characters.tickles
+import dabones.show.context
 
-context = ShowContext()
-performer = Tickles(context)
+context = dabones.show.context.ShowContext()
+performer = dabones.characters.tickles.Tickles(context)
 context.run()

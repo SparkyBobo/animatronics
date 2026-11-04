@@ -6,9 +6,9 @@ LizzieB deployment.
 Copyright (c) 2026 Sparky Bobo
 """
 
-from dabones.characters.lizzie import LizzieB
-from dabones.show.context import ShowContext
+import dabones.characters.lizzie
+import dabones.show.context
 
-context = ShowContext()
-performer = LizzieB(context)
+context = dabones.show.context.ShowContext()
+performer = dabones.characters.lizzie.LizzieB(context)
 context.run()
