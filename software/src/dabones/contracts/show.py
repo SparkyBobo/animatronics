@@ -1,4 +1,3 @@
-
 """
 DaBones
 
@@ -7,11 +6,10 @@ Show contracts.
 Copyright (c) 2026 Sparky Bobo
 """
 
-from dabones.behavior.base import *
-from dabones.contracts.midi import *
-from dabones.contracts.planner import *
-from dabones.contracts.service import *
-from dabones.contracts.show import *
+import dabones.behavior.base
+import dabones.contracts.midi
+import dabones.contracts.planner
+import dabones.contracts.service
 
 # A protocol for the show status
 class ShowStatus:
@@ -36,23 +34,23 @@ class ShowContext:
     def run(self) -> None:
         ...
 
-    def add_service(self, service: Service) -> None:
+    def add_service(self, service: dabones.contracts.service.Service) -> None:
         ...
 
-    def add_behavior(self, behavior: Behavior) -> None:
+    def add_behavior(self, behavior: dabones.behavior.base.Behavior) -> None:
         ...
 
-    def add_mapping(self, mapping: MidiMessageProcessor) -> None:
-        ...
-
-    @property
-    def status(self) -> ShowStatus:        
+    def add_mapping(self, mapping: dabones.contracts.midi.MidiMessageProcessor) -> None:
         ...
 
     @property
-    def planner_cache(self) -> DriverValueCache:        
+    def status(self) -> ShowStatus:
+        ...
+
+    @property
+    def planner_cache(self) -> dabones.contracts.planner.DriverValueCache:
         raise NotImplementedError
 
     @property
-    def planner_queue(self) -> PerformanceMessageProcessor:        
+    def planner_queue(self) -> dabones.contracts.performance.PerformanceMessageProcessor:
         raise NotImplementedError
