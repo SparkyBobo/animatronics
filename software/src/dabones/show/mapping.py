@@ -1,0 +1,106 @@
+"""
+DaBones
+
+Maps MIDI to performance events.
+
+Copyright (c) 2026 Sparky Bobo
+"""
+
+from dabones.contracts.midi import *
+from dabones.contracts.performance import *
+
+import logging
+logger = logging.getLogger(__name__)
+
+class ShowMapper(MidiMessageProcessor):
+    """Maps MIDI to performance events."""
+
+    def __init__(self, next: PerformanceMessageProcessor) -> None:
+        """Initialize ShowMapper."""
+        self.next = next
+
+    def map(self, timecode:int, message:MidiMessage) -> MidiMessageResult:
+        """Process MidiMessages and pass them to the PerformanceMessageProcessor."""
+        perf_msg = None
+        if isinstance(message, MidiNoteOn):
+            pass
+
+        elif isinstance(message, MidiNoteOff):
+            pass
+
+        elif isinstance(message, MidiControlChange):
+            pass
+
+        elif isinstance(message, MidiProgramChange):
+            pass
+
+        elif isinstance(message, MidiPitchBend):
+            pass
+
+        elif isinstance(message, MidiDeviceMode):
+            pass
+
+        elif isinstance(message, MidiAllSoundOff):
+            pass
+
+        elif isinstance(message, MidiAllNotesOff):
+            pass
+
+        elif isinstance(message, MidiSongStart):
+            perf_msg = PerformanceSongStartMessage(timecode=timecode)
+
+        elif isinstance(message, MidiSongStop):
+            perf_msg = PerformanceSongStopMessage(timecode=timecode)
+
+        elif isinstance(message, MidiSongContinue):
+            perf_msg = PerformanceSongContinueMessage(timecode=timecode)
+
+        elif isinstance(message, MidiClock):
+            perf_msg = PerformanceClockMessage(timecode=timecode)
+
+        elif isinstance(message, MidiFileOpen):
+            perf_msg = PerformanceLoadSongMessage(song=message.id, timecode=timecode)
+
+        elif isinstance(message, MidiSongSelect):
+            perf_msg = PerformanceLoadSongMessage(song=message.song, timecode=timecode)
+
+        elif isinstance(message, MidiFileHeader):
+            perf_msg = PerformanceFileHeaderMessage(name=str(message.name), action="open", timecode=timecode)
+            
+        elif isinstance(message, MidiFileContent):
+            perf_msg = PerformanceFileContentMessage(data=message.data, timecode=timecode)
+            
+        elif isinstance(message, MidiFileComplete):
+            perf_msg = PerformanceFileCompleteMessage(checksum=0, timecode=timecode)
+            
+        elif isinstance(message, MidiCancel):
+            pass
+            
+        elif isinstance(message, MidiNack):
+            pass
+            
+        elif isinstance(message, MidiAck):
+            pass
+            
+        elif isinstance(message, MidiVolumeSet):
+            perf_msg = PerformanceVolumeMessage(level=message.level, timecode=timecode)
+            
+        elif isinstance(message, MidiSongPosition):
+            perf_msg = PerformanceSongPositionMessage(position=message.position, timecode=timecode)
+            
+        elif isinstance(message, MidiTuneRequest):
+            pass
+            
+        elif isinstance(message, MidiActiveSensing):
+            pass
+            
+        elif isinstance(message, MidiReset):
+            perf_msg = PerformanceSystemResetMessage()
+
+        if (perf_msg is not None):
+            logger.critical(f"Create performance message {type(perf_msg).__name__ }@{perf_msg.timecode}")
+            self.next.process(perf_msg)
+            return MidiMessageResult.HANDLED
+
+        return MidiMessageResult.SKIPPED
+

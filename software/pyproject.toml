@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "dabones"
+version = "0.1.0"
+description = "DaBones animatronic skeleton band show-control system"
+requires-python = ">=3.9"
+
+dependencies = [
+    "umidiparser",
+    "adafruit-circuitpython-midi",
+    "adafruit-circuitpython-pioasm"
+]
+
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "mido",
+]
+
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["--import-mode=importlib"]
+pythonpath = [
+    "src",
+    "shims",
+]
+
+
+[tool.black]
+line-length = 88
+
+
+[tool.ruff]
+line-length = 88
+target-version = "py39"
+
+[tool.ruff.lint]
+ignore = [
+    "E501",
+]

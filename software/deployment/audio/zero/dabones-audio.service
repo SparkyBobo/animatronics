@@ -1,0 +1,26 @@
+[Unit]
+Description=DaBones Audio Playback Service
+After=sound.target
+
+[Service]
+Type=simple
+User=sparky
+SupplementaryGroups=audio dialout
+WorkingDirectory=/opt/dabones-audio
+
+Environment=DABONES_SERIAL_PORT=/dev/serial0
+Environment=DABONES_BAUD_RATE=115200
+Environment=DABONES_SONG_DIR=/home/sparky/audio
+Environment=DABONES_APLAY=/usr/bin/aplay
+
+ExecStart=/usr/bin/python3 /opt/dabones-audio/audio_service.py
+
+Restart=on-failure
+RestartSec=2
+
+NoNewPrivileges=true
+ProtectSystem=full
+ProtectHome=read-only
+
+[Install]
+WantedBy=multi-user.target
