@@ -15,7 +15,7 @@ import dabones.hardware.ports
 import logging
 logger = logging.getLogger(__name__)
 
-class AudioDriver:
+class AudioDriver(dabones.contracts.service.Service):
     """Control a Pi Zero through its Linux serial terminal."""
 
     def __init__(self, port: dabones.hardware.ports.SerialPort) -> None:
