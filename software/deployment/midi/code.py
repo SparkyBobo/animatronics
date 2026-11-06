@@ -32,7 +32,7 @@ import digitalio
 import time
 
 # DaBones Imports
-from dabones.midi.messages import *
+from animacy.midi.messages import *
 
 # USB/Midi Imports
 import usb_host

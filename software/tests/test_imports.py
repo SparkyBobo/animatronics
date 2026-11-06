@@ -1,4 +1,4 @@
-from dabones import __version__
+from animacy import __version__
 
 
 def test_package_imports():

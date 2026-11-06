@@ -6,7 +6,7 @@ MIDI Filter utility
 Copyright (c) 2026 Sparky Bobo
 """
 
-from dabones.contracts.midi import *
+from animacy.contracts.midi import *
 import gc
 import mido
 
