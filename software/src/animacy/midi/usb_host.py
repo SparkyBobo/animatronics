@@ -1,5 +1,5 @@
 """
-DaBones
+Animacy
 
 USB Host for MIDI messages.
 

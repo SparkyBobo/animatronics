@@ -1,5 +1,5 @@
 """
-DaBones
+Animacy
 
 Performance control and event contracts.
 

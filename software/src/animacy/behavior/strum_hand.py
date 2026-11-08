@@ -1,5 +1,5 @@
 """
-DaBones
+Animacy
 
 Strum hand behaviors.
 

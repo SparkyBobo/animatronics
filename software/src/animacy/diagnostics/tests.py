@@ -1,5 +1,5 @@
 """
-DaBones
+Animacy
 
 Diagnostic test library.
 

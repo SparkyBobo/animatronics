@@ -1,5 +1,5 @@
 """
-DaBones
+Animacy
 
 Dispatches messages to performance processors.
 

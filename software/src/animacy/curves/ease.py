@@ -1,5 +1,5 @@
 """
-DaBones
+Animacy
 
 Ease time transforms.
 

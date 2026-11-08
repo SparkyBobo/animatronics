@@ -1,5 +1,5 @@
 """
-DaBones
+Animacy
 
 Parses (Adafruit) MIDI messages from streams.
 

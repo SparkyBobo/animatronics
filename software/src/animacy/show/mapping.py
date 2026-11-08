@@ -1,5 +1,5 @@
 """
-DaBones
+Animacy
 
 Maps MIDI to performance events.
 
