@@ -1,7 +1,7 @@
 """
 Animacy
 
-Queue tests.
+Performance message queue tests.
 
 Copyright (c) 2026 Sparky Bobo
 """

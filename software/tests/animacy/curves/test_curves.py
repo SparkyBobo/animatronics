@@ -1,7 +1,7 @@
 """
 Animacy
 
-Time transform tests.
+Time curve tests.
 
 Copyright (c) 2026 Sparky Bobo
 """

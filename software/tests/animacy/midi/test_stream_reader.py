@@ -1,7 +1,7 @@
 """
 Animacy
 
-Stream reader tests.
+MIDI stream reader tests.
 
 Copyright (c) 2026 Sparky Bobo
 """

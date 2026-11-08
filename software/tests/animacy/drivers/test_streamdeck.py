@@ -1,7 +1,7 @@
 """
 Animacy
 
-Streamdeck mini driver test.
+Disabled StreamDeck Mini driver test examples.
 
 Copyright (c) 2026 Sparky Bobo
 """

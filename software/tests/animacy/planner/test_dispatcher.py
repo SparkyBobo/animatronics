@@ -1,7 +1,7 @@
 """
 Animacy
 
-PlanningDispatcher tests.
+Planning dispatcher tests.
 
 Copyright (c) 2026 Sparky Bobo
 """

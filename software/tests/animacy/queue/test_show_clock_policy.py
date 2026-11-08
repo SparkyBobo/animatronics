@@ -1,7 +1,7 @@
 """
 Animacy
 
-Show Clock Policy tests.
+Show clock queue policy tests.
 
 Copyright (c) 2026 Sparky Bobo
 """

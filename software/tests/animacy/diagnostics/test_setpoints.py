@@ -1,7 +1,7 @@
 """
 Animacy
 
-SetpointDiagnostics test.
+Setpoint diagnostics tests.
 
 Copyright (c) 2026 Sparky Bobo
 """

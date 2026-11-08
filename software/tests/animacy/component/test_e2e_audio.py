@@ -1,7 +1,7 @@
 """
 Animacy
 
-Audio pipeline tests.
+Audio performer end-to-end tests.
 
 Copyright (c) 2026 Sparky Bobo
 """

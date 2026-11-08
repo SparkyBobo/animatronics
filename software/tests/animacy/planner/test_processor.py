@@ -1,7 +1,7 @@
 """
 Animacy
 
-PlanningProcessor tests.
+Planning processor tests.
 
 Copyright (c) 2026 Sparky Bobo
 """

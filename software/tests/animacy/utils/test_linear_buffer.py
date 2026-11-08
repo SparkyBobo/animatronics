@@ -1,7 +1,7 @@
 """
 Animacy
 
-LinearBuffer tests.
+Linear buffer tests.
 
 Copyright (c) 2026 Sparky Bobo
 """
