@@ -4,9 +4,9 @@ build-backend = "setuptools.build_meta"
 
 
 [project]
-name = "dabones"
+name = "animacy"
 version = "0.1.0"
-description = "DaBones animatronic skeleton band show-control system"
+description = "Animacy framework for animatronic show control"
 requires-python = ">=3.9"
 
 dependencies = [
