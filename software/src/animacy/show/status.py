@@ -1,7 +1,7 @@
 """
 Animacy
 
-That status of the show.
+Show status processor.
 
 Copyright (c) 2026 Sparky Bobo
 """
