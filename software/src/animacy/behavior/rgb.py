@@ -15,8 +15,7 @@ from animacy.contracts.setpoint import Setpoint
 from animacy.drivers.led import LedDriver
 from animacy.curves.linear import LinearCurve
 
-import logging
-logger = logging.getLogger(__name__)
+from animacy.utils.logging import INFO, log
 
 class RgbBehavior(Behavior):
     """Addressable RGB LED behaviors."""
@@ -54,10 +53,10 @@ class RgbBehavior(Behavior):
         (color_last_value, unused_time1) = self.cache.get(color_transition)
         color_transition.start_value = color_last_value if color_last_value is not None else ColorDriverValue(Color())
         message.events.append(PerformanceEvent(transition=color_transition, curve=LinearCurve(), start=start_time, end=message.timecode))
-        logger.info(f"Color transition {color_transition.start_value}@{start_time} to {color_transition.end_value}@{message.timecode} for addr={self.address}")
+        log(1011, INFO, color_transition.start_value, start_time, color_transition.end_value, message.timecode, self.address)
 
         intensity_transition = DriverTransition(self.driver, IntensityDriverValue(0), IntensityDriverValue(intensity))
         (intensity_last_value, unused_time2) = self.cache.get(intensity_transition)
         intensity_transition.start_value = intensity_last_value if intensity_last_value is not None else IntensityDriverValue(0)
         message.events.append(PerformanceEvent(transition=intensity_transition, curve=LinearCurve(), start=start_time, end=message.timecode))
-        logger.info(f"Intensity transition {intensity_transition.start_value}@{start_time} to {intensity_transition.end_value}@{message.timecode} for addr={self.address}")
+        log(1012, INFO, intensity_transition.start_value, start_time, intensity_transition.end_value, message.timecode, self.address)

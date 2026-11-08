@@ -10,16 +10,14 @@ from animacy.contracts.performance import *
 from animacy.contracts.queue import QueuePolicy
 from animacy.queue.queue import PerformanceMessageQueue
 
-import logging
-
-logger = logging.getLogger(__name__)
+from animacy.utils.logging import INFO, log
 
 class QueueProcessor:
     """Processes messages against the show clock."""
 
     def __init__(self, next: PerformanceMessageProcessor, policy: QueuePolicy) -> None:
         """Initialize queue processor."""
-        logger.info("Initialize QueueProcessor.")
+        log(5, INFO)
         self.next = next
         self.policy = policy
         self.queue = PerformanceMessageQueue()
@@ -34,7 +32,7 @@ class QueueProcessor:
         return result
 
     def _process(self, message:PerformanceMessage) -> PerformanceMessageResult:
-        logger.info(f"Process performance message {message.id}@{message.timecode}")
+        log(1, INFO, message.id, message.timecode)
         if (isinstance(message, PerformanceSystemResetMessage) or isinstance(message, PerformanceResetEventMessage)):
             self.queue.reset()
             return PerformanceMessageResult.HANDLED

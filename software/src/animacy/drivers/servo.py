@@ -10,8 +10,7 @@ from animacy.contracts.driver import *
 from animacy.hardware.ports import IOPort
 from pwmio import PWMOut
 
-import logging
-logger = logging.getLogger(__name__)
+from animacy.utils.logging import INFO, log
 
 # A servo driver.
 class ServoDriver:
@@ -19,7 +18,7 @@ class ServoDriver:
 
     def __init__(self, port:IOPort) -> None:
         """Initialize ServoDriver."""
-        logger.info(f"Initialize ServoDriver@{port.pin}")
+        log(5, INFO)
         self.port = port
         self.pwm = PWMOut(port.pin, frequency=50)
         self.total_period_us = 20000  # 20ms in microseconds

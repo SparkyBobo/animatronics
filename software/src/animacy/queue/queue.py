@@ -10,21 +10,20 @@ from animacy.contracts.performance import PerformanceMessage
 from animacy.utils.counter import Counter
 import gc
 
-import logging
-logger = logging.getLogger(__name__)
+from animacy.utils.logging import INFO, log
 
 class PerformanceMessageQueue:
     """Queues commands against the show clock."""
 
     def __init__(self) -> None:
         """Initialize message queue."""
-        logger.info("Initialize PerformanceMessageQueue.")
+        log(5, INFO)
         self.next = next
         self.reset()
 
     def reset(self) -> None:
         """Reset the message queue and clear the event queue."""
-        logger.info("Reset message queue.")
+        log(1606, INFO)
         self.messages = []
         self.sequence = Counter()
 

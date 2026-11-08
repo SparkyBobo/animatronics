@@ -8,8 +8,7 @@ Copyright (c) 2026 Sparky Bobo
 
 from animacy.contracts.midi import MidiMessage, MidiChannelMessage, MidiMessageProcessor, MidiMessageResult
  
-import logging
-logger = logging.getLogger(__name__)
+from animacy.utils.logging import INFO, log
 
 class PerformerBase(MidiMessageProcessor):
     """Base character."""
@@ -21,7 +20,7 @@ class PerformerBase(MidiMessageProcessor):
             name: character name.
             midi_channel: MIDI channel number (1-16, 1-based).
         """        
-        logger.info(f"Initialize {name}")
+        log(5, INFO)
         self.name = name
         self.channel = channel - 1
         pass
@@ -38,5 +37,4 @@ class PerformerBase(MidiMessageProcessor):
             return MidiMessageResult.HANDLED
         # block all others
         return MidiMessageResult.TERMINATE
-
 

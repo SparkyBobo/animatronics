@@ -9,20 +9,19 @@ Copyright (c) 2026 Sparky Bobo
 from animacy.contracts.performance import *
 from animacy.execution.executor import Executor
 
-import logging
-logger = logging.getLogger(__name__)
+from animacy.utils.logging import INFO, log
 
 class ExecutionProcessor:
     """Processes messages for execution."""
 
     def __init__(self, next: PerformanceMessageProcessor, executor: Executor) -> None:
         """Initialize execution processor."""
-        logger.info("Initialize ExecutionProcessor.")
+        log(5, INFO)
         self.next = next
         self.executor = executor
 
     def process(self, message:PerformanceMessage) -> PerformanceMessageResult:
-        logger.info(f"Process performance message {message.id}@{message.timecode}")
+        log(1, INFO, message.id, message.timecode)
         result = PerformanceMessageResult.SKIPPED
         if (isinstance(message, PerformanceSystemResetMessage) or isinstance(message, PerformanceResetEventMessage)):
             self.executor.reset()

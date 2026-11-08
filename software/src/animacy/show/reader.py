@@ -11,8 +11,7 @@ from animacy.contracts.service import *
 from animacy.contracts.performance import *
 from animacy.midi.file_reader import MidiFileReader
 
-import logging
-logger = logging.getLogger(__name__)
+from animacy.utils.logging import CRITICAL, DEBUG, INFO, log
 
 class ShowReader:
     """Show reader."""
@@ -23,12 +22,12 @@ class ShowReader:
         self.reader = reader
 
     def process(self, message:PerformanceMessage) -> PerformanceMessageResult:
-        logger.debug(f"Process performance message {message.id}@{message.timecode}")
+        log(1, DEBUG, message.id, message.timecode)
         # Always pass the message along first so the messages we load
         # are not wiped out downstream of us.
         result = PerformanceMessageResult.SKIPPED
         if (isinstance(message, PerformanceLoadSongMessage)):
-            logger.info(f"Loading song {message.song}")
+            log(1706, INFO, message.song)
             self.reader.open(f"{message.song}.mid")
             return PerformanceMessageResult.HANDLED
         return result
@@ -37,7 +36,7 @@ class ShowReader:
         #  Read files if it's open
         if (self.reader.midi is not None):
 
-            logger.critical(f"Loading song...")
+            log(1707, CRITICAL)
             handled = 0
             skipped = 0
             for event in self.reader.get_events():
@@ -47,7 +46,7 @@ class ShowReader:
                 if result == MidiMessageResult.HANDLED:
                     handled += 1
 
-            logger.critical(f"Loaded song with {handled} handled events, {skipped} skipped events")
+            log(1708, CRITICAL, handled, skipped)
             self.reader.close()
             return ServiceResult.LOADED
 

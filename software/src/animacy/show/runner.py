@@ -8,8 +8,7 @@ Copyright (c) 2026 Sparky Bobo
 
 from animacy.contracts.performance import *
 
-import logging
-logger = logging.getLogger(__name__)
+from animacy.utils.logging import INFO, log
 
 class ShowRunner:
     """Show runner."""
@@ -20,10 +19,10 @@ class ShowRunner:
 
     def process(self, message:PerformanceMessage) -> PerformanceMessageResult:
         if isinstance(message, PerformanceSongStartMessage):
-            logger.info(f"Process song start message {message.id}@{message.timecode}")
+            log(3, INFO, message.id, message.timecode)
 
         elif isinstance(message, PerformanceSongStopMessage):
-            logger.info(f"Process song stop message {message.id}@{message.timecode}")
+            log(4, INFO, message.id, message.timecode)
 
         elif isinstance(message, PerformanceSongContinueMessage):
-            logger.info(f"Process song continue message {message.id}@{message.timecode}")
+            log(1711, INFO, message.id, message.timecode)

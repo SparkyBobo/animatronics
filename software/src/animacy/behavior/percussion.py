@@ -16,8 +16,7 @@ from animacy.contracts.driver import DriverTransition, PositionDriverValue
 from animacy.contracts.setpoint import Setpoint
 from animacy.curves.ease import ZeroEndpointAccelerationCurve
 
-import logging
-logger = logging.getLogger(__name__)
+from animacy.utils.logging import INFO, log
 
 class PercussionBehavior(Behavior):
     """Percussion behaviors."""
@@ -68,7 +67,7 @@ class PercussionBehavior(Behavior):
         # Move to the string start, then play through to end string.
         message.events.append(PerformanceEvent(transition=prep_transition, curve=ZeroEndpointAccelerationCurve(), start=target_start, end=target_play))
         message.events.append(PerformanceEvent(transition=play_transition, curve=ZeroEndpointAccelerationCurve(), start=target_play, end=message.timecode))
-        logger.info(f"Percusion strike for {self.name}@{message.timecode}")  
+        log(1010, INFO, self.name, message.timecode)
 
 
 class BassPercussionBehavior(PercussionBehavior):
@@ -103,5 +102,4 @@ class HitHatPercussionBehavior(PercussionBehavior):
             Setpoint("strike", PositionDriverValue(85)),
         ]
         super().__init__(port=port, note=42, setpoints=setpoints, next=next, cache=cache, name="Hihat")
-
 
