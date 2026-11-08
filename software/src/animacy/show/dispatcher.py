@@ -7,9 +7,8 @@ Copyright (c) 2026 Sparky Bobo
 """
 
 from animacy.contracts.performance import *
-from animacy.show.status import ShowStatusProcessor
-
 from animacy.utils.logging import INFO, log
+
 
 class ShowDispatcher:
     """Processes messages for show."""

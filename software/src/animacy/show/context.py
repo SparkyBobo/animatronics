@@ -6,32 +6,31 @@ Show execution context.
 Copyright (c) 2026 Sparky Bobo
 """
 
-from animacy.contracts.service import Service, ServiceResult
-from animacy.contracts.midi import MidiMessageProcessor
-from animacy.contracts.planner import DriverValueCache
-from animacy.contracts.performance import *
-from animacy.contracts.show import ShowContext as BaseContext
+import time
+
 from animacy.behavior.base import Behavior
+from animacy.contracts.midi import MidiMessageProcessor
+from animacy.contracts.performance import *
+from animacy.contracts.planner import DriverValueCache
+from animacy.contracts.service import Service, ServiceResult
+from animacy.contracts.show import ShowContext as BaseContext
 from animacy.execution.evaluator import ExecutionEvaluator
 from animacy.execution.executor import Executor
 from animacy.execution.processor import ExecutionProcessor
+from animacy.midi.dispatcher import MidiMessageDispatcher
+from animacy.midi.file_reader import MidiFileReader
+from animacy.midi.logger import MidiMessageLogger
+from animacy.midi.serial_port import MidiSerialPort
+from animacy.midi.stream_reader import MidiStreamReader
 from animacy.planning.cache import PlanningCache
-from animacy.queue.planning_policy import PlanningPolicy
 from animacy.planning.processor import PlanningProcessor
 from animacy.queue.planning_policy import PlanningPolicy
 from animacy.queue.processor import QueueProcessor
 from animacy.queue.show_clock_policy import ShowClockQueuePolicy
-from animacy.show.reader import ShowReader
 from animacy.show.dispatcher import ShowDispatcher
-from animacy.show.status import ShowStatusProcessor
-from animacy.midi.dispatcher import MidiMessageDispatcher
-from animacy.midi.logger import MidiMessageLogger
-from animacy.midi.file_reader import MidiFileReader
-from animacy.midi.stream_reader import MidiStreamReader
-from animacy.midi.serial_port import MidiSerialPort
 from animacy.show.mapping import ShowMapper
-import time
-
+from animacy.show.reader import ShowReader
+from animacy.show.status import ShowStatusProcessor
 from animacy.utils.logging import CRITICAL, log
 
 CLOCK_INTERVAL = 60.0 / (120 * 24)  # 20.833 ms

@@ -6,11 +6,11 @@ Executes timed driver transitions.
 Copyright (c) 2026 Sparky Bobo
 """
 
-from animacy.contracts.driver import DriverTransition, DriverValue
+from animacy.contracts.driver import DriverTransition
 from animacy.contracts.performance import *
 from animacy.execution.evaluator import ExecutionEvaluator
-
 from animacy.utils.logging import INFO, log
+
 
 class Executor:
     """Executes timed driver transitions."""
@@ -19,7 +19,6 @@ class Executor:
         """Initialize Executor."""
         self.evaluator = evaluator
         self.active_messages = []
-        pass
 
     def reset(self) -> None:
         """Reset active transitions."""

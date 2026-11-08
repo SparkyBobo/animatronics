@@ -6,19 +6,14 @@ Addressable RGBW behaviors.
 Copyright (c) 2026 Sparky Bobo
 """
 
-from email import message
 
-from email.mime import message
-
-from animacy.drivers.led import LedDriver
 from animacy.behavior.rgb import RgbBehavior
 from animacy.contracts.color import Color
-from animacy.contracts.driver import AddressableDriverTransition, ColorDriverValue
-from animacy.contracts.setpoint import Setpoint
 from animacy.contracts.performance import *
 from animacy.contracts.planner import DriverValueCache
-
+from animacy.drivers.led import LedDriver
 from animacy.utils.logging import INFO, log
+
 
 class RgbwBehavior(RgbBehavior):
     """Addressable RGBW LED behaviors."""

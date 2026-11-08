@@ -6,9 +6,11 @@ Execution processor tests.
 Copyright (c) 2026 Sparky Bobo
 """
 
+from unittest.mock import Mock
+
 from animacy.contracts.performance import *
 from animacy.execution.processor import ExecutionProcessor
-from unittest.mock import Mock
+
 
 def test_processor_init():
     dispatcher = Mock()

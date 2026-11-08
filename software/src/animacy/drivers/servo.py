@@ -6,11 +6,12 @@ Servo driver.
 Copyright (c) 2026 Sparky Bobo
 """
 
-from animacy.contracts.driver import *
-from animacy.hardware.ports import IOPort
 from pwmio import PWMOut
 
+from animacy.contracts.driver import *
+from animacy.hardware.ports import IOPort
 from animacy.utils.logging import INFO, log
+
 
 # A servo driver.
 class ServoDriver:
@@ -36,4 +37,4 @@ class ServoDriver:
         if isinstance(value, PositionDriverValue):
             return self.constraints
         else:
-            raise ValueError(f"Unsupported driver value type: {type(value)}")
+            raise ValueError(f"Unsupported driver value type: {type(value)}")  # noqa: TRY004

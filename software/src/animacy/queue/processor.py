@@ -9,8 +9,8 @@ Copyright (c) 2026 Sparky Bobo
 from animacy.contracts.performance import *
 from animacy.contracts.queue import QueuePolicy
 from animacy.queue.queue import PerformanceMessageQueue
-
 from animacy.utils.logging import INFO, log
+
 
 class QueueProcessor:
     """Processes messages against the show clock."""
@@ -33,7 +33,7 @@ class QueueProcessor:
 
     def _process(self, message:PerformanceMessage) -> PerformanceMessageResult:
         log(1, INFO, message.id, message.timecode)
-        if (isinstance(message, PerformanceSystemResetMessage) or isinstance(message, PerformanceResetEventMessage)):
+        if isinstance(message, (PerformanceSystemResetMessage, PerformanceResetEventMessage)):
             self.queue.reset()
             return PerformanceMessageResult.HANDLED
 
@@ -41,7 +41,7 @@ class QueueProcessor:
             self.queue.reset()
             return PerformanceMessageResult.HANDLED
 
-        if (isinstance(message, PerformanceSongStartMessage) or isinstance(message, PerformanceClockMessage)):
+        if isinstance(message, (PerformanceSongStartMessage, PerformanceClockMessage)):
             dequeued_messages = self._dequeue()
             for msg in dequeued_messages:
                 self.next.process(msg)
@@ -68,4 +68,3 @@ class QueueProcessor:
             dequeued_messages.append(self.queue.dequeue())
             next_message = self.queue.peek()
         return dequeued_messages
-

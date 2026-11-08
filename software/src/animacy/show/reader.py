@@ -7,11 +7,11 @@ Copyright (c) 2026 Sparky Bobo
 """
 
 from animacy.contracts.midi import *
-from animacy.contracts.service import *
 from animacy.contracts.performance import *
+from animacy.contracts.service import *
 from animacy.midi.file_reader import MidiFileReader
-
 from animacy.utils.logging import CRITICAL, DEBUG, INFO, log
+
 
 class ShowReader:
     """Show reader."""

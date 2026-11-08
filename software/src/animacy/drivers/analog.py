@@ -6,9 +6,10 @@ Analog driver.
 Copyright (c) 2026 Sparky Bobo
 """
 
+import logging
+
 from animacy.hardware.ports import IOPort
 
-import logging
 logger = logging.getLogger(__name__)
 
 # An analog driver.

@@ -6,13 +6,14 @@ LizzieB performer.
 Copyright (c) 2026 Sparky Bobo
 """
 
-from animacy.contracts.show import ShowContext
-from animacy.hardware.ports import Ports
-from animacy.characters.performer import PerformerBase
+import logging
+
 from animacy.behavior.mouth import MouthBehavior
 from animacy.behavior.neck import NeckBehavior
+from animacy.characters.performer import PerformerBase
+from animacy.contracts.show import ShowContext
+from animacy.hardware.ports import Ports
 
-import logging
 logger = logging.getLogger(__name__)
 
 class LizzieB(PerformerBase):

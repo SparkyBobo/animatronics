@@ -8,16 +8,16 @@ Copyright (c) 2026 Sparky Bobo
 
 import pytest
 
+from animacy.contracts.color import Color
 from animacy.contracts.driver import (
     AddressableDriverTransition,
     AudioDriverValue,
     ColorDriverValue,
     DriverConstraints,
+    DriverTransition,
     IntensityDriverValue,
     PositionDriverValue,
-    DriverTransition,
 )
-from animacy.contracts.color import Color
 
 
 def test_position_driver_value_interpolates_and_clamps_progress():

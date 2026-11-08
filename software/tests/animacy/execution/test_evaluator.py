@@ -7,10 +7,12 @@ Execution evaluator tests.
 Copyright (c) 2026 Sparky Bobo
 """
 
+from unittest.mock import Mock
+
 from animacy.contracts.performance import *
 from animacy.execution.evaluator import ExecutionEvaluator
 from animacy.show.status import ShowStatusProcessor
-from unittest.mock import Mock
+
 
 def test_evaluator_init():
     evaluator = ExecutionEvaluator(status=ShowStatusProcessor())

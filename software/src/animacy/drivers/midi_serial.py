@@ -7,9 +7,10 @@ Copyright (c) 2026 Sparky Bobo
 """
 
 import busio
-from animacy.hardware.ports import SerialPort
 
+from animacy.hardware.ports import SerialPort
 from animacy.utils.logging import INFO, log
+
 
 # A midi serial driver.
 class MidiSerialDriver:

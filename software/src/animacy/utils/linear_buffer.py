@@ -1,4 +1,4 @@
-"DriverValue""""
+"""
 Animacy
 
 Linear buffer.
@@ -7,6 +7,8 @@ Copyright (c) 2026 Sparky Bobo
 """
 
 import logging
+from collections.abc import Sequence
+
 logger = logging.getLogger(__name__)
 
 class  LinearBufferReader:
@@ -18,9 +20,7 @@ class  LinearBufferReader:
 class  LinearBufferWriter:
     def consume(self, count: int) -> None:
         pass
-    def append(self, data: bytearray) -> None:
-        pass
-    def append(self, data: bytes) -> None:
+    def append(self, data: Sequence[int]) -> None:
         pass
     def reset(self) -> None:
         pass
@@ -34,7 +34,6 @@ class  LinearBuffer:
         self.buffer = bytearray(self.MAX_BUFFER)
         self.head = 0
         self.tail = 0
-        pass
 
     def peek(self, index: int = 0, count: int = 1) -> memoryview:
         if (self.head == self.tail):
@@ -53,14 +52,7 @@ class  LinearBuffer:
             self.head = 0
             self.tail = 0
 
-    def append(self, data: bytearray) -> None:
-        if (self.tail + len(data) > self.MAX_BUFFER):
-            raise RuntimeError(f" LinearBuffer overrun: {self.tail + len(data)}")
-
-        self.buffer[self.tail:self.tail] = data
-        self.tail += len(data)
-
-    def append(self, data: bytes) -> None:
+    def append(self, data: Sequence[int]) -> None:
         if (self.tail + len(data) > self.MAX_BUFFER):
             raise RuntimeError(f" LinearBuffer overrun: {self.tail + len(data)}")
 

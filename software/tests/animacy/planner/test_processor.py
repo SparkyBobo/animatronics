@@ -6,11 +6,13 @@ Planning processor tests.
 Copyright (c) 2026 Sparky Bobo
 """
 
-from animacy.contracts.performance import *
-from animacy.contracts.driver import DriverTransition, PositionDriverValue
-from animacy.planning.processor import PlanningProcessor
-from animacy.planning.cache import PlanningCache
 from unittest.mock import Mock
+
+from animacy.contracts.driver import DriverTransition, PositionDriverValue
+from animacy.contracts.performance import *
+from animacy.planning.cache import PlanningCache
+from animacy.planning.processor import PlanningProcessor
+
 
 def test_processor_init():
     next_processor = Mock()

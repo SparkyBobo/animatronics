@@ -8,8 +8,8 @@ Copyright (c) 2026 Sparky Bobo
 
 from animacy.contracts.midi import *
 from animacy.contracts.performance import *
-
 from animacy.utils.logging import CRITICAL, log
+
 
 class ShowMapper(MidiMessageProcessor):
     """Maps MIDI to performance events."""
@@ -21,28 +21,19 @@ class ShowMapper(MidiMessageProcessor):
     def map(self, timecode:int, message:MidiMessage) -> MidiMessageResult:
         """Process MidiMessages and pass them to the PerformanceMessageProcessor."""
         perf_msg = None
-        if isinstance(message, MidiNoteOn):
-            pass
-
-        elif isinstance(message, MidiNoteOff):
-            pass
-
-        elif isinstance(message, MidiControlChange):
-            pass
-
-        elif isinstance(message, MidiProgramChange):
-            pass
-
-        elif isinstance(message, MidiPitchBend):
-            pass
-
-        elif isinstance(message, MidiDeviceMode):
-            pass
-
-        elif isinstance(message, MidiAllSoundOff):
-            pass
-
-        elif isinstance(message, MidiAllNotesOff):
+        if isinstance(
+            message,
+            (
+                MidiNoteOn,
+                MidiNoteOff,
+                MidiControlChange,
+                MidiProgramChange,
+                MidiPitchBend,
+                MidiDeviceMode,
+                MidiAllSoundOff,
+                MidiAllNotesOff,
+            ),
+        ):
             pass
 
         elif isinstance(message, MidiSongStart):
@@ -72,13 +63,7 @@ class ShowMapper(MidiMessageProcessor):
         elif isinstance(message, MidiFileComplete):
             perf_msg = PerformanceFileCompleteMessage(checksum=0, timecode=timecode)
 
-        elif isinstance(message, MidiCancel):
-            pass
-
-        elif isinstance(message, MidiNack):
-            pass
-
-        elif isinstance(message, MidiAck):
+        elif isinstance(message, (MidiCancel, MidiNack, MidiAck)):
             pass
 
         elif isinstance(message, MidiVolumeSet):
@@ -87,10 +72,7 @@ class ShowMapper(MidiMessageProcessor):
         elif isinstance(message, MidiSongPosition):
             perf_msg = PerformanceSongPositionMessage(position=message.position, timecode=timecode)
 
-        elif isinstance(message, MidiTuneRequest):
-            pass
-
-        elif isinstance(message, MidiActiveSensing):
+        elif isinstance(message, (MidiTuneRequest, MidiActiveSensing)):
             pass
 
         elif isinstance(message, MidiReset):

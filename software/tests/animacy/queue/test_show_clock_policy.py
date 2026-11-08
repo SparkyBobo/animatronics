@@ -6,9 +6,15 @@ Show clock queue policy tests.
 Copyright (c) 2026 Sparky Bobo
 """
 
-from animacy.contracts.performance import PerformanceControlMessage, PerformanceDataMessage, PerformanceMessageResult
-from animacy.queue.show_clock_policy import ShowClockQueuePolicy
 from unittest.mock import Mock
+
+from animacy.contracts.performance import (
+    PerformanceControlMessage,
+    PerformanceDataMessage,
+    PerformanceMessageResult,
+)
+from animacy.queue.show_clock_policy import ShowClockQueuePolicy
+
 
 def test_policy_init():
     policy = ShowClockQueuePolicy(status=Mock())

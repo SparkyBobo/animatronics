@@ -6,10 +6,14 @@ Policy to release items based on the show clock.
 Copyright (c) 2026 Sparky Bobo
 """
 
-from animacy.contracts.performance import PerformanceMessage, PerformanceControlMessage, PerformanceMessageResult
+from animacy.contracts.performance import (
+    PerformanceControlMessage,
+    PerformanceMessage,
+    PerformanceMessageResult,
+)
 from animacy.contracts.show import ShowStatus
-
 from animacy.utils.logging import INFO, log
+
 
 class ShowClockQueuePolicy:
     """Queues and dequeues messages against the show clock."""

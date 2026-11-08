@@ -7,8 +7,8 @@ Copyright (c) 2026 Sparky Bobo
 """
 
 from animacy.curves.ease import (
-    EaseInOutTransform,
     EaseInCurve,
+    EaseInOutTransform,
     EaseOutCurve,
     ZeroEndpointAccelerationCurve,
     ZeroEndpointVelocityCurve,

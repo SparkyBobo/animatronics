@@ -5,8 +5,8 @@ CircuitPython pin map utility.
 
 Copyright (c) 2026 Sparky Bobo
 """
-import microcontroller
 import board
+import microcontroller
 
 board_pins = []
 for pin in dir(microcontroller.pin):
@@ -18,7 +18,7 @@ for pin in dir(microcontroller.pin):
         # Add the original GPIO name, in parentheses.
         if pins:
             # Only include pins that are in board.
-            pins.append(f"({str(pin)})")
+            pins.append(f"({pin!s})")
             board_pins.append(" ".join(pins))
 
 for pins in sorted(board_pins):

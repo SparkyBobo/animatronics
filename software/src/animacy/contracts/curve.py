@@ -17,4 +17,3 @@ class TimeCurve:
         current_time: int,
     ) -> float:
         """Map an absolute clock time to progress from 0.0 to 1.0."""
-        ...

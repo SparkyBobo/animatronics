@@ -6,10 +6,12 @@ Processes messages for planning.
 Copyright (c) 2026 Sparky Bobo
 """
 
+from __future__ import annotations
+
 from animacy.contracts.performance import *
 from animacy.contracts.planner import DriverValueCache
-
 from animacy.utils.logging import INFO, log
+
 
 class PlanningProcessor:
     """Dispatch behaviors and record their planned driver values."""
@@ -53,4 +55,3 @@ class PlanningProcessor:
         if self.next:
             self.next.process(message)
         return result
-

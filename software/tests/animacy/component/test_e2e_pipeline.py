@@ -6,14 +6,21 @@ Queued performance pipeline end-to-end tests.
 Copyright (c) 2026 Sparky Bobo
 """
 
+from unittest.mock import Mock
+
 from animacy.behavior.eyes import EyesBehavior
 from animacy.behavior.rgb import RgbBehavior
+from animacy.contracts.driver import (
+    AddressableDriverTransition,
+    ColorDriverValue,
+    DriverTransition,
+    IntensityDriverValue,
+)
 from animacy.contracts.performance import *
-from animacy.contracts.driver import DriverTransition, AddressableDriverTransition, ColorDriverValue, IntensityDriverValue
 from animacy.curves.linear import LinearCurve
 from animacy.drivers.led import LedDriver
-from animacy.execution.executor import Executor
 from animacy.execution.evaluator import ExecutionEvaluator
+from animacy.execution.executor import Executor
 from animacy.execution.processor import ExecutionProcessor
 from animacy.planning.cache import PlanningCache
 from animacy.planning.processor import PlanningProcessor
@@ -22,7 +29,7 @@ from animacy.queue.processor import QueueProcessor
 from animacy.queue.show_clock_policy import ShowClockQueuePolicy
 from animacy.show.dispatcher import ShowDispatcher
 from animacy.show.status import ShowStatusProcessor
-from unittest.mock import Mock
+
 
 def test_e2e_process_queued():
 

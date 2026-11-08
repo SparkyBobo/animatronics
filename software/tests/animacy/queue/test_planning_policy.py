@@ -6,9 +6,15 @@ Planning policy tests.
 Copyright (c) 2026 Sparky Bobo
 """
 
-from animacy.contracts.performance import PerformanceControlMessage, PerformanceDataMessage, PerformanceMessageResult
-from animacy.queue.planning_policy import PlanningPolicy
 from unittest.mock import Mock
+
+from animacy.contracts.performance import (
+    PerformanceControlMessage,
+    PerformanceDataMessage,
+    PerformanceMessageResult,
+)
+from animacy.queue.planning_policy import PlanningPolicy
+
 
 def test_policy_init():
     policy = PlanningPolicy(status=Mock())

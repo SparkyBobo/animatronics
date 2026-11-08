@@ -14,11 +14,12 @@ Audio pipeline tests.
 Copyright (c) 2026 Sparky Bobo
 """
 
+from animacy.characters.lizzie import LizzieB
 from animacy.contracts.performance import *
 from animacy.contracts.service import Service, ServiceResult
-from animacy.characters.lizzie import LizzieB
-from animacy.show.context import ShowContext
 from animacy.hardware.debug import *
+from animacy.show.context import ShowContext
+
 
 class ScriptedService(Service):
     def __init__(self, context: ShowContext, messages: list[PerformanceMessage]) -> None:

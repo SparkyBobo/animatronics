@@ -5,11 +5,11 @@ Midi message contracts.
 
 Copyright (c) 2026 Sparky Bobo
 """
+from __future__ import annotations
 
-from animacy.contracts.performance import PerformanceMessage, PerformanceMessageProcessor
 
 # Generic Midi message
-class MidiMessage():
+class MidiMessage:
     def __eq__(self, other: object) -> bool:
         return (
             isinstance(other, MidiMessage)
@@ -98,7 +98,7 @@ class MidiUniversalSystem(MidiMessage):
 # File transfer header message
 class MidiFileHeader(MidiUniversalSystem):
 
-    def __init__(self, channel: int=0, length: int = 0, name: str = None):
+    def __init__(self, channel: int=0, length: int = 0, name: str | None = None):
         super().__init__(channel)
         self.length = length
         self.name = name
@@ -107,7 +107,7 @@ class MidiFileHeader(MidiUniversalSystem):
 # File transfer content message, i.e., file bytes.
 class MidiFileContent(MidiUniversalSystem):
 
-    def __init__(self, channel: int=0, data: bytes = None):
+    def __init__(self, channel: int=0, data: bytes | None = None):
         super().__init__(channel)
         self.data = data
 
@@ -121,7 +121,7 @@ class MidiFileComplete(MidiUniversalSystem):
 # and calculate.
 class MidiFileOpen(MidiUniversalSystem):
     # song id.
-    def __init__(self, channel: int=0, id: str = None):
+    def __init__(self, channel: int=0, id: str | None = None):
         super().__init__(channel)
         self.id = id
 
@@ -196,7 +196,7 @@ class MidiReset(MidiMessage):
 # Track info
 class MidiFileInfo:
 
-    def __init__(self, sequence: str = None, name: str = None, tempo: int = -1, miditicks_per_quarter: int = -1):
+    def __init__(self, sequence: str | None = None, name: str | None = None, tempo: int = -1, miditicks_per_quarter: int = -1):
         super().__init__()
         self.sequence = sequence
         self.name = name
@@ -206,7 +206,7 @@ class MidiFileInfo:
 # Track info
 class MidiTrackInfo:
 
-    def __init__(self, name: str = None, channel: int = -1):
+    def __init__(self, name: str | None = None, channel: int = -1):
         super().__init__()
         self.name = name
         self.channel = channel

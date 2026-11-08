@@ -8,9 +8,16 @@ Copyright (c) 2026 Sparky Bobo
 
 import os
 import tempfile
-from animacy.contracts.performance import PerformanceControlMessage, PerformanceFileHeaderMessage, PerformanceFileContentMessage, PerformanceFileCompleteMessage, PerformanceMessageResult
 
+from animacy.contracts.performance import (
+    PerformanceControlMessage,
+    PerformanceFileCompleteMessage,
+    PerformanceFileContentMessage,
+    PerformanceFileHeaderMessage,
+    PerformanceMessageResult,
+)
 from animacy.utils.logging import ERROR, log
+
 
 class ShowWriter:
     """Show file writer."""

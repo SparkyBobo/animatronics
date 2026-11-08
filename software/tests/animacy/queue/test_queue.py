@@ -6,9 +6,10 @@ Performance message queue tests.
 Copyright (c) 2026 Sparky Bobo
 """
 
+
 from animacy.contracts.performance import PerformanceDataMessage
 from animacy.queue.queue import PerformanceMessageQueue
-from unittest.mock import Mock
+
 
 def test_processor_init():
     queue = PerformanceMessageQueue()

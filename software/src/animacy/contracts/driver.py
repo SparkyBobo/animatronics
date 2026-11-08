@@ -7,7 +7,9 @@ Copyright (c) 2026 Sparky Bobo
 """
 
 from __future__ import annotations
+
 from animacy.contracts.color import Color
+
 
 # A driver values base class
 class DriverValue:
@@ -26,17 +28,17 @@ class DriverValue:
 
     @classmethod
     def from_components(
-        cls: type["DriverValue"],
+        cls: type[DriverValue],
         components: tuple[int, ...],
-    ) -> "DriverValue":
+    ) -> DriverValue:
         """Build this value type from ordered integer components."""
         raise NotImplementedError
 
     def interpolate(
-        self: "DriverValue",
-        target: "DriverValue",
+        self: DriverValue,
+        target: DriverValue,
         progress: float,
-    ) -> "DriverValue":
+    ) -> DriverValue:
         if type(target) is not type(self):
             raise TypeError("Driver values must have the same concrete type")
 
@@ -192,7 +194,7 @@ class DriverConstraints:
     means that the corresponding constraint is unbounded.
     """
 
-    def __init__(self, minimum: DriverValue = None, maximum: DriverValue = None, max_velocity: float = None, max_acceleration: float = None):
+    def __init__(self, minimum: DriverValue = None, maximum: DriverValue = None, max_velocity: float | None = None, max_acceleration: float | None = None):
         super().__init__()
         self.minimum = minimum
         self.maximum = maximum
@@ -200,10 +202,9 @@ class DriverConstraints:
         self.max_acceleration = max_acceleration
 
 # The driver processing protocol.
-class Driver():
+class Driver:
     def process(self, transition: DriverTransition) -> DriverTransitionResult:
         ...
 
     def constraints_for(self, value: DriverValue) -> DriverConstraints:
         """Return constraints for the given typed driver value."""
-        ...

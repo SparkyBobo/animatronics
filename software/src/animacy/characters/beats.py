@@ -6,16 +6,21 @@ Beats performer.
 Copyright (c) 2026 Sparky Bobo
 """
 
-from animacy.contracts.show import ShowContext
-from animacy.hardware.ports import Ports
-from animacy.drivers.led import LedDriver
-from animacy.characters.performer import PerformerBase
-from animacy.behavior.eyes import EyesBehavior
-from animacy.behavior.rgb import RgbBehavior
-from animacy.behavior.mouth import MouthBehavior
-from animacy.behavior.percussion import BassPercussionBehavior, SnarePercussionBehavior, HitHatPercussionBehavior
-
 import logging
+
+from animacy.behavior.eyes import EyesBehavior
+from animacy.behavior.mouth import MouthBehavior
+from animacy.behavior.percussion import (
+    BassPercussionBehavior,
+    HitHatPercussionBehavior,
+    SnarePercussionBehavior,
+)
+from animacy.behavior.rgb import RgbBehavior
+from animacy.characters.performer import PerformerBase
+from animacy.contracts.show import ShowContext
+from animacy.drivers.led import LedDriver
+from animacy.hardware.ports import Ports
+
 logger = logging.getLogger(__name__)
 
 class Beats(PerformerBase):

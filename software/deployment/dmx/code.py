@@ -26,22 +26,18 @@
 #
 
 # Common Imports
-import board
-import busio
-import digitalio
 import array
 import time
-import rp2pio
-import adafruit_pioasm
 
 # Midi Imports
 import adafruit_midi
+import adafruit_pioasm
+import board
+import busio
+import digitalio
+import rp2pio
 from adafruit_midi.control_change import ControlChange
-from adafruit_midi.pitch_bend import PitchBend
-from adafruit_midi.note_off import NoteOff
 from adafruit_midi.note_on import NoteOn
-from adafruit_midi.program_change import ProgramChange
-from adafruit_midi.midi_continue import Continue
 from adafruit_midi.start import Start
 from adafruit_midi.stop import Stop
 
@@ -170,6 +166,8 @@ def all_off():
         dmx_values[DMX_VALUES_INDEX0 + i] = 0
 
 def white_fade(target):
+    global white_start_value, white_target_value, white_start_time, white_duration
+
     white_start_value = dmx_values[DMX_VALUES_INDEX0]
     white_target_value = target * 2
     white_start_time = time.monotonic()
@@ -182,54 +180,53 @@ while True:
     msg=midi_uart.receive()
 
     #  if the input is a recognized message...
-    if msg is not None:
-        if msg.channel == 0 or msg.channel == my_midi_channel:
+    if msg is not None and (msg.channel == 0 or msg.channel == my_midi_channel):
 
-            if isinstance(msg, Start) or (isinstance(msg, NoteOn) and msg.note == 1):
-                print("Start")
-                white_fade(white)
+        if isinstance(msg, Start) or (isinstance(msg, NoteOn) and msg.note == 1):
+            print("Start")
+            white_fade(white)
 
-                red_start_value = dmx_values[DMX_VALUES_INDEX0 + 101 + 0]
-                red_target_value = red
-                green_start_value = dmx_values[DMX_VALUES_INDEX0 + 101 + 1]
-                green_target_value = green
-                blue_start_value = dmx_values[DMX_VALUES_INDEX0 + 101 + 2]
-                blue_target_value = blue
-                rgb_start_time = time.monotonic()
-                rgb_duration = fade_seconds
+            red_start_value = dmx_values[DMX_VALUES_INDEX0 + 101 + 0]
+            red_target_value = red
+            green_start_value = dmx_values[DMX_VALUES_INDEX0 + 101 + 1]
+            green_target_value = green
+            blue_start_value = dmx_values[DMX_VALUES_INDEX0 + 101 + 2]
+            blue_target_value = blue
+            rgb_start_time = time.monotonic()
+            rgb_duration = fade_seconds
 
 
-            elif isinstance(msg, Stop) or (isinstance(msg, NoteOn) and msg.note == 2):
-                print("Stop")
+        elif isinstance(msg, Stop) or (isinstance(msg, NoteOn) and msg.note == 2):
+            print("Stop")
 
-                red_start_value = dmx_values[DMX_VALUES_INDEX0 + 101 + 0]
-                red_target_value = 0
-                green_start_value = dmx_values[DMX_VALUES_INDEX0 + 101 + 1]
-                green_target_value = 0
-                blue_start_value = dmx_values[DMX_VALUES_INDEX0 + 101 + 2]
-                blue_target_value = 10
-                rgb_start_time = time.monotonic()
-                rgb_duration = fade_seconds
+            red_start_value = dmx_values[DMX_VALUES_INDEX0 + 101 + 0]
+            red_target_value = 0
+            green_start_value = dmx_values[DMX_VALUES_INDEX0 + 101 + 1]
+            green_target_value = 0
+            blue_start_value = dmx_values[DMX_VALUES_INDEX0 + 101 + 2]
+            blue_target_value = 10
+            rgb_start_time = time.monotonic()
+            rgb_duration = fade_seconds
 
-            elif isinstance(msg, ControlChange):
-                print("CC: ", msg.control, "Value:", msg.value)
-                if (msg.control == 20):
-                    white_level = msg.value * 2
+        elif isinstance(msg, ControlChange):
+            print("CC: ", msg.control, "Value:", msg.value)
+            if (msg.control == 20):
+                white_level = msg.value * 2
     
-                if (msg.control >= 21 and msg.control <= 23):
-                    if (msg.control == 21):
-                        red = msg.value * 2
-                    if (msg.control == 22):
-                        green = msg.value * 2
-                    if (msg.control == 23):
-                        blue = msg.value * 2
+            if (msg.control >= 21 and msg.control <= 23):
+                if (msg.control == 21):
+                    red = msg.value * 2
+                if (msg.control == 22):
+                    green = msg.value * 2
+                if (msg.control == 23):
+                    blue = msg.value * 2
 
-                if (msg.control == 24):
-                    if (msg.value == 0):
-                        fade_seconds = .001
-                    elif (msg.value <= 128):
-                        fade_seconds = 0.1 + (msg.value - 1) * 9.9 / 126
-                        print(f"Fade set to {fade_seconds}")
+            if (msg.control == 24):
+                if (msg.value == 0):
+                    fade_seconds = .001
+                elif (msg.value <= 128):
+                    fade_seconds = 0.1 + (msg.value - 1) * 9.9 / 126
+                    print(f"Fade set to {fade_seconds}")
 
     # Fade
     next_tick = time.monotonic()
