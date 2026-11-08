@@ -1,7 +1,6 @@
 #
 # Animatroincs Guitar Player Module
 # Copyright (C) 2025 Sparky Bobo Designs
-# https://github.com/SparkyBobo/animatronics/tree/master/software/servo/guitar
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
