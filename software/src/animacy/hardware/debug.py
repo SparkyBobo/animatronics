@@ -1,4 +1,10 @@
-"""CircuitPython Essentials Pin Map Script"""
+"""
+Animacy
+
+CircuitPython pin map utility.
+
+Copyright (c) 2026 Sparky Bobo
+"""
 import microcontroller
 import board
 

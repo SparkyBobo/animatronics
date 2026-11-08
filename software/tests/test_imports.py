@@ -1,3 +1,11 @@
+"""
+Animacy
+
+Package import tests.
+
+Copyright (c) 2026 Sparky Bobo
+"""
+
 from animacy import __version__
 
 
