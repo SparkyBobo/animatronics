@@ -35,16 +35,16 @@ class DMXDriver:
         self.mode_pin_num = mode_pin or board.GP7
         self.out_pin = out_pin or board.GP8
         self.timing_pin = timing_pin or board.GP4
-        
+
         # Initialize mode pin
         self.dmx_mode_pin = digitalio.DigitalInOut(self.mode_pin_num)
         self.dmx_mode_pin.direction = digitalio.Direction.OUTPUT
         self.dmx_mode_pin.value = True  # Set to transmit
-        
+
         # Initialize DMX values buffer
         # Array structure: [MBB, BRK, MAB, channel_count, start_code, ch1_data, ch2_data, ...]
         self.dmx_values = array.array("L", (0 for _ in range(DMX_CHANNELS + 5)))
-        
+
         # Setup tx timings - See https://support.etcconnect.com/ETC/FAQ/DMX_Speed
         # These timings are close to the Eos family of products "medium" speed.
         self.dmx_values[0] = 30            # Word 0: Length of MARK BEFORE BREAK in microseconds (8us min)
@@ -52,12 +52,12 @@ class DMXDriver:
         self.dmx_values[2] = 128           # Word 2: Length of MARK AFTER BREAK in microseconds (12us min)
         self.dmx_values[3] = DMX_CHANNELS  # Word 3: Number of channels to send (1-512) + (1 for start code)
         self.dmx_values[4] = 0             # Word 4: Start Code data byte (usually 0)
-        
+
         # Initialize DMX state machine with PIO program
         self._init_state_machine()
-        
+
         log(1305, INFO)
-    
+
     def _init_state_machine(self):
         """Initialize the DMX-512 PIO state machine"""
         # DMX PIO program - Borrowed heavily from [mydana]: https://github.com/mydana/CircuitPython_DMX_Transmitter
@@ -103,7 +103,7 @@ class DMXDriver:
             .wrap
             """
         )
-        
+
         # Setup the tx state machine environment
         self.dmx_state_machine = rp2pio.StateMachine(
             program=dmx_tx_program.assembled,
@@ -119,28 +119,28 @@ class DMXDriver:
             auto_pull=True,
             out_shift_right=True
         )
-        
+
         # Start background transmission
         self.dmx_state_machine.background_write(loop=memoryview(self.dmx_values))
-    
+
     def set_dmx_level(self, channel, value):
         """
         Set a single DMX channel level
-        
+
         Args:
             channel: DMX channel number (1-512)
             value: Channel value (0-255)
         """
         if channel >= 1 and channel <= DMX_CHANNELS:
             self.dmx_values[DMX_VALUES_INDEX0 + channel - 1] = value
-    
+
     def get_dmx_level(self, channel):
         """
         Get a single DMX channel level
-        
+
         Args:
             channel: DMX channel number (1-512)
-            
+
         Returns:
             Channel value (0-255)
         """
@@ -151,7 +151,7 @@ class DMXDriver:
     def set_dmx_levels(self, channel_value_pairs):
         """
         Update multiple DMX channels in one call.
-        
+
         Args:
             channel_value_pairs: iterable of (channel, value) tuples where
                 channel is 1-512 and value is 0-255. Invalid entries are skipped.
@@ -165,16 +165,16 @@ class DMXDriver:
                 elif val > 255:
                     val = 255
                 self.dmx_values[DMX_VALUES_INDEX0 + channel - 1] = val
-    
+
     def all_off(self):
         """Turn off all DMX channels"""
         for i in range(DMX_CHANNELS):
             self.dmx_values[DMX_VALUES_INDEX0 + i] = 0
-    
+
     def get_values(self):
         """
         Get the DMX channel values array
-        
+
         Returns:
             The last DMX_CHANNELS elements of dmx_values (the channel data)
         """

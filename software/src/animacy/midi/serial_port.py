@@ -19,7 +19,7 @@ class MidiSerialPort:
     def __init__(self) -> None:
         """Initialize MidiSerialPort."""
         self.driver = MidiSerialDriver(Ports.midi)
-        self._midi = adafruit_midi.MIDI(midi_in=self.driver.uart, midi_out=self.driver.uart) 
+        self._midi = adafruit_midi.MIDI(midi_in=self.driver.uart, midi_out=self.driver.uart)
 
     @property
     def device(self) -> any:

@@ -30,7 +30,7 @@ class StringBendBehavior(Behavior):
         self.setpoints = [
             Setpoint("rest", DriverTransition(self.driver, PositionDriverValue(85), PositionDriverValue(85))),
             Setpoint("max", DriverTransition(self.driver, PositionDriverValue(95), PositionDriverValue(95)))
-        ] 
+        ]
 
     def process(self, event:PerformanceDataMessage) -> PerformanceMessageHandlerResult:
         if isinstance(event, PerformanceResetEventMessage):

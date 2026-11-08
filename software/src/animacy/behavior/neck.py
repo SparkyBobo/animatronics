@@ -27,14 +27,14 @@ class NeckBehavior(Behavior):
         super().__init__(name)
         self.driver = ServoDriver(port)
         self.next  = next
-        self.cache = cache        
+        self.cache = cache
 
         # Neck has a few setpoints: left, center, right
         self.setpoints = [
             Setpoint("left", PositionDriverValue(900)),
             Setpoint("center", PositionDriverValue(1720)),
             Setpoint("right", PositionDriverValue(2200)),
-        ]  
+        ]
 
     def map(self, timecode:int, message:MidiMessage) -> MidiMessageResult:
         if (isinstance(message, MidiNoteOn) and message.note == 26):
@@ -75,4 +75,4 @@ class NeckBehavior(Behavior):
         desiered_time = 24
         target_start = max(message.timecode - desiered_time, position_last_time)
         message.events.append(PerformanceEvent(transition=neck_transition, curve=ZeroEndpointAccelerationCurve(), start=target_start, end=message.timecode))
-        #logger.info(f"Neck transition to {target}@{message.timecode}")        
+        #logger.info(f"Neck transition to {target}@{message.timecode}")

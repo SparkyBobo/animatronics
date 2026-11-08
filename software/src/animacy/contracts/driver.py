@@ -60,7 +60,7 @@ class PositionDriverValue(DriverValue):
         self.position = position
 
     def __str__(self) -> str:
-        return f"PositionDriverValue({self.position})"        
+        return f"PositionDriverValue({self.position})"
 
     def components(self) -> tuple[int, ...]:
         return (self.position,)
@@ -82,7 +82,7 @@ class IntensityDriverValue(DriverValue):
         self.intensity = intensity
 
     def __str__(self) -> str:
-        return f"IntensityDriverValue({self.intensity})"        
+        return f"IntensityDriverValue({self.intensity})"
 
     def components(self) -> tuple[int, ...]:
         return (self.intensity,)
@@ -104,7 +104,7 @@ class ColorDriverValue(DriverValue):
         self.color = color
 
     def __str__(self) -> str:
-        return f"ColorDriverValue({self.color})"        
+        return f"ColorDriverValue({self.color})"
 
     def components(self) -> tuple[int, ...]:
         return (self.color.red, self.color.green, self.color.blue, self.color.white)
@@ -120,14 +120,14 @@ class ColorDriverValue(DriverValue):
 
 # An audio value.
 class AudioDriverValue(DriverValue):
-    
+
     def __init__(self, command: str):
         super().__init__()
         self.command = command
 
     def __str__(self) -> str:
-        return f"AudioDriverValue({self.command})"        
-       
+        return f"AudioDriverValue({self.command})"
+
 
     def interpolate(self: AudioDriverValue, target: AudioDriverValue, progress: float) -> AudioDriverValue:
         return target
@@ -168,7 +168,7 @@ class DriverTransition:
 # A driver transition with an address.
 class AddressableDriverTransition(DriverTransition):
     """A driver transition addressed to one device on a bus."""
-    
+
     def __init__(self, driver: Driver=None, start_value: DriverValue=None, end_value: DriverValue=None, progress: float = 0.0, address: int = -1):
         super().__init__(driver, start_value, end_value, progress)
         self.address = address
@@ -177,7 +177,7 @@ class AddressableDriverTransition(DriverTransition):
     def key(self) -> str:
         return f"{id(self.driver)}:{self.address}:{type(self.end_value).__name__}"
 
-# A transition result 
+# A transition result
 class DriverTransitionResult:
     """Driver transition processing result."""
     SKIPPED = 0         # No action taken

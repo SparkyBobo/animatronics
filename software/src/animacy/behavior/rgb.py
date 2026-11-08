@@ -24,7 +24,7 @@ class RgbBehavior(Behavior):
         self,
         driver: LedDriver,
         address: int,
-        cache: DriverValueCache,         
+        cache: DriverValueCache,
         name: str,
     ) -> None:
         """Initialize RgbBehavior."""

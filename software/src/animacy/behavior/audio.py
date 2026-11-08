@@ -28,7 +28,7 @@ class AudioBehavior(Behavior):
         self.driver = driver
 
     def map(self, timecode:int, message:MidiMessage) -> MidiMessageResult:
-        return MidiMessageResult.SKIPPED        
+        return MidiMessageResult.SKIPPED
 
     def process(self, message:PerformanceMessage) -> PerformanceMessageResult:
         """Process performance events."""

@@ -17,7 +17,7 @@ class SongSelect(MIDIMessage):
     """Song select message."""
     _STATUS = 0xF1
     _STATUSMASK = 0xFF
-    LENGTH = 2     
+    LENGTH = 2
 
     def __init__(self, id) -> None:
         """Initialize SongSelect."""
@@ -31,7 +31,7 @@ class SongSelect(MIDIMessage):
     def from_bytes(cls, msg_bytes):
         return cls(msg_bytes[1])
 
-SongSelect.register_message_type()                
+SongSelect.register_message_type()
 
 # Song Position
 class SongPosition(MIDIMessage):
@@ -54,7 +54,7 @@ class SongPosition(MIDIMessage):
     def from_bytes(cls, msg_bytes):
         return cls(msg_bytes[1] | (msg_bytes[2] << 7))
 
-SongPosition.register_message_type()                
+SongPosition.register_message_type()
 
 # Tune Request
 class TuneRequest(MIDIMessage):
@@ -74,7 +74,7 @@ class TuneRequest(MIDIMessage):
     def from_bytes(cls, msg_bytes):
         return cls()
 
-TuneRequest.register_message_type()                
+TuneRequest.register_message_type()
 
 # System Exclusive
 # No need to register, already parsed by system exclusive.
@@ -142,7 +142,7 @@ class FileHeader(UniversalSystem):
             | msg_bytes[7]
         )
         name = msg_bytes[8:].decode("utf-8")
-        return cls(channel, length, name)        
+        return cls(channel, length, name)
 
 class FileContent(UniversalSystem):
     """SysEx universal file header message."""
@@ -158,7 +158,7 @@ class FileContent(UniversalSystem):
     @classmethod
     def from_sysex_bytes(cls, channel:int, msg_bytes):
         decoded_data = FileContent._decode_file_buffer(msg_bytes)
-        return cls(channel, decoded_data)         
+        return cls(channel, decoded_data)
 
     @classmethod
     def _encode_file_bytes(cls, data:bytes) -> bytearray:
@@ -203,7 +203,7 @@ class FileOpen(UniversalSystem):
     @classmethod
     def from_sysex_bytes(cls, channel:int, msg_bytes):
         id = (msg_bytes[0] << 7) | msg_bytes[1]
-        return cls(channel, id) 
+        return cls(channel, id)
 
 # Volume
 class VolumeSet(UniversalSystem):
@@ -219,6 +219,6 @@ class VolumeSet(UniversalSystem):
     @classmethod
     def from_data_bytes(cls, channel:int, msg_bytes):
         level = (msg_bytes[0] << 7) | msg_bytes[1]
-        return cls(channel, level)     
+        return cls(channel, level)
 
-                
+

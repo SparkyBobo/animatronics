@@ -23,7 +23,7 @@ class MidiMessageDispatcher:
             self.handlers.append(handler)
 
     def unsubscribe(self, handler: MidiMessageProcessor):
-        self.handlers.remove(handler)           
+        self.handlers.remove(handler)
 
     def map(self, timecode: int, message:MidiMessage) -> MidiMessageResult:
         result = MidiMessageResult.SKIPPED

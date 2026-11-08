@@ -65,34 +65,34 @@ class ShowMapper(MidiMessageProcessor):
 
         elif isinstance(message, MidiFileHeader):
             perf_msg = PerformanceFileHeaderMessage(name=str(message.name), action="open", timecode=timecode)
-            
+
         elif isinstance(message, MidiFileContent):
             perf_msg = PerformanceFileContentMessage(data=message.data, timecode=timecode)
-            
+
         elif isinstance(message, MidiFileComplete):
             perf_msg = PerformanceFileCompleteMessage(checksum=0, timecode=timecode)
-            
+
         elif isinstance(message, MidiCancel):
             pass
-            
+
         elif isinstance(message, MidiNack):
             pass
-            
+
         elif isinstance(message, MidiAck):
             pass
-            
+
         elif isinstance(message, MidiVolumeSet):
             perf_msg = PerformanceVolumeMessage(level=message.level, timecode=timecode)
-            
+
         elif isinstance(message, MidiSongPosition):
             perf_msg = PerformanceSongPositionMessage(position=message.position, timecode=timecode)
-            
+
         elif isinstance(message, MidiTuneRequest):
             pass
-            
+
         elif isinstance(message, MidiActiveSensing):
             pass
-            
+
         elif isinstance(message, MidiReset):
             perf_msg = PerformanceSystemResetMessage(timecode=timecode)
 

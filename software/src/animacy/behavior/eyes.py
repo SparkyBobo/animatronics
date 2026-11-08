@@ -31,7 +31,7 @@ class EyesBehavior(Behavior):
         if (isinstance(message, MidiNoteOn) and message.note == 29):
             self.next.process(PerformanceEyeMessage(timecode=timecode, color=Color(), intensity=message.velocity, fade=0))
             return MidiMessageResult.HANDLED
-        return MidiMessageResult.SKIPPED    
+        return MidiMessageResult.SKIPPED
 
     def process(self, message:PerformanceMessage) -> PerformanceMessageResult:
         if isinstance(message, PerformanceResetEventMessage) or isinstance(message, PerformanceEyeMessage):

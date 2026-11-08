@@ -53,7 +53,7 @@ for track in mid.tracks:
     last_kept_tick = 0
 
     for msg in track:
-        absolute_tick += msg.time    
+        absolute_tick += msg.time
 
         ch = keep_message(msg)
         if (ch >= 0):

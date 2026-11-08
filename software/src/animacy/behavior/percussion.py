@@ -38,7 +38,7 @@ class PercussionBehavior(Behavior):
             return MidiMessageResult.HANDLED
         if (isinstance(message, MidiPitchBend)):
             return MidiMessageResult.HANDLED
-        return MidiMessageResult.SKIPPED        
+        return MidiMessageResult.SKIPPED
 
     def process(self, message:PerformanceMessage) -> PerformanceMessageResult:
         if isinstance(message, PerformanceResetEventMessage):

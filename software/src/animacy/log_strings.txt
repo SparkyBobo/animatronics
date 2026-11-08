@@ -96,8 +96,6 @@
 1706|Loading song {}
 1707|Loading song...
 1708|Loaded song with {} handled events, {} skipped events
-# show/runner.py
-1711|Process song continue message {}@{}
 # show/status.py
 1714|Pause ShowStatus.
 1715|Play ShowStatus.

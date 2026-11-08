@@ -62,7 +62,7 @@ def test_e2e_process_queued():
     load_message = PerformanceLoadSongMessage(song="Song1")
     show_processor.process(load_message)
 
-    # A song load will start reading a midi file and processing the messages. 
+    # A song load will start reading a midi file and processing the messages.
     # For this test, we will simulate a song with a message that change the color and intensity of the eyes.
     eye_message = PerformanceEyeMessage(timecode=5, color=Color(red=255, green=0, blue=0), intensity=128, fade=3)
     show_processor.process(eye_message)
@@ -86,7 +86,7 @@ def test_e2e_process_queued():
     assert execution_queue.process.call_count == 3
     assert execution_processor.process.call_count ==  2
     assert len(eye_message.events) == 4
-    assert all(isinstance(event.curve, LinearCurve) for event in eye_message.events)    
+    assert all(isinstance(event.curve, LinearCurve) for event in eye_message.events)
 
     # Start the clock
     clock_message = PerformanceClockMessage(timecode=1)

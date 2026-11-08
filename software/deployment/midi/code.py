@@ -73,8 +73,8 @@ usb_host.Port(board.GP4, board.GP5)
 time.sleep(2.0)
 
 # Find any MIDI devices on the Type-A USB port
-# The USB Host MIDI library does not support hot-plugging, 
-# so if the device is lost it will need to be reconnected 
+# The USB Host MIDI library does not support hot-plugging,
+# so if the device is lost it will need to be reconnected
 # to be found again.
 if usb_host_device is None:
     print("Looking for devices on USB Host...")
@@ -90,7 +90,7 @@ if usb_host_device is None:
         else:
             print("Setup MIDI device on usb host.")
             midi_usb_host = adafruit_midi.MIDI(midi_in=usb_host_device, debug=True)
-            led_usb_host.value = False        
+            led_usb_host.value = False
 
 # Setup MIDI device on UART, all channels
 # In from external controller via DIN, out to TRS.
@@ -113,7 +113,7 @@ def midi_receive(midi_dev, midi_led=None):
 
     # Exit if the device is not set.
     if midi_dev is None:
-        return    
+        return
 
     #  Receive MIDI input and retransmit
     msg=midi_dev.receive()
@@ -188,7 +188,7 @@ while True:
 
     # Process show control messages.
     if control_msg is not None:
-        
+
         if isinstance(control_msg, NoteOn):
             if (control_msg.note == 8):
                 midi_uart.send(NoteOn(channel=0, note=1, velocity=127))

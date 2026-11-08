@@ -20,7 +20,7 @@ def test_dispatch_subscribe():
     handler = Mock()
     disp = PlanningDispatcher(next=Mock())
     disp.subscribe(handler)
-    assert handler in disp.handlers    
+    assert handler in disp.handlers
 
 def test_dispatch_unsubscribe():
     handler = Mock()

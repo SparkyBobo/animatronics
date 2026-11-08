@@ -29,7 +29,7 @@ class ServoDriver:
         if isinstance(target, PositionDriverValue):
             #logger.info(f"ServoDriver to {target}")
             duty_ratio = target.position / self.total_period_us
-            self.pwm.duty_cycle = int(duty_ratio * 65535)            
+            self.pwm.duty_cycle = int(duty_ratio * 65535)
 
     def constraints_for(self, value: DriverValue) -> DriverConstraints:
         """Return constraints for the given typed driver value."""

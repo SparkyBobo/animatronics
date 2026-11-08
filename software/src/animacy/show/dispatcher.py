@@ -26,7 +26,7 @@ class ShowDispatcher:
 
     def unsubscribe(self, handler: PerformanceMessageProcessor):
         """Unsubscribe a PerformanceMessageProcessor: handler."""
-        self.handlers.remove(handler)      
+        self.handlers.remove(handler)
 
     def process(self, message:PerformanceMessage) -> PerformanceMessageResult:
         """Dispatch message to all subscribers."""
@@ -36,4 +36,4 @@ class ShowDispatcher:
             if result == PerformanceMessageResult.TERMINATE:
                 return result
         return result
-    
+

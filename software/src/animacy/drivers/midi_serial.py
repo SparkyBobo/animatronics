@@ -19,9 +19,9 @@ class MidiSerialDriver:
         """Initialize MidiSerialDriver."""
         log(5, INFO)
         self._uart = busio.UART(
-            tx=port.txpin, 
-            rx=port.rxpin, 
-            baudrate=port.baudrate, 
+            tx=port.txpin,
+            rx=port.rxpin,
+            baudrate=port.baudrate,
             bits=8,
             parity=None,
             stop=1,
@@ -29,4 +29,4 @@ class MidiSerialDriver:
 
     @property
     def uart(self) -> any:
-        return self._uart        
+        return self._uart

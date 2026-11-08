@@ -27,7 +27,7 @@ class SerialPort:
         self.rxpin = rxpin
         self.baudrate = baudrate
         self.timeout = timeout
-        pass    
+        pass
 
 class I2CPort:
     """Serial definition."""
@@ -37,7 +37,7 @@ class I2CPort:
         self.name = name
         self.cpin = cpin
         self.dpin = dpin
-        pass    
+        pass
 
 class Ports:
     """Port definition."""
@@ -59,11 +59,11 @@ class Ports:
     io15 = IOPort("gpio3", board.GP15)
     io = [ io0, io1, io2, io3, io4, io5, io6, io7, io8, io9, io10, io11, io12, io13, io14, io15 ]
     # Every board has a MIDI UART
-    midi = SerialPort("midi", board.GP16, board.GP17, baudrate=31250, timeout=0.001)      
+    midi = SerialPort("midi", board.GP16, board.GP17, baudrate=31250, timeout=0.001)
     # Every board has 1 accessory i2c port
     i2c = I2CPort("is2", board.GP19, board.GP18)
     # Every board has 1 diagnostic i2c port
-    diag = I2CPort("diag", board.GP21, board.GP20)          
+    diag = I2CPort("diag", board.GP21, board.GP20)
     # Every board has a built-in status and Neopixel port
     led = IOPort("led", board.GP22)
     status = IOPort("status" ,board.LED)

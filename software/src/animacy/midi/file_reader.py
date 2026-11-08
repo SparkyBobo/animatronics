@@ -52,7 +52,7 @@ class MidiFileReader:
         """
         return self.selected_track_info
 
-    def select_track(self, channel:int) -> MidiTrackInfo: 
+    def select_track(self, channel:int) -> MidiTrackInfo:
         """
         Returns the MIDI track info for the selected track.
         """
@@ -104,15 +104,15 @@ class MidiFileReader:
             elif event.status == umidiparser.PITCHWHEEL:
                 track_msg = MidiPitchBend(channel = event.channel, bend = event.pitch)
             else:
-                continue # skip        
+                continue # skip
 
             timecode = round(
                 absolute_ticks * 24 / self.midi.miditicks_per_quarter
             )
             yield MidiTrackEvent(timecode=timecode, message=track_msg)
-            
 
-    def _get_file_info(self) -> MidiFileInfo: 
+
+    def _get_file_info(self) -> MidiFileInfo:
         """
         Returns the MIDI track for the metadata track, channel 0.
         """
@@ -135,4 +135,4 @@ class MidiFileReader:
             if (channel_prefix == 0):
                 return MidiFileInfo(sequence=file_sequence, name=file_name, tempo=file_tempo, miditicks_per_quarter=self.midi.miditicks_per_quarter)
 
-        return None    
+        return None

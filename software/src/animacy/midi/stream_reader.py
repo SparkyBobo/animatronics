@@ -29,7 +29,7 @@ class MidiStreamReader(Service):
 
     def __init__(self, next: MidiMessageProcessor = None) -> None:
         """Initialize MidiParser."""
-        self.next = next   
+        self.next = next
 
     def open(self, device) -> None:
         """Open the selected device."""

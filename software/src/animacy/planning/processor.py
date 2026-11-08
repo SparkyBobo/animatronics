@@ -51,6 +51,6 @@ class PlanningProcessor:
                     result = PerformanceMessageResult.HANDLED
 
         if self.next:
-            self.next.process(message)            
+            self.next.process(message)
         return result
-    
+
