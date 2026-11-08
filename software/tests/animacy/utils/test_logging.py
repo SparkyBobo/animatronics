@@ -1,3 +1,11 @@
+"""
+Animacy
+
+Logging utility tests.
+
+Copyright (c) 2026 Sparky Bobo
+"""
+
 import builtins
 from io import StringIO
 

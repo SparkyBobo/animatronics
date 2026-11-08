@@ -1,7 +1,7 @@
 """
 Animacy
 
-File reader tests.
+MIDI file reader tests.
 
 Copyright (c) 2026 Sparky Bobo
 """

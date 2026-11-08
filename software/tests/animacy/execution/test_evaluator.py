@@ -2,7 +2,7 @@
 """
 Animacy
 
-Executor tests.
+Execution evaluator tests.
 
 Copyright (c) 2026 Sparky Bobo
 """

@@ -1,7 +1,7 @@
 """
 Animacy
 
-DMX output driver test.
+DMX output driver tests.
 
 Copyright (c) 2026 Sparky Bobo
 """

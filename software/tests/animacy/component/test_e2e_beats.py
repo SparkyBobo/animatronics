@@ -1,7 +1,7 @@
 """
 Animacy
 
-Midi pipeline tests.
+Beats performer end-to-end tests.
 
 Copyright (c) 2026 Sparky Bobo
 """

@@ -1,7 +1,7 @@
 """
 Animacy
 
-Performance pipeline tests.
+Queued performance pipeline end-to-end tests.
 
 Copyright (c) 2026 Sparky Bobo
 """

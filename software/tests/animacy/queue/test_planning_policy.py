@@ -1,7 +1,7 @@
 """
 Animacy
 
-Planning Policy tests.
+Planning policy tests.
 
 Copyright (c) 2026 Sparky Bobo
 """
