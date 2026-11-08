@@ -44,6 +44,7 @@ class AudioBehavior(Behavior):
         elif isinstance(message, PerformanceSongStartMessage):
             log(3, INFO, message.id, message.timecode)
             self._update(message=message, command="START")
+            return PerformanceMessageResult.HANDLED
         elif isinstance(message, PerformanceSongStopMessage):
             log(4, INFO, message.id, message.timecode)
             self._update(message=message, command="STOP")

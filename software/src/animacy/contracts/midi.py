@@ -73,8 +73,8 @@ class MidiPitchBend(MidiChannelMessage):
 # All Sound Off
 class MidiDeviceMode(MidiControlChange):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, channel: int = 0, control: int = 0, value: int = 0):
+        super().__init__(channel=channel, control=control, value=value)
 
 # All Sound Off
 class MidiAllSoundOff(MidiChannelMessage):

@@ -20,7 +20,7 @@ from animacy.characters.groove import Groove
 from animacy.show.context import ShowContext
 from animacy.hardware.debug import *
 
-class TestService(Service):
+class ScriptedService(Service):
     def __init__(self, context: ShowContext, messages: list[PerformanceMessage]) -> None:
         context.add_service(self)
         self.context = context
@@ -51,6 +51,6 @@ def test_e2e_groove():
         PerformanceSongStopMessage(timecode=-1),
     ]
     context = ShowContext()
-    TestService(context, messages)
+    ScriptedService(context, messages)
     Groove(context)
     context.run()

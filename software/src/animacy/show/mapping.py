@@ -94,7 +94,7 @@ class ShowMapper(MidiMessageProcessor):
             pass
             
         elif isinstance(message, MidiReset):
-            perf_msg = PerformanceSystemResetMessage()
+            perf_msg = PerformanceSystemResetMessage(timecode=timecode)
 
         if (perf_msg is not None):
             log(1704, CRITICAL, type(perf_msg).__name__, perf_msg.timecode)
