@@ -34,7 +34,7 @@ class MouthBehavior(Behavior):
             Setpoint("soft", PositionDriverValue(1200)),
             Setpoint("normal", PositionDriverValue(1700)),
             Setpoint("scream", PositionDriverValue(2200)),
-        ] 
+        ]
 
     def map(self, timecode:int, message:MidiMessage) -> MidiMessageResult:
         if (isinstance(message, MidiNoteOn) and message.note == 29):
@@ -73,4 +73,4 @@ class MouthBehavior(Behavior):
         desiered_time = 24
         target_start = max(message.timecode - desiered_time, position_last_time)
         message.events.append(PerformanceEvent(transition=mount_transition, curve=ZeroEndpointAccelerationCurve(), start=target_start, end=message.timecode))
-        #logger.info(f"Mouth transition to {target} from sp[{target_index}]@{message.timecode}")        
+        #logger.info(f"Mouth transition to {target} from sp[{target_index}]@{message.timecode}")

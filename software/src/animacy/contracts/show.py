@@ -46,13 +46,13 @@ class ShowContext:
         ...
 
     @property
-    def status(self) -> ShowStatus:        
+    def status(self) -> ShowStatus:
         ...
 
     @property
-    def planner_cache(self) -> DriverValueCache:        
+    def planner_cache(self) -> DriverValueCache:
         raise NotImplementedError
 
     @property
-    def planner_queue(self) -> PerformanceMessageProcessor:        
+    def planner_queue(self) -> PerformanceMessageProcessor:
         raise NotImplementedError

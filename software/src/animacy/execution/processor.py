@@ -38,11 +38,11 @@ class ExecutionProcessor:
         if (isinstance(message, PerformanceClockMessage)):
             self.executor.evaluate()
             result = PerformanceMessageResult.HANDLED
-        
+
         if self.executor.process(message) == PerformanceMessageResult.TERMINATE:
             return PerformanceMessageResult.TERMINATE
-    
+
         if self.next:
-            self.next.process(message)            
+            self.next.process(message)
         return result
-    
+

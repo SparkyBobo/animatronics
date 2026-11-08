@@ -15,7 +15,7 @@ class MidiUsbHost:
     def __init__(self) -> None:
         """Initialize MidiUsbHost."""
         pass
-    
+
     @property
     def device(self) -> any:
         return None

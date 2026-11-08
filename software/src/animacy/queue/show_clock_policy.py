@@ -37,4 +37,4 @@ class ShowClockQueuePolicy:
             return PerformanceMessageResult.SKIPPED
         else:
             return PerformanceMessageResult.QUEUED
-    
+

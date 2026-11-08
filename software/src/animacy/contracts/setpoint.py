@@ -17,8 +17,8 @@ class Setpoint:
         name: The name of the setpoint.
         transition: The driver transition for the setpoint.
     """
-    
+
     def __init__(self, name: str = None, value: DriverValue = None):
         super().__init__()
         self.name = name
-        self.value = value    
+        self.value = value

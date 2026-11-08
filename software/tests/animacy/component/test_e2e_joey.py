@@ -34,10 +34,10 @@ class ScriptedService(Service):
             self.context.show_dispatcher.process(message)
             return ServiceResult.ACTIVITY
         return ServiceResult.EXIT
-    
+
 
 def test_e2e_joey():
-    messages = [ 
+    messages = [
         PerformanceLoadSongMessage(song=1, timecode=-1),
         PerformanceSongStartMessage(timecode=-1),
         PerformanceClockMessage(0),

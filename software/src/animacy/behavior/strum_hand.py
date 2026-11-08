@@ -48,7 +48,7 @@ class StrumHandBehavior(Behavior):
         if (isinstance(message, MidiNoteOff) and message.note>= 36  and message.note <= 47):
             self.next.process(PerformancePlayTechiqueMessage(timecode=timecode, technique=message.note-36, intensity=0))
             return MidiMessageResult.HANDLED
-        return MidiMessageResult.SKIPPED        
+        return MidiMessageResult.SKIPPED
 
     def process(self, message:PerformanceDataMessage) -> PerformanceMessageResult:
         if isinstance(message, PerformanceResetEventMessage):
@@ -82,4 +82,3 @@ class StrumHandBehavior(Behavior):
         message.events.append(PerformanceEvent(transition=play_transition, curve=ZeroEndpointAccelerationCurve(), start=message.timecode, end=message.timecode+play_timecode))
         message.timecode = target_start
         #logger.info(f"Strum transition to sp[{start_index}] through sp[{end_index}]@{message.timecode}")
-    

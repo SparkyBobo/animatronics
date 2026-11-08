@@ -64,8 +64,8 @@ class QueueProcessor:
             outcome = self.policy.process(next_message)
             if (outcome == PerformanceMessageResult.QUEUED):
                 break
-            
+
             dequeued_messages.append(self.queue.dequeue())
             next_message = self.queue.peek()
         return dequeued_messages
-    
+

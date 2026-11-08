@@ -25,11 +25,11 @@ def test_dmx_driver_set_dmx_levels():
         (2, 128),
         (3, 64),
         (4, 0),
-    ])    
+    ])
     assert_transmitted_channel_value(driver, 1, 255)
     assert_transmitted_channel_value(driver, 2, 128)
     assert_transmitted_channel_value(driver, 3, 64)
-    assert_transmitted_channel_value(driver, 4, 0)    
+    assert_transmitted_channel_value(driver, 4, 0)
 
 def test_dmx_driver_all_off():
     driver = DMXDriver()
@@ -37,7 +37,7 @@ def test_dmx_driver_all_off():
         (1, 255),
         (2, 128),
         (3, 64),
-    ])    
+    ])
     driver.all_off()
     assert_transmitted_channel_value(driver, 1, 0)
     assert_transmitted_channel_value(driver, 2, 0)
@@ -49,7 +49,7 @@ def test_dmx_driver_get_values():
         (1, 255),
         (2, 128),
         (3, 64),
-    ]) 
+    ])
     values = driver.get_values()
     assert len(values) == 512
     assert values[0] == 255

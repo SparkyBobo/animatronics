@@ -33,7 +33,7 @@ def test_reader_file_info():
 
 def test_reader_show_1():
     reader = MidiFileReader()
-    reader.open("1.mid")    
+    reader.open("1.mid")
 
     assert reader.midi.miditicks_per_quarter == 960
     assert len(reader.midi.tracks) == 7
@@ -43,13 +43,13 @@ def test_reader_show_1():
     count = 0
     for event in reader.get_events():
         count += 1
-    
+
     assert count == 3925
 
 
 def test_reader_show_2():
     reader = MidiFileReader()
-    reader.open("2.mid")    
+    reader.open("2.mid")
 
     assert reader.midi.miditicks_per_quarter == 960
     assert len(reader.midi.tracks) == 7
@@ -74,7 +74,7 @@ def test_reader_track_info_1():
     assert reader.track_info.name == 'Joey'
     assert reader.track_info.channel == 1
 
-    expected = [            
+    expected = [
         MidiTrackEvent(timecode=1, message=MidiNoteOff(channel=1, note=60, velocity=0)),
         MidiTrackEvent(timecode=2, message=MidiNoteOn(channel=1, note=61, velocity=40)),
         MidiTrackEvent(timecode=3, message=MidiControlChange(channel=1, control=1, value=40)),
@@ -103,9 +103,9 @@ def test_reader_track_info_2():
 
     assert reader.track_info
     assert reader.track_info.name == 'Slash'
-    assert reader.track_info.channel == 2    
+    assert reader.track_info.channel == 2
 
-    expected = [            
+    expected = [
         MidiTrackEvent(timecode=1, message=MidiNoteOff(channel=2, note=70, velocity=0)),
         MidiTrackEvent(timecode=2, message=MidiNoteOn(channel=2, note=71, velocity=127)),
         MidiTrackEvent(timecode=3, message=MidiControlChange(channel=2, control=2, value=42)),
@@ -183,7 +183,7 @@ def get_test_file():
     ch2_track.append(mido.Message('control_change', channel=2, control=2, value=42, time=3))
     ch2_track.append(mido.Message('program_change', channel=2, program=72, time=4))
     ch2_track.append(mido.Message('pitchwheel', channel=2, pitch=1000, time=5))
-    ch2_track.append(mido.MetaMessage('end_of_track'))        
+    ch2_track.append(mido.MetaMessage('end_of_track'))
     mid = mido.MidiFile(type=1, ticks_per_beat=480)
     mid.tracks.append(meta_track)
     mid.tracks.append(ch1_track)

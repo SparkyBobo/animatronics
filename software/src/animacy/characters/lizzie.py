@@ -26,12 +26,12 @@ class LizzieB(PerformerBase):
         self.mouth = MouthBehavior(port=Ports.io0, next=context.planner_queue, cache=context.planner_cache)
         self.neck = NeckBehavior(port=Ports.io1, next=context.planner_queue, cache=context.planner_cache)
 
-        # LizzieB has standard eyes 
-        #self.led_driver = LedDriver(2)  
+        # LizzieB has standard eyes
+        #self.led_driver = LedDriver(2)
         #self.eyes = EyesBehavior(self.led_driver)
 
         # Register
         context.add_mapping(self)
         context.add_behavior(self.mouth)
-        context.add_behavior(self.neck)        
+        context.add_behavior(self.neck)
 

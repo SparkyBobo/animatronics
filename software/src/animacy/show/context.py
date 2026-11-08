@@ -143,10 +143,10 @@ class ShowContext(BaseContext):
 
     @property
     def planner_cache(self) -> DriverValueCache:
-        return self._planner_cache    
+        return self._planner_cache
 
     @property
-    def planner_queue(self) -> PerformanceMessageProcessor:        
+    def planner_queue(self) -> PerformanceMessageProcessor:
         return self.planning_queue
 
 

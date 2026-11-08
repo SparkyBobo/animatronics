@@ -22,18 +22,18 @@ class AudioDriver(Service):
         """Initialize AudioDriver."""
         log(5, INFO)
         self.uart = busio.UART(
-            tx=port.txpin, 
-            rx=port.rxpin, 
-            baudrate=port.baudrate, 
+            tx=port.txpin,
+            rx=port.rxpin,
+            baudrate=port.baudrate,
             bits=8,
             parity=None,
             stop=1,
             timeout=port.timeout)
 
-        self.last_activity = time.monotonic()    
+        self.last_activity = time.monotonic()
         self.constraints = DriverConstraints(IntensityDriverValue(0), IntensityDriverValue(255), 0.0, 0.0)
 
-    def process(self, transition: DriverTransition) -> DriverTransitionResult:      
+    def process(self, transition: DriverTransition) -> DriverTransitionResult:
         if isinstance(transition.end_value, AudioDriverValue):
             log(1302, INFO, transition.end_value.command)
             self._send_line(transition.end_value.command)
@@ -43,7 +43,7 @@ class AudioDriver(Service):
         if isinstance(value, AudioDriverValue):
             return self.constraints
         else:
-            raise ValueError(f"Unsupported driver value type: {type(value)}")        
+            raise ValueError(f"Unsupported driver value type: {type(value)}")
 
     def service(self) -> ServiceResult:
         """Process incoming terminal output; call frequently."""
@@ -51,12 +51,12 @@ class AudioDriver(Service):
         if ((self.last_activity + 5.0) < time.monotonic()):
             log(1303, INFO)
             self._send_line("PING")
-            self.last_activity = time.monotonic() 
+            self.last_activity = time.monotonic()
 
         # Read the response.
         data = self.uart.readline()
         if not data:
-            return ServiceResult.IDLE        
+            return ServiceResult.IDLE
 
         text = data.decode("ascii").strip()
         log(1304, INFO, text)

@@ -50,7 +50,7 @@ def test_processor_dequeue():
     policy.process.return_value = PerformanceMessageResult.HANDLED
     clock = PerformanceClockMessage(timecode=100)
     assert processor.process(clock) == PerformanceMessageResult.HANDLED
-    assert not processor.queue.messages    
+    assert not processor.queue.messages
     assert dispatcher.process.call_count == 2
 
 def test_processor_discard():

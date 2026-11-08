@@ -29,9 +29,9 @@ class Slash(PerformerBase):
         #self.string_bend = StringBendBehavior(port=Ports.io0, power=Ports.io1)
         self.fret_hand = FretHandBehavior(port=Ports.io2, next=context.planner_queue, cache=context.planner_cache)
         self.strum_hand = StrumHandBehavior(port=Ports.io3, next=context.planner_queue, cache=context.planner_cache)
-        #self.foottap = FoottapBehaviour(port=Ports.io4)   
+        #self.foottap = FoottapBehaviour(port=Ports.io4)
 
-        # Slash has standard eyes 
+        # Slash has standard eyes
         self.led_driver = LedDriver(2)
         self.left_eye = RgbBehavior(self.led_driver, 0, cache=context.planner_cache, name="LeftEye")
         self.right_eye = RgbBehavior(self.led_driver, 1, cache=context.planner_cache, name="RightEye")

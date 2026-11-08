@@ -49,4 +49,4 @@ class FoottapBehaviour(Behavior):
             message.events.append(PerformanceEvent(transition=lower_transition, curve=InstantCurve(), start=message.timecode, end=message.timecode))
             return PerformanceMessageResult.HANDLED
 
-        
+

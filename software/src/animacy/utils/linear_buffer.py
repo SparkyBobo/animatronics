@@ -10,7 +10,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 class  LinearBufferReader:
-    def peek(self, index: int = 0, count: int = 1) -> memoryview: 
+    def peek(self, index: int = 0, count: int = 1) -> memoryview:
         pass
     def available(self, count: int) -> int:
         pass

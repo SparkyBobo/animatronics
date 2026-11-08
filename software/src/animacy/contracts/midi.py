@@ -27,14 +27,14 @@ class MidiUnknownMessage(MidiMessage):
 
 # Unknown Midi message
 class MidiChannelMessage(MidiMessage):
-    
+
     def __init__(self, channel: int = 0):
         super().__init__()
         self.channel = channel
 
 # Midi Note Off
 class MidiNoteOff(MidiChannelMessage):
-    
+
     def __init__(self, channel: int = 0, note: int=0, velocity: int=0):
         super().__init__(channel)
         self.note = note
@@ -106,7 +106,7 @@ class MidiFileHeader(MidiUniversalSystem):
 
 # File transfer content message, i.e., file bytes.
 class MidiFileContent(MidiUniversalSystem):
-    
+
     def __init__(self, channel: int=0, data: bytes = None):
         super().__init__(channel)
         self.data = data
@@ -205,7 +205,7 @@ class MidiFileInfo:
 
 # Track info
 class MidiTrackInfo:
-    
+
     def __init__(self, name: str = None, channel: int = -1):
         super().__init__()
         self.name = name
@@ -213,7 +213,7 @@ class MidiTrackInfo:
 
 # Track events
 class MidiTrackEvent:
-    
+
     def __init__(self, timecode: int = 0, message: MidiMessage = None):
         super().__init__()
         self.timecode = timecode
@@ -224,7 +224,7 @@ class MidiMessageResult:
     """Midi message processing result"""
     SKIPPED = 0     # No action taken
     HANDLED = 1     # Action taken
-    TERMINATE = 2   # Do not continue propogation    
+    TERMINATE = 2   # Do not continue propogation
 
 # A processing protocol for processing midi messages
 class MidiMessageProcessor:
