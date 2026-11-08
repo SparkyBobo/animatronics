@@ -32,3 +32,14 @@ def test_executor_terminated():
 
     assert transitions == [transition1, transition2]
     assert result == PerformanceMessageResult.TERMINATE
+
+def test_evaluator_skips_events_without_transitions():
+    evaluator = ExecutionEvaluator(status=ShowStatusProcessor())
+    message = PerformanceDataMessage(
+        events=[PerformanceEvent(transition=None), PerformanceEvent(transition=None)]
+    )
+
+    transitions, result = evaluator.evaluate(message)
+
+    assert transitions == []
+    assert result == PerformanceMessageResult.TERMINATE

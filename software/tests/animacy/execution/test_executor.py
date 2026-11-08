@@ -55,6 +55,18 @@ def test_executor_evaluates_again_at_same_clock():
     assert evaluator.evaluate.call_count == 2
     assert driver.process.call_count == 2
 
+def test_executor_does_not_activate_the_same_message_twice():
+    evaluator = Mock()
+    evaluator.evaluate.return_value = ([], PerformanceMessageResult.HANDLED)
+    executor = Executor(evaluator=evaluator)
+    message = _message()
+
+    executor.process(message)
+    executor.process(message)
+
+    assert executor.active_messages == [message]
+    evaluator.evaluate.assert_called_once_with(message)
+
 def test_executor_terminated():
     driver = Mock()
     evaluator = Mock()

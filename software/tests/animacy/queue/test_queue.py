@@ -50,3 +50,9 @@ def test_processor_dequeue():
     assert dequeued_message == message1
     assert queue.messages[0] == message2
     assert queue.messages[1] == message3
+
+def test_processor_empty_queue_operations_return_none():
+    queue = PerformanceMessageQueue()
+
+    assert queue.peek() is None
+    assert queue.dequeue() is None

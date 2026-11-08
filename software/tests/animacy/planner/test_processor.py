@@ -40,3 +40,29 @@ def test_processor_process():
     behavior.process.assert_called_once_with(message)
     cache.update.assert_called_once_with(transition, 10)
     next_processor.process.assert_called_once_with(message)
+
+def test_processor_does_not_dispatch_terminated_messages():
+    next_processor = Mock()
+    handler = Mock()
+    handler.process.return_value = PerformanceMessageResult.TERMINATE
+    processor = PlanningProcessor(
+        next=next_processor,
+        cache=PlanningCache(),
+        handlers=[handler],
+    )
+    message = PerformanceDataMessage()
+
+    assert processor.process(message) == PerformanceMessageResult.TERMINATE
+
+    next_processor.process.assert_not_called()
+
+def test_processor_subscribe_and_unsubscribe_handlers():
+    processor = PlanningProcessor(next=Mock(), cache=PlanningCache())
+    handler = Mock()
+
+    processor.subscribe(handler)
+    processor.subscribe(handler)
+    assert processor.handlers == [handler]
+
+    processor.unsubscribe(handler)
+    assert processor.handlers == []

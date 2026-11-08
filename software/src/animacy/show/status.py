@@ -53,7 +53,7 @@ class ShowStatusProcessor:
             if (self.show_clock == 0):
                 self.start_clock = time.monotonic()
                 self.next_clock_tick = time.monotonic()
-            self._update(self.show_clock+1 if message.timecode is -1 else message.timecode)
+            self._update(self.show_clock + 1 if message.timecode == -1 else message.timecode)
             message.timecode = self.show_clock
             return PerformanceMessageResult.HANDLED
 

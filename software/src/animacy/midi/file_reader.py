@@ -93,10 +93,12 @@ class MidiFileReader:
             elif event.status == umidiparser.CONTROL_CHANGE:
                 if (event.control < 120):
                     track_msg = MidiControlChange(channel = event.channel, control = event.control, value = event.value)
-                if (event.control == 120):
+                elif (event.control == 120):
                     track_msg = MidiAllSoundOff(channel = event.channel)
-                if (event.control == 123):
+                elif (event.control == 123):
                     track_msg = MidiAllNotesOff(channel = event.channel)
+                else:
+                    continue
             elif event.status == umidiparser.PROGRAM_CHANGE:
                 track_msg = MidiProgramChange(channel = event.channel, program = event.program)
             elif event.status == umidiparser.PITCHWHEEL:
@@ -134,4 +136,3 @@ class MidiFileReader:
                 return MidiFileInfo(sequence=file_sequence, name=file_name, tempo=file_tempo, miditicks_per_quarter=self.midi.miditicks_per_quarter)
 
         return None    
-

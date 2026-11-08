@@ -79,14 +79,14 @@ class MidiDeviceMode(MidiControlChange):
 # All Sound Off
 class MidiAllSoundOff(MidiChannelMessage):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, channel: int = 0):
+        super().__init__(channel=channel)
 
 # All Notes Off
 class MidiAllNotesOff(MidiChannelMessage):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, channel: int = 0):
+        super().__init__(channel=channel)
 
 # Universal System Exclusive
 class MidiUniversalSystem(MidiMessage):

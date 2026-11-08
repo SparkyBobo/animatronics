@@ -133,7 +133,7 @@ class AudioDriverValue(DriverValue):
         return target
 
     def components(self) -> tuple[int, ...]:
-        return (0)
+        return (0,)
 
     @classmethod
     def from_components(

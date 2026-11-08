@@ -26,3 +26,38 @@ def test_processor_execute():
     assert processor.process(message) == PerformanceMessageResult.SKIPPED
     executor.process.assert_called_once_with(message)
     dispatcher.process.assert_called_once_with(message)
+
+def test_processor_resets_executor_for_song_position():
+    dispatcher = Mock()
+    executor = Mock()
+    processor = ExecutionProcessor(dispatcher, executor)
+    message = PerformanceSongPositionMessage(position=42)
+
+    assert processor.process(message) == PerformanceMessageResult.HANDLED
+
+    executor.reset.assert_called_once_with()
+    executor.process.assert_called_once_with(message)
+    dispatcher.process.assert_called_once_with(message)
+
+def test_processor_evaluates_executor_on_clock():
+    dispatcher = Mock()
+    executor = Mock()
+    processor = ExecutionProcessor(dispatcher, executor)
+    message = PerformanceClockMessage(timecode=42)
+
+    assert processor.process(message) == PerformanceMessageResult.HANDLED
+
+    executor.evaluate.assert_called_once_with()
+    executor.process.assert_called_once_with(message)
+    dispatcher.process.assert_called_once_with(message)
+
+def test_processor_stops_propagation_when_executor_terminates():
+    dispatcher = Mock()
+    executor = Mock()
+    executor.process.return_value = PerformanceMessageResult.TERMINATE
+    processor = ExecutionProcessor(dispatcher, executor)
+    message = PerformanceDataMessage()
+
+    assert processor.process(message) == PerformanceMessageResult.TERMINATE
+
+    dispatcher.process.assert_not_called()

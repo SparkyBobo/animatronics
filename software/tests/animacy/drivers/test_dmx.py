@@ -56,6 +56,23 @@ def test_dmx_driver_get_values():
     assert values[1] == 128
     assert values[2] == 64
 
+def test_dmx_driver_ignores_out_of_range_channels():
+    driver = DMXDriver()
+    driver.set_dmx_level(0, 255)
+    driver.set_dmx_level(513, 255)
+    driver.set_dmx_levels([(1, 200), (0, 255), (513, 255)])
+
+    assert driver.get_dmx_level(0) == 0
+    assert driver.get_dmx_level(1) == 200
+    assert driver.get_dmx_level(513) == 0
+
+def test_dmx_driver_clamps_channel_levels():
+    driver = DMXDriver()
+    driver.set_dmx_levels([(1, -1), (2, 256)])
+
+    assert driver.get_dmx_level(1) == 0
+    assert driver.get_dmx_level(2) == 255
+
 def assert_transmitted_channel_value(driver, channel, value):
     assert driver.dmx_state_machine.last_write is not None
     assert driver.dmx_state_machine.last_write[DMX_VALUES_INDEX0 + channel - 1] == value
