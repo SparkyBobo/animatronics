@@ -30,6 +30,7 @@ class ShowDispatcher:
 
     def process(self, message:PerformanceMessage) -> PerformanceMessageResult:
         """Dispatch message to all subscribers."""
+        result = PerformanceMessageResult.SKIPPED
         for handler in self.handlers:
             result = handler.process(message)
             if result == PerformanceMessageResult.TERMINATE:

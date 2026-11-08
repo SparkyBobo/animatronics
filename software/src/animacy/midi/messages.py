@@ -52,7 +52,7 @@ class SongPosition(MIDIMessage):
 
     @classmethod
     def from_bytes(cls, msg_bytes):
-        return cls(msg_bytes[1], msg_bytes[2])
+        return cls(msg_bytes[1] | (msg_bytes[2] << 7))
 
 SongPosition.register_message_type()                
 
@@ -83,26 +83,31 @@ class UniversalSystem(SystemExclusive):
     """SysEx universal message."""
     def __init__(self, channel: int, sub1: int, sub2: int, data:bytes, manufacturer_id=0x7e):
         """Initialize MidiUniversalSystem."""
-        super().__init__(channel=channel)
+        super().__init__(manufacturer_id=bytes([manufacturer_id]), data=b"")
         self.manufacturer_id = manufacturer_id
+        self.channel = channel
         self.sub1 = sub1
         self.sub2 = sub2
         self.data = data
 
     def __bytes__(self):
-        return bytes([
-            self._STATUS, 
-            self.manufacturer_id, 
-            self.sub1, 
-            self.sub2, 
-            self.data, 
-            self.END_STATUS
-        ])
+        return bytes([self._STATUS, self.manufacturer_id, self.channel, self.sub1, self.sub2]) + self.data + bytes([self.ENDSTATUS])
 
     @classmethod
     def from_bytes(cls, msg_bytes):
-        manufacturer_id = msg_bytes[0]
-        return UniversalSystem.from_data_bytes(msg_bytes[1:])
+        return cls.from_data_bytes(msg_bytes[2:-1], msg_bytes[1])
+
+    @classmethod
+    def from_data_bytes(cls, data, manufacturer_id):
+        if len(data) < 3:
+            raise ValueError("Universal SysEx payload must contain channel and sub-identifiers")
+        return cls(
+            channel=data[0],
+            sub1=data[1],
+            sub2=data[2],
+            data=data[3:],
+            manufacturer_id=manufacturer_id[0] if isinstance(manufacturer_id, bytes) else manufacturer_id,
+        )
 
     @classmethod
     def from_sysex_bytes(cls, msg_bytes, manufacturer_id=0x7e):
@@ -110,54 +115,64 @@ class UniversalSystem(SystemExclusive):
         sub1 = msg_bytes[1]
         sub2 = msg_bytes[2]
         data = msg_bytes[3:]
-        return cls(channel, sub1, sub2, data)     
+        return cls(channel, sub1, sub2, data, manufacturer_id=manufacturer_id)
 
 # File Commands
 class FileHeader(UniversalSystem):
     """SysEx universal file header message."""
-    def __init__(self, channel:int, len:int, name:str):
+    def __init__(self, channel:int, length:int, name:str):
         """Initialize FileHeader."""
-        self.channel = channel
-        self.length = len
+        self.length = length
         self.name = name
-        len1 = len >> 21 & 0x7f
-        len2 = len >> 14 & 0x7f
-        len3 = len >> 7 & 0x7f
-        len4 = len & 0x7f
-        sysex_data = bytes(['M', 'I', 'D', 'I', len1, len2, len3, len4]) + name
+        len1 = length >> 21 & 0x7f
+        len2 = length >> 14 & 0x7f
+        len3 = length >> 7 & 0x7f
+        len4 = length & 0x7f
+        sysex_data = b"MIDI" + bytes([len1, len2, len3, len4]) + name.encode("utf-8")
         super().__init__(manufacturer_id=0x7e, channel=channel, sub1=0x07, sub2=0x01, data=sysex_data)
 
     @classmethod
     def from_sysex_bytes(cls, channel:int, msg_bytes):
-        # msg_bytes[0:3] is "MIDI"
-        length = msg_bytes[4] << 21 + msg_bytes[5] << 14 + msg_bytes[6] << 7 + msg_bytes[7]
-        name = str(msg_bytes[8:])
+        if msg_bytes[:4] != b"MIDI" or len(msg_bytes) < 8:
+            raise ValueError("Invalid MIDI file header payload")
+        length = (
+            (msg_bytes[4] << 21)
+            | (msg_bytes[5] << 14)
+            | (msg_bytes[6] << 7)
+            | msg_bytes[7]
+        )
+        name = msg_bytes[8:].decode("utf-8")
         return cls(channel, length, name)        
 
 class FileContent(UniversalSystem):
     """SysEx universal file header message."""
     def __init__(self, channel:int, data:bytes):
         """Initialize FileHeader."""
-        self.channel = channel
+        self.encoded_data = FileContent._encode_file_bytes(data)
+        super().__init__(manufacturer_id=0x7e, channel=channel, sub1=0x07, sub2=0x02, data=self.encoded_data)
         self.data = data
-        encoded_data = FileContent._encode_file_bytes(data)
-        super().__init__(manufacturer_id=0x7e, channel=channel, sub1=0x07, sub2=0x01, data=encoded_data)
+
+    def __bytes__(self):
+        return bytes([self._STATUS, self.manufacturer_id, self.channel, self.sub1, self.sub2]) + self.encoded_data + bytes([self.ENDSTATUS])
 
     @classmethod
     def from_sysex_bytes(cls, channel:int, msg_bytes):
-        decoded_data = FileContent._decode_file_bytes(msg_bytes)
+        decoded_data = FileContent._decode_file_buffer(msg_bytes)
         return cls(channel, decoded_data)         
 
     @classmethod
     def _encode_file_bytes(cls, data:bytes) -> bytearray:
         """Write the 8-bit byte array as a sysex buffer, not including the terminator."""
         result = bytearray()
-        for offset in range(0, len(data), 8):
-            data[offset] = 0
-            for i, value in enumerate(data[offset + 1:offset + 7]):
-                if (value & 0x80):
-                    data[offset] += 1 << i
-                result.append(value)
+        for offset in range(0, len(data), 7):
+            chunk = data[offset:offset + 7]
+            msbs = 0
+            for i, value in enumerate(chunk):
+                if value & 0x80:
+                    msbs |= 1 << i
+            result.append(msbs)
+            for value in chunk:
+                result.append(value & 0x7f)
         return result
 
     @classmethod
@@ -187,7 +202,7 @@ class FileOpen(UniversalSystem):
 
     @classmethod
     def from_sysex_bytes(cls, channel:int, msg_bytes):
-        id = msg_bytes[0] << 7 + msg_bytes[1]
+        id = (msg_bytes[0] << 7) | msg_bytes[1]
         return cls(channel, id) 
 
 # Volume
@@ -196,14 +211,14 @@ class VolumeSet(UniversalSystem):
     def __init__(self, channel:int, level:int):
         """Initialize Volume."""
         self.level = level
-        lvl1 = len >> 7 & 0x7f
-        lvl2 = len & 0x7f
+        lvl1 = level >> 7 & 0x7f
+        lvl2 = level & 0x7f
         sysex_data = bytes([lvl1, lvl2])
         super().__init__(manufacturer_id=0x7f, channel=channel, sub1=0x04, sub2=0x01, data=sysex_data)
 
     @classmethod
     def from_data_bytes(cls, channel:int, msg_bytes):
-        level = msg_bytes[0] << 7 + msg_bytes[1]
+        level = (msg_bytes[0] << 7) | msg_bytes[1]
         return cls(channel, level)     
 
                 

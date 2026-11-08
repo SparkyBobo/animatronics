@@ -20,7 +20,7 @@ from animacy.characters.tickles import Tickles
 from animacy.show.context import ShowContext
 from animacy.hardware.debug import *
 
-class TestService(Service):
+class ScriptedService(Service):
     def __init__(self, context: ShowContext, messages: list[PerformanceMessage]) -> None:
         context.add_service(self)
         self.context = context
@@ -51,6 +51,6 @@ def test_e2e_Tickles():
         PerformanceSongStopMessage(timecode=-1),
     ]
     context = ShowContext()
-    TestService(context, messages)
+    ScriptedService(context, messages)
     Tickles(context)
     context.run()

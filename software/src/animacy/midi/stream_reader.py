@@ -114,31 +114,33 @@ class MidiStreamReader(Service):
         # System Exclusive
         elif isinstance(msg, SystemExclusive):
             log(1236, INFO, msg.channel)
-            usysex_msg = UniversalSystem.from_data_bytes(msg.data, msg.manufacturer_id)
-            # Non-Real time
-            if (usysex_msg.manufacturer_id == 0x7e):
-                if (usysex_msg.subid1 == 0x07 and usysex_msg.subid2 == 0x01):
-                    msg = FileHeader.from_sysex_bytes(usysex_msg.channel, usysex_msg.data)
-                    return_msg = MidiFileHeader(channel=msg.channel, length=msg.length, name=msg.name)
-                elif (usysex_msg.subid1 == 0x07 and usysex_msg.subid2 == 0x02):
-                    msg = FileContent.from_sysex_bytes(usysex_msg.channel, usysex_msg.data)
-                    return_msg = MidiFileContent(channel=msg.channel, data=msg.data)
-                elif (usysex_msg.subid1 == 0x0b and usysex_msg.subid2 == 0x01):
-                    msg = FileOpen.from_sysex_bytes(usysex_msg.channel, usysex_msg.data)
-                    return_msg = MidiFileOpen(channel=msg.channel, id=msg.id)
-                elif (usysex_msg.subid1 == 0x7b):
-                    return_msg = MidiFileComplete(channel=msg.channel)
-                elif (usysex_msg.subid1 == 0x7d):
-                    return_msg = MidiCancel(channel=msg.channel)
-                elif (usysex_msg.subid1 == 0x7e):
-                    return_msg = MidiNack(channel=msg.channel)
-                elif (usysex_msg.subid1 == 0x7f):
-                    return_msg = MidiAck(channel=msg.channel)
-            # Real time
-            elif (usysex_msg.manufacturer_id == 0x7f):
-                if (usysex_msg.subid1 == 0x04 and usysex_msg.subid2 == 0x01):
-                    msg = VolumeSet.from_data_bytes(usysex_msg.channel, usysex_msg.data)
-                    return_msg = MidiVolumeSet(level=msg.level)
+            manufacturer_id = msg.manufacturer_id[0] if len(msg.manufacturer_id) == 1 else None
+            if manufacturer_id in (0x7e, 0x7f):
+                usysex_msg = UniversalSystem.from_data_bytes(msg.data, manufacturer_id)
+                # Non-Real time
+                if (usysex_msg.manufacturer_id == 0x7e):
+                    if (usysex_msg.sub1 == 0x07 and usysex_msg.sub2 == 0x01):
+                        msg = FileHeader.from_sysex_bytes(usysex_msg.channel, usysex_msg.data)
+                        return_msg = MidiFileHeader(channel=msg.channel, length=msg.length, name=msg.name)
+                    elif (usysex_msg.sub1 == 0x07 and usysex_msg.sub2 == 0x02):
+                        msg = FileContent.from_sysex_bytes(usysex_msg.channel, usysex_msg.data)
+                        return_msg = MidiFileContent(channel=msg.channel, data=msg.data)
+                    elif (usysex_msg.sub1 == 0x0b and usysex_msg.sub2 == 0x01):
+                        msg = FileOpen.from_sysex_bytes(usysex_msg.channel, usysex_msg.data)
+                        return_msg = MidiFileOpen(channel=msg.channel, id=msg.id)
+                    elif (usysex_msg.sub1 == 0x7b):
+                        return_msg = MidiFileComplete(channel=usysex_msg.channel)
+                    elif (usysex_msg.sub1 == 0x7d):
+                        return_msg = MidiCancel(channel=usysex_msg.channel)
+                    elif (usysex_msg.sub1 == 0x7e):
+                        return_msg = MidiNack(channel=usysex_msg.channel)
+                    elif (usysex_msg.sub1 == 0x7f):
+                        return_msg = MidiAck(channel=usysex_msg.channel)
+                # Real time
+                elif (usysex_msg.manufacturer_id == 0x7f):
+                    if (usysex_msg.sub1 == 0x04 and usysex_msg.sub2 == 0x01):
+                        msg = VolumeSet.from_data_bytes(usysex_msg.channel, usysex_msg.data)
+                        return_msg = MidiVolumeSet(channel=msg.channel, level=msg.level)
 
         # Unhandled
         elif isinstance(msg, MIDIBadEvent):
@@ -147,4 +149,6 @@ class MidiStreamReader(Service):
             log(1238, WARNING, msg.status)
 
         if (return_msg is not None):
-            self.next.map(-1, return_msg)            
+            self.next.map(-1, return_msg)
+
+        return ServiceResult.ACTIVITY
