@@ -34,6 +34,7 @@ def test_e2e_process_queued():
 
     # Execution layer
     evaluator = Mock(wraps=ExecutionEvaluator(show_status))
+    evaluator.status = show_status
     executor =  Mock(wraps=Executor(evaluator=evaluator))
     execution_processor =  Mock(wraps=ExecutionProcessor(next=None, executor=executor))
     execution_policy = Mock(wraps=ShowClockQueuePolicy(show_status))
@@ -48,11 +49,14 @@ def test_e2e_process_queued():
     # Behaviour layer
     left_eye = RgbBehavior(cache=planner_cache, driver=driver, address=1, name="LeftEye")
     right_eye = RgbBehavior(cache=planner_cache, driver=driver, address=2, name="RightEye")
-    eyes_behaviour = EyesBehavior(left=left_eye, right=right_eye)
+    eyes_behaviour = EyesBehavior(leds=[left_eye, right_eye], next=planning_processor)
     planning_processor.subscribe(eyes_behaviour)
 
     # Show layer
-    show_processor = Mock(wraps=ShowDispatcher(next=planning_queue, status=show_status))
+    dispatcher = ShowDispatcher()
+    dispatcher.subscribe(show_status)
+    dispatcher.subscribe(planning_queue)
+    show_processor = Mock(wraps=dispatcher)
 
     # Load the song
     load_message = PerformanceLoadSongMessage(song="Song1")
@@ -94,7 +98,7 @@ def test_e2e_process_queued():
     assert planner_cache.update.call_count == 4
     assert execution_queue.process.call_count == 4
     assert execution_processor.process.call_count ==  3
-    assert eye_message.timecode == 2 # message was rescheduled to the earliest event start time
+    assert eye_message.timecode == 2 # eye fades are scheduled from their start time
     assert len(eye_message.events) == 4
     assert all(isinstance(event.curve, LinearCurve) for event in eye_message.events)
     assert eye_message.events[0].start == 2
@@ -118,12 +122,12 @@ def test_e2e_process_queued():
     assert execution_processor.process.call_count ==  5
 
     # Assert commands were sent to execution
-    assert executor.process.call_count ==  1
+    assert executor.process.call_count == execution_processor.process.call_count
     assert executor.evaluate.call_count ==  2
     assert len(executor._mock_wraps.active_messages) == 1
 
     # Assert commands executed by the driver
-    assert driver.process.call_count == 4
+    assert driver.process.call_count == 8
     first = driver.process.call_args_list[0].args[0]
     second = driver.process.call_args_list[1].args[0]
     third = driver.process.call_args_list[2].args[0]
@@ -144,52 +148,56 @@ def test_e2e_process_queued():
     assert isinstance(fourth, DriverTransition)
     assert fourth.start_value == IntensityDriverValue(0)
     assert fourth.progress == 0.0
+    assert all(
+        driver.process.call_args_list[index].args[0].progress == 0.0
+        for index in range(4, 8)
+    )
     assert all(planner_cache.get(event.transition) == (event.transition.end_value, event.end) for event in eye_message.events)
 
     # Advance clock
     clock_message = PerformanceClockMessage(timecode=3)
     show_processor.process(clock_message)
 
-    assert executor.process.call_count ==  1
+    assert executor.process.call_count == execution_processor.process.call_count
     assert executor.evaluate.call_count ==  3
     assert len(executor._mock_wraps.active_messages) == 1
-    assert driver.process.call_count == 8
-    assert driver.process.call_args_list[4].args[0].progress == 0.3333333333333333
-    assert driver.process.call_args_list[5].args[0].progress == 0.3333333333333333
-    assert driver.process.call_args_list[6].args[0].progress == 0.3333333333333333
-    assert driver.process.call_args_list[7].args[0].progress == 0.3333333333333333
+    assert driver.process.call_count == 12
+    assert driver.process.call_args_list[8].args[0].progress == 0.3333333333333333
+    assert driver.process.call_args_list[9].args[0].progress == 0.3333333333333333
+    assert driver.process.call_args_list[10].args[0].progress == 0.3333333333333333
+    assert driver.process.call_args_list[11].args[0].progress == 0.3333333333333333
 
     # Advance clock
     clock_message = PerformanceClockMessage(timecode=4)
     show_processor.process(clock_message)
 
-    assert executor.process.call_count ==  1
+    assert executor.process.call_count == execution_processor.process.call_count
     assert executor.evaluate.call_count ==  4
     assert len(executor._mock_wraps.active_messages) == 1
-    assert driver.process.call_count == 12
-    assert driver.process.call_args_list[8].args[0].progress == 0.6666666666666666
-    assert driver.process.call_args_list[9].args[0].progress == 0.6666666666666666
-    assert driver.process.call_args_list[10].args[0].progress == 0.6666666666666666
-    assert driver.process.call_args_list[11].args[0].progress == 0.6666666666666666
+    assert driver.process.call_count == 16
+    assert driver.process.call_args_list[12].args[0].progress == 0.6666666666666666
+    assert driver.process.call_args_list[13].args[0].progress == 0.6666666666666666
+    assert driver.process.call_args_list[14].args[0].progress == 0.6666666666666666
+    assert driver.process.call_args_list[15].args[0].progress == 0.6666666666666666
 
     # Advance clock
     clock_message = PerformanceClockMessage(timecode=5)
     show_processor.process(clock_message)
 
-    assert executor.process.call_count ==  1
+    assert executor.process.call_count == execution_processor.process.call_count
     assert executor.evaluate.call_count ==  5
     assert len(executor._mock_wraps.active_messages) == 0
-    assert driver.process.call_count == 16
+    assert driver.process.call_count == 20
 
     # Assert commands executed by the driver
-    assert executor.process.call_count ==  1
+    assert executor.process.call_count == execution_processor.process.call_count
     assert executor.evaluate.call_count ==  5
     assert len(executor._mock_wraps.active_messages) == 0
-    assert driver.process.call_count == 16
-    first = driver.process.call_args_list[12].args[0]
-    second = driver.process.call_args_list[13].args[0]
-    third = driver.process.call_args_list[14].args[0]
-    fourth = driver.process.call_args_list[15].args[0]
+    assert driver.process.call_count == 20
+    first = driver.process.call_args_list[16].args[0]
+    second = driver.process.call_args_list[17].args[0]
+    third = driver.process.call_args_list[18].args[0]
+    fourth = driver.process.call_args_list[19].args[0]
     assert isinstance(first, AddressableDriverTransition)
     assert isinstance(first.start_value, ColorDriverValue)
     assert first.end_value.color == Color(red=255, green=0, blue=0)
@@ -207,5 +215,3 @@ def test_e2e_process_queued():
     assert fourth.end_value.intensity == 128
     assert fourth.progress == 1.0
     assert all(planner_cache.get(event.transition) == (event.transition.end_value, event.end) for event in eye_message.events)
-
-

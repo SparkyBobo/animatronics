@@ -63,25 +63,52 @@ led_usb_dev.value = True
 usb_host_device = None
 midi_usb_host = None
 
+# polling parameters for USB host enumeration
+usb_poll_interval = 5.0  # seconds between retries
+last_usb_poll = time.monotonic() - usb_poll_interval
+
 # Setup the Type-A USB Port for the USB Midi Host
 usb_host.Port(board.GP4, board.GP5)
 
-# Find any MIDI devices on the Type-A USB port
-if usb_host_device is None:
+
+# Try to find a MIDI device on the host port.
+def scan_usb_host():
+    """
+    The host stack may not be ready immediately after power‑up, so the
+    initial call can fail.  Call this periodically or after a short delay
+    until a device appears.  If `usb_host_device` is set the function
+    returns immediately.
+    """
+    global usb_host_device, midi_usb_host, led_usb_host
+    if usb_host_device is not None:
+        return
+
     print("Looking for devices on USB Host...")
     for device in usb.core.find(find_all=True):
         try:
-            print("Found: manufacturer", device.manufacturer, "product", device.product, "serial", device.serial_number, "vid", hex(device.idVendor), "product", hex(device.idProduct))
-            usb_host_device=adafruit_usb_host_midi.MIDI(device)
+            print(
+                "Found: manufacturer", device.manufacturer,
+                "product", device.product,
+                "serial", device.serial_number,
+                "vid", hex(device.idVendor),
+                "pid", hex(device.idProduct),
+            )
+            usb_host_device = adafruit_usb_host_midi.MIDI(device)
         except ValueError:
+            # not a midi device, keep searching
             continue
-
-        if (usb_host_device is None):
-            print("Not Found: no midi devices found")
-        else:
+        # if we managed to wrap the device create the MIDI object
+        if usb_host_device is not None:
             print("Setup MIDI device on usb host.")
             midi_usb_host = adafruit_midi.MIDI(midi_in=usb_host_device)
-            led_usb_host.value = False        
+            led_usb_host.value = False
+            break
+    else:
+        print("No USB MIDI device found")
+
+# initial scan (delay a moment so the host stack can enumerate)
+time.sleep(0.5)
+scan_usb_host()
 
 # Setup MIDI device on UART, all channels
 # In from external controller via DIN, out to TRS.
@@ -147,6 +174,12 @@ def midi_forward(midi_dev, midi_led=None):
 
 # Loop
 while True:
+
+    # periodically try to find a host device if we don't yet have one
+    usb_now = time.monotonic()
+    if usb_host_device is None and (usb_now - last_usb_poll) >= usb_poll_interval:
+        last_usb_poll = usb_now
+        scan_usb_host()
 
     #  receive MIDI input from USB Host
     try:

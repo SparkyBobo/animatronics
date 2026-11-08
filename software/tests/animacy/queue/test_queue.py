@@ -20,8 +20,7 @@ def test_processor_queue():
     message2 = PerformanceDataMessage(timecode=5, events=[])
     queue.queue(message1)
     queue.queue(message2)
-    assert queue.messages[0][2] == message2
-    assert queue.messages[1][2] == message1
+    assert queue.messages == [message1, message2]
 
 def test_processor_peek():
     queue = PerformanceMessageQueue()
@@ -34,9 +33,9 @@ def test_processor_peek():
 
     peeked_message = queue.peek()
     assert peeked_message == message1
-    assert queue.messages[0][2] == message1
-    assert queue.messages[1][2] == message2    
-    assert queue.messages[2][2] == message3    
+    assert queue.messages[0] == message1
+    assert queue.messages[1] == message2
+    assert queue.messages[2] == message3
 
 def test_processor_dequeue():
     queue = PerformanceMessageQueue()
@@ -49,5 +48,5 @@ def test_processor_dequeue():
 
     dequeued_message = queue.dequeue()
     assert dequeued_message == message1
-    assert queue.messages[0][2] == message2
-    assert queue.messages[1][2] == message3
+    assert queue.messages[0] == message2
+    assert queue.messages[1] == message3

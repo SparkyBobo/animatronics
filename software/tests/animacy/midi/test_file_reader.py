@@ -82,12 +82,14 @@ def test_reader_track_info_1():
         MidiTrackEvent(timecode=5, message=MidiPitchBend(channel=1, bend=100)),
     ]
 
-    for event in reader.get_events():
-        assert isinstance(event, MidiTrackEvent)
-        assert event.timecode != -1
+    events = list(reader.get_events())
+    assert [event.message for event in events] == [
+        event.message for event in expected
+    ]
+    assert [event.timecode for event in events] == [0, 0, 0, 0, 1]
 
-        expected_event = expected[event.timecode-1]
-        assert event.message == expected_event.message
+    for event in events:
+        assert isinstance(event, MidiTrackEvent)
 
 
 def test_reader_track_info_2():
@@ -111,12 +113,14 @@ def test_reader_track_info_2():
         MidiTrackEvent(timecode=5, message=MidiPitchBend(channel=2, bend=1000)),
     ]
 
-    for event in reader.get_events():
-        assert isinstance(event, MidiTrackEvent)
-        assert event.timecode != -1
+    events = list(reader.get_events())
+    assert [event.message for event in events] == [
+        event.message for event in expected
+    ]
+    assert [event.timecode for event in events] == [0, 0, 0, 0, 1]
 
-        expected_event = expected[event.timecode-1]
-        assert event.message == expected_event.message
+    for event in events:
+        assert isinstance(event, MidiTrackEvent)
 
 def get_test_file():
     meta_track = mido.MidiTrack()

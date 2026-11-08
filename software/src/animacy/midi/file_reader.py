@@ -27,9 +27,9 @@ class MidiFileReader:
     def open(self, filename:str) -> None:
         """Open the selected file."""
         self.midi = umidiparser.MidiFile(filename)
-        #self._file_info = self._get_file_info()
-        #self.selected_track = None
-        #self.selected_track_info = None
+        self._file_info = self._get_file_info()
+        self.selected_track = None
+        self.selected_track_info = None
 
     def close(self) -> None:
         """Close the open file."""
@@ -59,6 +59,8 @@ class MidiFileReader:
         if (not self.midi):
             return None
 
+        self.selected_track = None
+        self.selected_track_info = None
         for track in self.midi.tracks:
             track_name = ''
             track_channel = -1
@@ -78,7 +80,8 @@ class MidiFileReader:
     def get_events(self):
         track_msg = None
         absolute_ticks = 0
-        for event in self.midi:
+        events = self.selected_track if self.selected_track is not None else self.midi
+        for event in events:
             absolute_ticks += event.delta_miditicks
             #logger.info(f"Midi read pre-map event freemem={gc.mem_free()}, alloc={gc.mem_alloc()}")
 
@@ -101,9 +104,9 @@ class MidiFileReader:
             else:
                 continue # skip        
 
-            # At 120 bpm and 960 PPQN and 24 MIDI Clock pulses per quarter note, 
-            # the conversion is exactly 40 file ticks per MIDI Clock pulse.
-            timecode = round(absolute_ticks/40)
+            timecode = round(
+                absolute_ticks * 24 / self.midi.miditicks_per_quarter
+            )
             yield MidiTrackEvent(timecode=timecode, message=track_msg)
             
 
@@ -131,5 +134,4 @@ class MidiFileReader:
                 return MidiFileInfo(sequence=file_sequence, name=file_name, tempo=file_tempo, miditicks_per_quarter=self.midi.miditicks_per_quarter)
 
         return None    
-
 

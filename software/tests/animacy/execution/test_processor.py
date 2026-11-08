@@ -22,6 +22,7 @@ def test_processor_execute():
     executor = Mock()
     processor = ExecutionProcessor(dispatcher, executor)
 
-    executor.process.return_value = PerformanceMessageResult.HANDLED
     message = PerformanceDataMessage(timecode=10, events=[])
-    assert processor.process(message) == PerformanceMessageResult.HANDLED
+    assert processor.process(message) == PerformanceMessageResult.SKIPPED
+    executor.process.assert_called_once_with(message)
+    dispatcher.process.assert_called_once_with(message)

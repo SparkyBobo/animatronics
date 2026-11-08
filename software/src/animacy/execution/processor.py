@@ -39,7 +39,7 @@ class ExecutionProcessor:
             self.executor.evaluate()
             result = PerformanceMessageResult.HANDLED
         
-        if (self.executor.process(message) == PerformanceMessageResult.TERMINATE):
+        if self.executor.process(message) == PerformanceMessageResult.TERMINATE:
             return PerformanceMessageResult.TERMINATE
     
         if self.next:

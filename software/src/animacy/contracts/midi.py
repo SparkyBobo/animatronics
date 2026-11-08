@@ -10,7 +10,12 @@ from animacy.contracts.performance import PerformanceMessage, PerformanceMessage
 
 # Generic Midi message
 class MidiMessage():
-    pass
+    def __eq__(self, other: object) -> bool:
+        return (
+            isinstance(other, MidiMessage)
+            and type(self) is type(other)
+            and self.__dict__ == other.__dict__
+        )
 
 # Bad Midi message
 class MidiIncompleteMessage(MidiMessage):

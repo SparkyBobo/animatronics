@@ -37,5 +37,7 @@ class EyesBehavior(Behavior):
         if isinstance(message, PerformanceResetEventMessage) or isinstance(message, PerformanceEyeMessage):
             for led in self.leds:
                 led.process(message)
+            if isinstance(message, PerformanceEyeMessage) and message.fade > 0:
+                message.timecode = max(0, message.timecode - message.fade)
             return PerformanceMessageResult.HANDLED
         return PerformanceMessageResult.SKIPPED

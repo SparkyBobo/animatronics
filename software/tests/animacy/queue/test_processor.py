@@ -25,7 +25,7 @@ def test_processor_queue():
     policy.process.return_value = PerformanceMessageResult.QUEUED
     message = PerformanceDataMessage(timecode=10, events=[])
     assert processor.process(message) == PerformanceMessageResult.QUEUED
-    assert processor.queue.messages[0][2] == message
+    assert processor.queue.messages[0] == message
 
 def test_processor_live():
     dispatcher = Mock()
@@ -45,7 +45,7 @@ def test_processor_dequeue():
     policy.process.return_value = PerformanceMessageResult.QUEUED
     message = PerformanceDataMessage(timecode=10, events=[])
     assert processor.process(message) == PerformanceMessageResult.QUEUED
-    assert processor.queue.messages[0][2] == message    
+    assert processor.queue.messages[0] == message
 
     policy.process.return_value = PerformanceMessageResult.HANDLED
     clock = PerformanceClockMessage(timecode=100)
@@ -61,7 +61,7 @@ def test_processor_discard():
     policy.process.return_value = PerformanceMessageResult.QUEUED
     message = PerformanceDataMessage(timecode=10, events=[])
     assert processor.process(message) == PerformanceMessageResult.QUEUED
-    assert processor.queue.messages[0][2] == message    
+    assert processor.queue.messages[0] == message
 
     policy.process.return_value = PerformanceMessageResult.HANDLED
     position = PerformanceSongPositionMessage(position=100)
@@ -77,7 +77,7 @@ def test_processor_system_reset():
     policy.process.return_value = PerformanceMessageResult.QUEUED
     message = PerformanceDataMessage(timecode=10, events=[])
     assert processor.process(message) == PerformanceMessageResult.QUEUED
-    assert processor.queue.messages[0][2] == message
+    assert processor.queue.messages[0] == message
 
     reset = PerformanceSystemResetMessage()
     assert processor.process(reset) == PerformanceMessageResult.HANDLED
@@ -91,7 +91,7 @@ def test_processor_event_reset():
     policy.process.return_value = PerformanceMessageResult.QUEUED
     message = PerformanceDataMessage(timecode=10, events=[])
     assert processor.process(message) == PerformanceMessageResult.QUEUED
-    assert processor.queue.messages[0][2] == message
+    assert processor.queue.messages[0] == message
 
     reset = PerformanceResetEventMessage()
     assert processor.process(reset) == PerformanceMessageResult.HANDLED
@@ -105,11 +105,10 @@ def test_processor_load_song():
     policy.process.return_value = PerformanceMessageResult.QUEUED
     message = PerformanceDataMessage(timecode=10, events=[])
     assert processor.process(message) == PerformanceMessageResult.QUEUED
-    assert processor.queue.messages[0][2] == message
+    assert processor.queue.messages[0] == message
 
     load_song = PerformanceLoadSongMessage()
     assert processor.process(load_song) == PerformanceMessageResult.HANDLED
     assert not processor.queue.messages
-
 
 

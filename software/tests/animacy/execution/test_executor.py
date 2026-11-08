@@ -11,6 +11,14 @@ from animacy.contracts.performance import *
 from animacy.execution.executor import Executor
 from unittest.mock import Mock
 
+def _message():
+    return PerformanceDataMessage(events=[PerformanceEvent()])
+
+def _transition(driver):
+    transition = Mock()
+    transition.driver = driver
+    return transition
+
 def test_executor_init():
     evaluator = Mock()
     executor = Executor(evaluator=evaluator)
@@ -22,27 +30,41 @@ def test_executor_handled():
     executor = Executor(evaluator=evaluator)
 
     driver = Mock()
-    command1 = Mock()
-    command2 = Mock()
+    command1 = _transition(driver)
+    command2 = _transition(driver)
     evaluator.evaluate.return_value = ([command1, command2], PerformanceMessageResult.HANDLED)
 
-    message = PerformanceDataMessage()
+    message = _message()
     executor.process(message)
     assert executor.active_messages == [message]
     assert driver.process.call_count == 2
     driver.process.assert_any_call(command1)
     driver.process.assert_any_call(command2)
 
+def test_executor_evaluates_again_at_same_clock():
+    evaluator = Mock()
+    evaluator.status.show_clock = 0
+    driver = Mock()
+    transition = _transition(driver)
+    evaluator.evaluate.return_value = ([transition], PerformanceMessageResult.HANDLED)
+    executor = Executor(evaluator=evaluator)
+
+    executor.process(_message())
+    executor.evaluate()
+
+    assert evaluator.evaluate.call_count == 2
+    assert driver.process.call_count == 2
+
 def test_executor_terminated():
     driver = Mock()
     evaluator = Mock()
     executor = Executor(evaluator=evaluator)
 
-    command1 = Mock()
-    command2 = Mock()
+    command1 = _transition(driver)
+    command2 = _transition(driver)
     evaluator.evaluate.return_value = ([command1, command2], PerformanceMessageResult.TERMINATE)
 
-    message = PerformanceDataMessage()
+    message = _message()
     executor.process(message)
     assert executor.active_messages == []
     assert driver.process.call_count == 2
@@ -52,29 +74,27 @@ def test_executor_terminated():
 def test_executor_compressed():
     driver = Mock()
     evaluator = Mock()
-    executor = Executor(driver=driver, evaluator=evaluator)
+    executor = Executor(evaluator=evaluator)
 
-    command1 = Mock()
-    command2 = Mock()
+    command1 = _transition(driver)
+    command2 = _transition(driver)
     evaluator.evaluate.side_effect = [
         # executor.process(message1)
         ([command1, command2], PerformanceMessageResult.HANDLED),
         # executor.process(message2)
         ([command1, command2], PerformanceMessageResult.HANDLED),
-        ([command1, command2], PerformanceMessageResult.TERMINATE),
+        ([command1, command2], PerformanceMessageResult.HANDLED),
         # executor.process(message3)
         ([command1, command2], PerformanceMessageResult.HANDLED),
-        ([command1, command2], PerformanceMessageResult.HANDLED)
+        ([command1, command2], PerformanceMessageResult.TERMINATE),
+        ([command1, command2], PerformanceMessageResult.HANDLED),
     ]
 
-    message1 = PerformanceDataMessage()
-    message2 = PerformanceDataMessage()
-    message3 = PerformanceDataMessage()
+    message1 = _message()
+    message2 = _message()
+    message3 = _message()
     executor.process(message1)
     executor.process(message2)
     executor.process(message3)
     assert executor.active_messages == [message1, message3]
-    assert driver.process.call_count == 10 # 2 commands * 5 calls
-
-
-
+    assert driver.process.call_count == 12 # 2 transitions across 6 evaluations
