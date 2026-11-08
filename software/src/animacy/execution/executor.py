@@ -28,8 +28,12 @@ class Executor:
     def process(self, message:PerformanceMessage) -> PerformanceMessageResult:
         """Process events and execute timed driver transitions."""
         if (len(message.events)):
+            if message in self.active_messages:
+                return PerformanceMessageResult.HANDLED
             self.active_messages.append(message)
             self.evaluate()
+            return PerformanceMessageResult.HANDLED
+        return PerformanceMessageResult.SKIPPED
 
     def evaluate(self) -> PerformanceMessageResult:
         """Process the active messages."""

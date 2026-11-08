@@ -10,7 +10,12 @@ from animacy.contracts.performance import PerformanceMessage, PerformanceMessage
 
 # Generic Midi message
 class MidiMessage():
-    pass
+    def __eq__(self, other: object) -> bool:
+        return (
+            isinstance(other, MidiMessage)
+            and type(self) is type(other)
+            and self.__dict__ == other.__dict__
+        )
 
 # Bad Midi message
 class MidiIncompleteMessage(MidiMessage):
@@ -74,14 +79,14 @@ class MidiDeviceMode(MidiControlChange):
 # All Sound Off
 class MidiAllSoundOff(MidiChannelMessage):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, channel: int = 0):
+        super().__init__(channel=channel)
 
 # All Notes Off
 class MidiAllNotesOff(MidiChannelMessage):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, channel: int = 0):
+        super().__init__(channel=channel)
 
 # Universal System Exclusive
 class MidiUniversalSystem(MidiMessage):

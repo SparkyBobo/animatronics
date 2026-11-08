@@ -27,33 +27,28 @@ class ExecutionEvaluator:
         transitions = []
         result = PerformanceMessageResult.TERMINATE
         for event in message.events or []:
-            if event.transition is not None:
-                # This transition has priority.
-                if (event.end == -1):
+            if event.transition is None:
+                continue
+
+            show_clock = self.status.show_clock
+            if event.end == -1:
+                event.transition.progress = 1.0
+                transitions.append(event.transition)
+                result = PerformanceMessageResult.HANDLED
+            elif show_clock < event.start:
+                result = PerformanceMessageResult.HANDLED
+            elif show_clock >= event.end:
+                if show_clock == event.end:
                     event.transition.progress = 1.0
                     transitions.append(event.transition)
-
-                # This transition is ending/ended.
-                if (event.end <= self.status.show_clock):
-                    event.transition.progress = 1.0
-                    if (event.end == self.status.show_clock):
-                        transitions.append(event.transition)
-
-                # This transition is starting.
-                elif (event.start <= self.status.show_clock):
-                    event.transition.progress = 0.0
-                    transitions.append(event.transition)
-                    result = PerformanceMessageResult.HANDLED
-
-                # This transition is active if the show clock is between the start and end time of the event.
-                elif (event.start < self.status.show_clock and event.end > self.status.show_clock):
-                    event.transition.progress = event.curve.progress(event.start, event.end, self.status.show_clock)
-                    transitions.append(event.transition)
-                    result = PerformanceMessageResult.HANDLED
-
-                # This transition is pending.
-                elif (event.start < self.status.show_clock):
-                    result = PerformanceMessageResult.SKIPPED
+            else:
+                event.transition.progress = event.curve.progress(
+                    event.start,
+                    event.end,
+                    show_clock,
+                )
+                transitions.append(event.transition)
+                result = PerformanceMessageResult.HANDLED
 
         #logger.info(f"Evaluated performance message with {len(message.events)}: {len(transitions)} transitions, result={result}")
         return (transitions, result)

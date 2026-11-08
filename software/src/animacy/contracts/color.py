@@ -28,3 +28,9 @@ class Color:
             return f"Color({self.red}:{self.green}:{self.blue}:{self.white})"
         return f"Color({self.red}:{self.green}:{self.blue})"
 
+    def __eq__(self, other: object) -> bool:
+        return (
+            isinstance(other, Color)
+            and (self.red, self.green, self.blue, self.white)
+            == (other.red, other.green, other.blue, other.white)
+        )

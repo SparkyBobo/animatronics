@@ -129,8 +129,12 @@ class PerformanceClockMessage(PerformanceControlMessage):
 # Events the define performer intent
 class PerformanceDataMessage(PerformanceMessage):
 
-    def __init__(self, timecode: int = 0):
-        super().__init__(timecode)
+    def __init__(
+        self,
+        timecode: int = 0,
+        events: list[PerformanceEvent] = None,
+    ):
+        super().__init__(timecode, events)
 
 # Resets the performer to a baseline position, ready to play a song.
 class PerformanceResetEventMessage(PerformanceDataMessage):

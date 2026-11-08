@@ -13,6 +13,13 @@ from animacy.contracts.color import Color
 class DriverValue:
     """Base type for typed values sent to a driver."""
 
+    def __eq__(self, other: object) -> bool:
+        return (
+            isinstance(other, DriverValue)
+            and type(self) is type(other)
+            and self.__dict__ == other.__dict__
+        )
+
     def components(self) -> tuple[int, ...]:
         """Return this value as ordered integer components."""
         raise NotImplementedError
@@ -126,7 +133,7 @@ class AudioDriverValue(DriverValue):
         return target
 
     def components(self) -> tuple[int, ...]:
-        return (0)
+        return (0,)
 
     @classmethod
     def from_components(
@@ -200,4 +207,3 @@ class Driver():
     def constraints_for(self, value: DriverValue) -> DriverConstraints:
         """Return constraints for the given typed driver value."""
         ...
-

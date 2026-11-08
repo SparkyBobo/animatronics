@@ -82,12 +82,14 @@ def test_reader_track_info_1():
         MidiTrackEvent(timecode=5, message=MidiPitchBend(channel=1, bend=100)),
     ]
 
-    for event in reader.get_events():
-        assert isinstance(event, MidiTrackEvent)
-        assert event.timecode != -1
+    events = list(reader.get_events())
+    assert [event.message for event in events] == [
+        event.message for event in expected
+    ]
+    assert [event.timecode for event in events] == [0, 0, 0, 0, 1]
 
-        expected_event = expected[event.timecode-1]
-        assert event.message == expected_event.message
+    for event in events:
+        assert isinstance(event, MidiTrackEvent)
 
 
 def test_reader_track_info_2():
@@ -111,12 +113,50 @@ def test_reader_track_info_2():
         MidiTrackEvent(timecode=5, message=MidiPitchBend(channel=2, bend=1000)),
     ]
 
-    for event in reader.get_events():
-        assert isinstance(event, MidiTrackEvent)
-        assert event.timecode != -1
+    events = list(reader.get_events())
+    assert [event.message for event in events] == [
+        event.message for event in expected
+    ]
+    assert [event.timecode for event in events] == [0, 0, 0, 0, 1]
 
-        expected_event = expected[event.timecode-1]
-        assert event.message == expected_event.message
+    for event in events:
+        assert isinstance(event, MidiTrackEvent)
+
+def test_reader_missing_track_clears_selection(tmp_path):
+    reader = MidiFileReader()
+    assert reader.select_track(1) is None
+
+    filename = tmp_path / "test.mid"
+    get_test_file().save(filename)
+    reader.open(str(filename))
+    reader.select_track(1)
+
+    assert reader.select_track(99) is None
+    assert reader.track_info is None
+
+def test_reader_maps_all_sound_off_and_all_notes_off_and_skips_unknown_controls(tmp_path):
+    midi_file = get_test_file()
+    track = midi_file.tracks[1]
+    track.pop()
+    track.extend([
+        mido.Message("control_change", channel=1, control=120, value=0, time=1),
+        mido.Message("control_change", channel=1, control=123, value=0, time=1),
+        mido.Message("control_change", channel=1, control=121, value=0, time=1),
+        mido.MetaMessage("end_of_track"),
+    ])
+    filename = tmp_path / "controls.mid"
+    midi_file.save(filename)
+
+    reader = MidiFileReader()
+    reader.open(str(filename))
+    assert reader.select_track(1) is not None
+    events = list(reader.get_events())
+
+    assert [event.message for event in events[-2:]] == [
+        MidiAllSoundOff(channel=1),
+        MidiAllNotesOff(channel=1),
+    ]
+    assert len(events) == 7
 
 def get_test_file():
     meta_track = mido.MidiTrack()

@@ -43,7 +43,7 @@ class PlanningProcessor:
             if handler_result == PerformanceMessageResult.HANDLED:
                 result = handler_result
 
-        # Cache the updates and reschedule the message
+        # Cache the updates
         if isinstance(message, PerformanceDataMessage):
             for event in message.events:
                 if event.transition is not None:
