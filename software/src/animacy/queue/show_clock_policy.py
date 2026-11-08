@@ -1,5 +1,5 @@
 """
-DaBones
+Animacy
 
 Policy to release items based on the show clock.
 

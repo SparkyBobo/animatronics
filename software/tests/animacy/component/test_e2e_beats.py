@@ -1,5 +1,5 @@
 """
-DaBones
+Animacy
 
 Midi pipeline tests.
 
@@ -7,7 +7,7 @@ Copyright (c) 2026 Sparky Bobo
 """
 
 """
-DaBones
+Animacy
 
 Audio pipeline tests.
 

@@ -1,5 +1,5 @@
 """
-DaBones
+Animacy
 
 Mouth and phoneme behaviors.
 

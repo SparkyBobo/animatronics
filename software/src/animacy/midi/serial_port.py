@@ -1,5 +1,5 @@
 """
-DaBones
+Animacy
 
 Serial Host for MIDI messages.
 

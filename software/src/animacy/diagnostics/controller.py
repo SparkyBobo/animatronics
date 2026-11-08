@@ -1,5 +1,5 @@
 """
-DaBones
+Animacy
 
 Interfaces with diagnostics controller.
 

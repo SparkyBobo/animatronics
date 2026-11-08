@@ -1,5 +1,5 @@
 """
-DaBones
+Animacy
 
 Message definitions for messages not defined by adafruit.
 These are used internally with the adafruit framework, they

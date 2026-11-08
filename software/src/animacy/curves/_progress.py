@@ -1,5 +1,5 @@
 """
-DaBones
+Animacy
 
 Shared time-transform progress helpers.
 

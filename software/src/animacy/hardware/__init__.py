@@ -1,5 +1,5 @@
 """
-DaBones
+Animacy
 
 __init__.py - intentionally left blank.
 

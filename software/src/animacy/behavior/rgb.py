@@ -1,5 +1,5 @@
 """
-DaBones
+Animacy
 
 Addressable RGB behaviors.
 

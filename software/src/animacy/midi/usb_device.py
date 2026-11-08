@@ -1,5 +1,5 @@
 """
-DaBones
+Animacy
 
 USB Device for MIDI messages.
 

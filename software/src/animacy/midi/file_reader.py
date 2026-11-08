@@ -1,5 +1,5 @@
 """
-DaBones
+Animacy
 
 Reads Standard MIDI Files.
 
