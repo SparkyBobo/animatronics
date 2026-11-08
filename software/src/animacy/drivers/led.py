@@ -6,11 +6,13 @@ Led driver.
 Copyright (c) 2026 Sparky Bobo
 """
 
-from animacy.contracts.driver import *
-from animacy.hardware.ports import Ports
+import logging
+
 import neopixel
 
-import logging
+from animacy.contracts.driver import *
+from animacy.hardware.ports import Ports
+
 logger = logging.getLogger(__name__)
 
 # An LED (NeoPixel) driver.
@@ -40,4 +42,4 @@ class LedDriver:
         elif isinstance(value, IntensityDriverValue):
             return self.intensity_constraints
         else:
-            raise ValueError(f"Unsupported driver value type: {type(value)}")
+            raise ValueError(f"Unsupported driver value type: {type(value)}")  # noqa: TRY004

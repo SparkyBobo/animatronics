@@ -6,7 +6,12 @@ Linear buffer tests.
 Copyright (c) 2026 Sparky Bobo
 """
 
-from animacy.utils.linear_buffer import LinearBuffer, LinearBufferReader, LinearBufferWriter
+from animacy.utils.linear_buffer import (
+    LinearBuffer,
+    LinearBufferReader,
+    LinearBufferWriter,
+)
+
 
 def test_buffer_init():
     buffer = LinearBuffer()
@@ -91,4 +96,4 @@ def test_buffer_consume_all():
     assert buffer.head == 0
     assert buffer.tail == 0
     assert reader.available() == 0
-    assert not reader.peek(0) == 0
+    assert reader.peek(0) != 0

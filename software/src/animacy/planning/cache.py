@@ -6,9 +6,12 @@ Driver value cache.
 Copyright (c) 2026 Sparky Bobo
 """
 
-from animacy.contracts.driver import DriverTransition, DriverValue
+from __future__ import annotations
 
 import logging
+
+from animacy.contracts.driver import DriverTransition, DriverValue
+
 logger = logging.getLogger(__name__)
 
 class PlanningCache:

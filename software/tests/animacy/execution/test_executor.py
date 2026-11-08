@@ -7,9 +7,11 @@ Execution executor tests.
 Copyright (c) 2026 Sparky Bobo
 """
 
+from unittest.mock import Mock
+
 from animacy.contracts.performance import *
 from animacy.execution.executor import Executor
-from unittest.mock import Mock
+
 
 def _message():
     return PerformanceDataMessage(events=[PerformanceEvent()])

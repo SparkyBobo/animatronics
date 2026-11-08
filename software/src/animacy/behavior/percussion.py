@@ -6,17 +6,17 @@ Percussion behaviors.
 Copyright (c) 2026 Sparky Bobo
 """
 
+from animacy.behavior.base import Behavior
+from animacy.contracts.driver import DriverTransition, PositionDriverValue
 from animacy.contracts.midi import *
 from animacy.contracts.performance import *
 from animacy.contracts.planner import *
-from animacy.hardware.ports import IOPort
-from animacy.drivers.servo import ServoDriver
-from animacy.behavior.base import Behavior
-from animacy.contracts.driver import DriverTransition, PositionDriverValue
 from animacy.contracts.setpoint import Setpoint
 from animacy.curves.ease import ZeroEndpointAccelerationCurve
-
+from animacy.drivers.servo import ServoDriver
+from animacy.hardware.ports import IOPort
 from animacy.utils.logging import INFO, log
+
 
 class PercussionBehavior(Behavior):
     """Percussion behaviors."""

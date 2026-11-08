@@ -6,14 +6,14 @@ Audio playback behaviors.
 Copyright (c) 2026 Sparky Bobo
 """
 
-from animacy.contracts.midi import *
-from animacy.contracts.driver import *
-from animacy.contracts.performance import *
 from animacy.behavior.base import Behavior
-from animacy.drivers.audio import AudioDriver
+from animacy.contracts.driver import *
+from animacy.contracts.midi import *
+from animacy.contracts.performance import *
 from animacy.curves.instant import InstantCurve
-
+from animacy.drivers.audio import AudioDriver
 from animacy.utils.logging import INFO, log
+
 
 class AudioBehavior(Behavior):
     """Audio playback behaviors."""
@@ -33,7 +33,7 @@ class AudioBehavior(Behavior):
     def process(self, message:PerformanceMessage) -> PerformanceMessageResult:
         """Process performance events."""
         log(1, INFO, message.id, message.timecode)
-        if isinstance(message, PerformanceResetEventMessage) or isinstance(message, PerformanceResetEventMessage):
+        if isinstance(message, PerformanceResetEventMessage):
             log(1002, INFO, message.id, message.timecode)
             self._update(message=message, command="STOP")
             return PerformanceMessageResult.HANDLED

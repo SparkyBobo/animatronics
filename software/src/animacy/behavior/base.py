@@ -6,9 +6,10 @@ Base behavior class.
 Copyright (c) 2026 Sparky Bobo
 """
 
+import logging
+
 from animacy.contracts.performance import PerformanceMessage, PerformanceMessageResult
 
-import logging
 logger = logging.getLogger(__name__)
 
 class Behavior:

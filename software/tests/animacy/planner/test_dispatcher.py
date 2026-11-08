@@ -6,9 +6,11 @@ Planning dispatcher tests.
 Copyright (c) 2026 Sparky Bobo
 """
 
+from unittest.mock import Mock
+
 from animacy.contracts.performance import PerformanceDataMessage
 from animacy.planning.dispatcher import PlanningDispatcher
-from unittest.mock import Mock
+
 
 def test_dispatch_create():
     next_processor = Mock()

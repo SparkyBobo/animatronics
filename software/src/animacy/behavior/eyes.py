@@ -6,16 +6,14 @@ Eyes behaviors.
 Copyright (c) 2026 Sparky Bobo
 """
 
+import logging
+
+from animacy.behavior.base import Behavior
+from animacy.behavior.rgb import RgbBehavior
 from animacy.contracts.midi import *
 from animacy.contracts.performance import *
 from animacy.contracts.planner import *
-from animacy.behavior.base import Behavior
-from animacy.behavior.rgb import RgbBehavior
-from animacy.contracts.driver import DriverTransition, PositionDriverValue
-from animacy.contracts.setpoint import Setpoint
-from animacy.curves.ease import ZeroEndpointAccelerationCurve
 
-import logging
 logger = logging.getLogger(__name__)
 
 class EyesBehavior(Behavior):
@@ -34,7 +32,7 @@ class EyesBehavior(Behavior):
         return MidiMessageResult.SKIPPED
 
     def process(self, message:PerformanceMessage) -> PerformanceMessageResult:
-        if isinstance(message, PerformanceResetEventMessage) or isinstance(message, PerformanceEyeMessage):
+        if isinstance(message, (PerformanceResetEventMessage, PerformanceEyeMessage)):
             for led in self.leds:
                 led.process(message)
             if isinstance(message, PerformanceEyeMessage) and message.fade > 0:

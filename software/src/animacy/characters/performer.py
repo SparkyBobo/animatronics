@@ -6,9 +6,14 @@ Foundational performer.
 Copyright (c) 2026 Sparky Bobo
 """
 
-from animacy.contracts.midi import MidiMessage, MidiChannelMessage, MidiMessageProcessor, MidiMessageResult
-
+from animacy.contracts.midi import (
+    MidiChannelMessage,
+    MidiMessage,
+    MidiMessageProcessor,
+    MidiMessageResult,
+)
 from animacy.utils.logging import INFO, log
+
 
 class PerformerBase(MidiMessageProcessor):
     """Base character."""
@@ -23,7 +28,6 @@ class PerformerBase(MidiMessageProcessor):
         log(5, INFO)
         self.name = name
         self.channel = channel - 1
-        pass
 
     def map(self, timecode: int, message:MidiMessage) -> MidiMessageResult:
         # Allow data through

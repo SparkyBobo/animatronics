@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Animacy
 
@@ -5,9 +6,6 @@ Audio service for pi zero.
 
 Copyright (c) 2026 Sparky Bobo
 """
-
-#!/usr/bin/env python3
-"""DaBones Pi Zero audio playback service."""
 
 import logging
 import os
@@ -17,7 +15,6 @@ import threading
 from pathlib import Path
 
 import serial
-
 
 SERIAL_PORT = os.environ.get("DABONES_SERIAL_PORT", "/dev/serial0")
 BAUD_RATE = int(os.environ.get("DABONES_BAUD_RATE", "115200"))

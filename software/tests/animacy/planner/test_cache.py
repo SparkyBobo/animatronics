@@ -7,6 +7,7 @@ Copyright (c) 2026 Sparky Bobo
 """
 
 from unittest.mock import Mock
+
 from animacy.contracts.driver import (
     AddressableDriverTransition,
     DriverTransition,
@@ -14,7 +15,6 @@ from animacy.contracts.driver import (
     PositionDriverValue,
 )
 from animacy.planning.cache import PlanningCache
-
 
 _DRIVER = Mock()
 

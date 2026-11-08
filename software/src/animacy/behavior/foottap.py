@@ -6,16 +6,17 @@ Foottap behaviors.
 Copyright (c) 2026 Sparky Bobo
 """
 
+import logging
+
+from animacy.behavior.base import Behavior
 from animacy.contracts.driver import DriverTransition, PositionDriverValue
 from animacy.contracts.performance import *
 from animacy.contracts.setpoint import Setpoint
-from animacy.behavior.base import Behavior
 from animacy.curves.ease import EaseOutCurve
 from animacy.curves.instant import InstantCurve
 from animacy.drivers.servo import ServoDriver
 from animacy.hardware.ports import IOPort
 
-import logging
 logger = logging.getLogger(__name__)
 
 class FoottapBehaviour(Behavior):
@@ -42,11 +43,10 @@ class FoottapBehaviour(Behavior):
             apex = self.setpoints[index].value
             # Start from current and raise to the apex
             raise_transition = DriverTransition(self.driver, self.setpoints[0].value, apex)
-            (unused_position, last_time) = self.cache.get(raise_transition)
+            (_, last_time) = self.cache.get(raise_transition)
             message.events.append(PerformanceEvent(transition=raise_transition, curve=EaseOutCurve(), start=last_time, end=message.timecode-1))
             # From the apex to the strike position
             lower_transition = DriverTransition(self.driver, apex, self.setpoints[0].value)
             message.events.append(PerformanceEvent(transition=lower_transition, curve=InstantCurve(), start=message.timecode, end=message.timecode))
             return PerformanceMessageResult.HANDLED
-
 

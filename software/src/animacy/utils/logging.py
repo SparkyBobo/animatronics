@@ -66,4 +66,3 @@ class Logging:
 
     def __init__(self) -> None:
         """Initialize Logging."""
-        pass

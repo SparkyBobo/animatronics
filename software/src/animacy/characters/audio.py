@@ -6,14 +6,16 @@ Audio playback.
 Copyright (c) 2026 Sparky Bobo
 """
 
+import logging
+
 import board
+
+from animacy.behavior.audio import AudioBehavior
+from animacy.characters.performer import PerformerBase
 from animacy.contracts.show import ShowContext
 from animacy.drivers.audio import AudioDriver
 from animacy.hardware.ports import SerialPort
-from animacy.characters.performer import PerformerBase
-from animacy.behavior.audio import AudioBehavior
 
-import logging
 logger = logging.getLogger(__name__)
 
 class Audio(PerformerBase):

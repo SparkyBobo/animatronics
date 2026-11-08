@@ -26,29 +26,30 @@
 #
 
 # Common Imports
+import time
+
+import adafruit_midi
+import adafruit_usb_host_midi
 import board
 import busio
 import digitalio
-import time
-
-# DaBones Imports
-from animacy.midi.messages import *
+import usb.core
 
 # USB/Midi Imports
 import usb_host
-import usb.core
 import usb_midi
-import adafruit_midi
-import adafruit_usb_host_midi
 from adafruit_midi.control_change import ControlChange
-from adafruit_midi.pitch_bend import PitchBend
+from adafruit_midi.midi_continue import Continue
 from adafruit_midi.note_off import NoteOff
 from adafruit_midi.note_on import NoteOn
+from adafruit_midi.pitch_bend import PitchBend
 from adafruit_midi.program_change import ProgramChange
-from adafruit_midi.midi_continue import Continue
 from adafruit_midi.start import Start
 from adafruit_midi.stop import Stop
 from adafruit_midi.timing_clock import TimingClock
+
+# DaBones Imports
+from animacy.midi.messages import *
 
 # Setup status LEDs
 picoLed = digitalio.DigitalInOut(board.LED)

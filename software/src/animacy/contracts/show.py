@@ -9,9 +9,11 @@ Copyright (c) 2026 Sparky Bobo
 
 from animacy.behavior.base import *
 from animacy.contracts.midi import *
+from animacy.contracts.performance import PerformanceMessageProcessor
 from animacy.contracts.planner import *
 from animacy.contracts.service import *
 from animacy.contracts.show import *
+
 
 # A protocol for the show status
 class ShowStatus:

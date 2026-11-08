@@ -6,16 +6,23 @@ String bend behaviors.
 Copyright (c) 2026 Sparky Bobo
 """
 
-from animacy.hardware.ports import IOPort
-from animacy.drivers.onoff import OnOffDriver
-from animacy.drivers.servo import ServoDriver
+import logging
+
 from animacy.behavior.base import Behavior
 from animacy.contracts.driver import DriverTransition, PositionDriverValue
+from animacy.contracts.performance import (
+    PerformanceBendNoteMessage,
+    PerformanceDataMessage,
+    PerformanceResetEventMessage,
+)
 from animacy.contracts.setpoint import Setpoint
-from animacy.contracts.performance import PerformanceDataMessage, PerformanceResetEventMessage, PerformanceBendNoteMessage
-from animacy.pipeline.processor import PerformanceMessageProcessor, PerformanceMessageHandlerResult
+from animacy.drivers.onoff import OnOffDriver
+from animacy.drivers.servo import ServoDriver
+from animacy.hardware.ports import IOPort
+from animacy.pipeline.processor import (
+    PerformanceMessageHandlerResult,
+)
 
-import logging
 logger = logging.getLogger(__name__)
 
 class StringBendBehavior(Behavior):

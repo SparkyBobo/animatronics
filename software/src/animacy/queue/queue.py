@@ -6,10 +6,13 @@ Queue for PerformanceMessage items.
 Copyright (c) 2026 Sparky Bobo
 """
 
-from animacy.contracts.performance import PerformanceMessage
+from __future__ import annotations
+
 import gc
 
+from animacy.contracts.performance import PerformanceMessage
 from animacy.utils.logging import INFO, log
+
 
 class PerformanceMessageQueue:
     """Queues commands against the show clock."""

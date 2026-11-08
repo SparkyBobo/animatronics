@@ -6,13 +6,15 @@ Audio playback driver.
 Copyright (c) 2026 Sparky Bobo
 """
 
-import busio
 import time
+
+import busio
+
 from animacy.contracts.driver import *
 from animacy.contracts.service import *
 from animacy.hardware.ports import SerialPort
-
 from animacy.utils.logging import INFO, log
+
 
 # An audio playback driver.
 class AudioDriver(Service):
@@ -43,7 +45,7 @@ class AudioDriver(Service):
         if isinstance(value, AudioDriverValue):
             return self.constraints
         else:
-            raise ValueError(f"Unsupported driver value type: {type(value)}")
+            raise ValueError(f"Unsupported driver value type: {type(value)}")  # noqa: TRY004
 
     def service(self) -> ServiceResult:
         """Process incoming terminal output; call frequently."""

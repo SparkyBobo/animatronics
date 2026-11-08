@@ -5,6 +5,7 @@ Performance control and event contracts.
 
 Copyright (c) 2026 Sparky Bobo
 """
+from __future__ import annotations
 
 from animacy.contracts.color import Color
 from animacy.contracts.curve import TimeCurve
@@ -25,7 +26,7 @@ class PerformanceEvent:
 # Generic performance message
 class PerformanceMessage:
 
-    def __init__(self, timecode: int = 0, events: list[PerformanceEvent] = None):
+    def __init__(self, timecode: int = 0, events: list[PerformanceEvent] | None = None):
         #global _next_id
         #_next_id += 1
         #self._id: str = str(_next_id)
@@ -40,7 +41,7 @@ class PerformanceMessage:
 # Events that show
 class PerformanceShowInformation(PerformanceMessage):
 
-    def __init__(self, timecode: int = 0, song: str = None, name: str = None):
+    def __init__(self, timecode: int = 0, song: str | None = None, name: str | None = None):
         super().__init__(timecode)
         self.song = song
         self.name = name
@@ -60,7 +61,7 @@ class PerformanceSystemResetMessage(PerformanceControlMessage):
 # such as verify, replace, delete.
 class PerformanceFileHeaderMessage(PerformanceControlMessage):
 
-    def __init__(self, timecode: int = 0, name: str = None, action: str = None):
+    def __init__(self, timecode: int = 0, name: str | None = None, action: str | None = None):
         super().__init__(timecode)
         self.name = name
         self.action = action
@@ -68,7 +69,7 @@ class PerformanceFileHeaderMessage(PerformanceControlMessage):
 # File transfer content message, i.e., file bytes.
 class PerformanceFileContentMessage(PerformanceControlMessage):
 
-    def __init__(self, timecode: int = 0, sequence: int = 0, data: bytes = None):
+    def __init__(self, timecode: int = 0, sequence: int = 0, data: bytes | None = None):
         super().__init__(timecode)
         self.sequence = sequence
         self.data = data
@@ -91,7 +92,7 @@ class PerformanceVolumeMessage(PerformanceControlMessage):
 # and calculate.
 class PerformanceLoadSongMessage(PerformanceControlMessage):
 
-    def __init__(self, timecode: int = 0, song: str = None):
+    def __init__(self, timecode: int = 0, song: str | None = None):
         super().__init__(timecode)
         self.song = song
 
@@ -132,7 +133,7 @@ class PerformanceDataMessage(PerformanceMessage):
     def __init__(
         self,
         timecode: int = 0,
-        events: list[PerformanceEvent] = None,
+        events: list[PerformanceEvent] | None = None,
     ):
         super().__init__(timecode, events)
 
@@ -175,7 +176,7 @@ class PerformanceBendNoteMessage(PerformanceDataMessage):
 # e.g., drumming, tambourine, percussion.
 class PerformancePercussionStrikeMessage(PerformanceDataMessage):
 
-    def __init__(self, timecode: int = 0, target: str = None, intensity: int = 0):
+    def __init__(self, timecode: int = 0, target: str | None = None, intensity: int = 0):
         super().__init__(timecode)
         self.target = target
         self.intensity = intensity

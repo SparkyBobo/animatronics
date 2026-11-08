@@ -15,8 +15,8 @@ Copyright (c) 2026 Sparky Bobo
 import array
 import time
 
-import usb.core
 import adafruit_usb_host_descriptors as descriptors
+import usb.core
 
 #import logging
 #logger = logging.getLogger(__name__)

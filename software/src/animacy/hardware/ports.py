@@ -6,7 +6,10 @@ Hardware ports.
 Copyright (c) 2026 Sparky Bobo
 """
 
+from typing import ClassVar
+
 import board
+
 
 class IOPort:
     """IOPort definition."""
@@ -15,7 +18,6 @@ class IOPort:
         """Initialize IOPort."""
         self.name = name
         self.pin = pin
-        pass
 
 class SerialPort:
     """Serial definition."""
@@ -27,7 +29,6 @@ class SerialPort:
         self.rxpin = rxpin
         self.baudrate = baudrate
         self.timeout = timeout
-        pass
 
 class I2CPort:
     """Serial definition."""
@@ -37,7 +38,6 @@ class I2CPort:
         self.name = name
         self.cpin = cpin
         self.dpin = dpin
-        pass
 
 class Ports:
     """Port definition."""
@@ -57,7 +57,24 @@ class Ports:
     io13 = IOPort("gpio3", board.GP13)
     io14 = IOPort("gpio3", board.GP14)
     io15 = IOPort("gpio3", board.GP15)
-    io = [ io0, io1, io2, io3, io4, io5, io6, io7, io8, io9, io10, io11, io12, io13, io14, io15 ]
+    io: ClassVar[list[IOPort]] = [
+        io0,
+        io1,
+        io2,
+        io3,
+        io4,
+        io5,
+        io6,
+        io7,
+        io8,
+        io9,
+        io10,
+        io11,
+        io12,
+        io13,
+        io14,
+        io15,
+    ]
     # Every board has a MIDI UART
     midi = SerialPort("midi", board.GP16, board.GP17, baudrate=31250, timeout=0.001)
     # Every board has 1 accessory i2c port

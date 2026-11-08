@@ -6,17 +6,19 @@ DMX output driver.
 Copyright (c) 2026 Sparky Bobo
 """
 
+import array
+
+import adafruit_pioasm
 import board
 import digitalio
-import array
 import rp2pio
-import adafruit_pioasm
 
 # DMX Configuration Constants
 DMX_CHANNELS = 512
 DMX_VALUES_INDEX0 = 5  # First channel index in dmx_values array
 
 from animacy.utils.logging import INFO, log
+
 
 # A DMX driver
 class DMXDriver:

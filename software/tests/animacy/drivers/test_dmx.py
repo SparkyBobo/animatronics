@@ -6,7 +6,8 @@ DMX output driver tests.
 Copyright (c) 2026 Sparky Bobo
 """
 
-from animacy.drivers.dmx import DMXDriver, DMX_VALUES_INDEX0
+from animacy.drivers.dmx import DMX_VALUES_INDEX0, DMXDriver
+
 
 def test_dmx_driver_set_dmx_level():
     driver = DMXDriver()

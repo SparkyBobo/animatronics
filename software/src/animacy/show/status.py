@@ -6,11 +6,11 @@ That status of the show.
 Copyright (c) 2026 Sparky Bobo
 """
 
-from animacy.contracts.performance import *
-from animacy.contracts.show import ShowStatus
 import time
 
+from animacy.contracts.performance import *
 from animacy.utils.logging import INFO, log
+
 
 class ShowStatusProcessor:
     """Tracks the state of the show."""
@@ -22,7 +22,7 @@ class ShowStatusProcessor:
 
     def process(self, message:PerformanceMessage) -> PerformanceMessageResult:
         log(1, INFO, message.id, message.timecode)
-        if (isinstance(message, PerformanceSystemResetMessage) or isinstance(message, PerformanceResetEventMessage)):
+        if isinstance(message, (PerformanceSystemResetMessage, PerformanceResetEventMessage)):
             self._reset()
             return PerformanceMessageResult.HANDLED
 

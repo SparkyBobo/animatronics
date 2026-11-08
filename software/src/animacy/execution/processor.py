@@ -8,8 +8,8 @@ Copyright (c) 2026 Sparky Bobo
 
 from animacy.contracts.performance import *
 from animacy.execution.executor import Executor
-
 from animacy.utils.logging import INFO, log
+
 
 class ExecutionProcessor:
     """Processes messages for execution."""
@@ -23,7 +23,7 @@ class ExecutionProcessor:
     def process(self, message:PerformanceMessage) -> PerformanceMessageResult:
         log(1, INFO, message.id, message.timecode)
         result = PerformanceMessageResult.SKIPPED
-        if (isinstance(message, PerformanceSystemResetMessage) or isinstance(message, PerformanceResetEventMessage)):
+        if isinstance(message, (PerformanceSystemResetMessage, PerformanceResetEventMessage)):
             self.executor.reset()
             result = PerformanceMessageResult.HANDLED
 
@@ -45,4 +45,3 @@ class ExecutionProcessor:
         if self.next:
             self.next.process(message)
         return result
-

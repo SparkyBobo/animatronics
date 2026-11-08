@@ -6,11 +6,12 @@ Evaluated performance messages for execution.
 Copyright (c) 2026 Sparky Bobo
 """
 
-from animacy.contracts.show import ShowStatus
+import logging
+
 from animacy.contracts.driver import DriverTransition
 from animacy.contracts.performance import *
+from animacy.contracts.show import ShowStatus
 
-import logging
 logger = logging.getLogger(__name__)
 
 class ExecutionEvaluator:
