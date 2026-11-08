@@ -9,8 +9,7 @@ Copyright (c) 2026 Sparky Bobo
 from animacy.contracts.performance import *
 from animacy.contracts.planner import DriverValueCache
 
-import logging
-logger = logging.getLogger(__name__)
+from animacy.utils.logging import INFO, log
 
 class PlanningProcessor:
     """Dispatch behaviors and record their planned driver values."""
@@ -22,7 +21,7 @@ class PlanningProcessor:
         handlers: list[PerformanceMessageProcessor] | None = None,
     ) -> None:
         """Initialize planning processor."""
-        logger.info("Initialize PlanningProcessor.")
+        log(5, INFO)
         self.next = next
         self.cache = cache
         self.handlers = handlers if handlers is not None else []
@@ -35,7 +34,7 @@ class PlanningProcessor:
         self.handlers.remove(handler)
 
     def process(self, message:PerformanceMessage) -> PerformanceMessageResult:
-        logger.info(f"Process performance message {message.id}@{message.timecode}")
+        log(1, INFO, message.id, message.timecode)
         result = PerformanceMessageResult.SKIPPED
         for handler in self.handlers:
             handler_result = handler.process(message)

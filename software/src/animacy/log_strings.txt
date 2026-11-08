@@ -1,0 +1,107 @@
+# Animacy log message catalog
+# Record format: decimal ID|template; each {} consumes one positional value.
+# Blank lines and lines beginning with # are ignored by the streaming reader.
+# IDs are grouped by package area; keep assignments stable and leave gaps unused.
+
+# 001-099: Common strings used by multiple modules
+001|Process performance message {}@{}
+002|Process message {}@{}
+003|Process song start message {}@{}
+004|Process song stop message {}@{}
+005|Initialize
+
+# 1000-1099: src/animacy/behavior/
+# behavior/audio.py
+1002|Process reset message {}@{}
+1003|Process song load message {}@{} for song {}
+1006|Song continue not supported {}@{}
+1007|Song position not supported {}@{}
+1008|Volume not suported {}@{}
+1009|Song transition to {}@{}
+# behavior/percussion.py
+1010|Percusion strike for {}@{}
+# behavior/rgb.py
+1011|Color transition {}@{} to {}@{} for addr={}
+1012|Intensity transition {}@{} to {}@{} for addr={}
+
+# 1100-1199: src/animacy/characters/
+
+# 1200-1299: src/animacy/midi/
+# midi/logger.py
+1201|MIDI NoteOn {}:{}:{}@{}
+1202|MIDI NoteOff {}:{}:{}@{}
+1203|MIDI ControlChange {}:{}:{}@{})
+1204|MIDI ProgramChange {}:{}@{}
+1205|MIDI PitchBend {}:{}@{}
+1206|MIDI Start@{}
+1207|MIDI Stop@{}
+1208|MIDI Continue@{}
+1209|MIDI Clock@{}
+1210|MIDI File Header {}@{}@{}
+1211|MIDI File Content {}@{}
+1212|MIDI File Complete@{}
+1213|MIDI File Open {}@{}
+1214|MIDI Cancel@{}
+1215|MIDI Nack@{}
+1216|MIDI Ack@{}
+1217|MIDI Volume {}@{}
+1218|MIDI Song Select {}@{}
+1219|MIDI Song Position {}@{}
+1220|MIDI Tune Request@{}
+1221|MIDI Sensing@{}
+1222|MIDI Reset@{}
+# midi/stream_reader.py
+1223|MIDI NoteOff {}:{}:{}
+1224|MIDI NoteOn {}:{}:{}
+1225|MIDI ControlChange {}:{}:{}
+1226|MIDI ProgramChange {}:{}
+1227|MIDI PitchBend {}:{}
+1228|MIDI Clock
+1229|MIDI Start
+1230|MIDI Stop
+1231|MIDI Continue
+1232|MIDI ActiveSensing
+1233|MIDI Song Select {}
+1234|MIDI Song Postion {}
+1235|MIDI Tune Request
+1236|MIDI SystemExclusive {}
+1237|MIDIBadEvent: {} {}
+1238|MIDIUnknownEvent status={}
+
+# 1300-1399: src/animacy/drivers/
+# drivers/audio.py
+1302|Audio PiZero command:{}
+1303|Ping Audio PiZero
+1304|Audio PiZero state:{}
+# drivers/dmx.py
+1305|DMXDriver initialized.
+
+# 1400-1499: src/animacy/execution/
+# execution/executor.py
+1401|Dispatch {} transitions for performance message {}@{}
+1402|Trim active messages to {}@{}
+
+# 1500-1599: src/animacy/planning/
+
+# 1600-1699: src/animacy/queue/
+# queue/queue.py
+1606|Reset message queue.
+
+# 1700-1799: src/animacy/show/
+# show/context.py
+1702|Starting ShowContext...
+# show/mapping.py
+1704|Create performance message {}@{}
+# show/reader.py
+1706|Loading song {}
+1707|Loading song...
+1708|Loaded song with {} handled events, {} skipped events
+# show/runner.py
+1711|Process song continue message {}@{}
+# show/status.py
+1714|Pause ShowStatus.
+1715|Play ShowStatus.
+# show/writer.py
+1716|ShowWriter: failed to open file {} due to {}
+1717|ShowWriter: expected sequence {} but got {}
+1718|ShowWriter: expected checksum {} but got {}

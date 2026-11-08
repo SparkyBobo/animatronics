@@ -9,8 +9,7 @@ Copyright (c) 2026 Sparky Bobo
 import busio
 from animacy.hardware.ports import SerialPort
 
-import logging
-logger = logging.getLogger(__name__)
+from animacy.utils.logging import INFO, log
 
 # A midi serial driver.
 class MidiSerialDriver:
@@ -18,7 +17,7 @@ class MidiSerialDriver:
 
     def __init__(self, port: SerialPort) -> None:
         """Initialize MidiSerialDriver."""
-        logger.info(f"Initialize MidiSerialDriver@tx={port.txpin},rx={port.rxpin}")
+        log(5, INFO)
         self._uart = busio.UART(
             tx=port.txpin, 
             rx=port.rxpin, 

@@ -10,19 +10,18 @@ from animacy.contracts.performance import *
 from animacy.contracts.show import ShowStatus
 import time
 
-import logging
-logger = logging.getLogger(__name__)
+from animacy.utils.logging import INFO, log
 
 class ShowStatusProcessor:
     """Tracks the state of the show."""
 
     def __init__(self) -> None:
         """Initialize show status."""
-        logger.info("Initialize ShowStatus.")
+        log(5, INFO)
         self._reset()
 
     def process(self, message:PerformanceMessage) -> PerformanceMessageResult:
-        logger.info(f"Process performance message {message.id}@{message.timecode}")
+        log(1, INFO, message.id, message.timecode)
         if (isinstance(message, PerformanceSystemResetMessage) or isinstance(message, PerformanceResetEventMessage)):
             self._reset()
             return PerformanceMessageResult.HANDLED
@@ -69,13 +68,13 @@ class ShowStatusProcessor:
 
     def _pause(self) -> None:
         """Pause the show status."""
-        logger.info("Pause ShowStatus.")
+        log(1714, INFO)
         self.is_running = False
         self.next_clock_tick = time.monotonic()
 
     def _play(self) -> None:
         """Play the show status."""
-        logger.info("Play ShowStatus.")
+        log(1715, INFO)
         self.is_running = True
         self.next_clock_tick = time.monotonic()
 

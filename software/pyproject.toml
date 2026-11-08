@@ -35,6 +35,8 @@ pythonpath = [
 [tool.black]
 line-length = 88
 
+[tool.setuptools.package-data]
+animacy = ["log_strings.txt"]
 
 [tool.ruff]
 line-length = 88

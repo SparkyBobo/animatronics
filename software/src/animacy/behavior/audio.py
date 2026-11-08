@@ -13,8 +13,7 @@ from animacy.behavior.base import Behavior
 from animacy.drivers.audio import AudioDriver
 from animacy.curves.instant import InstantCurve
 
-import logging
-logger = logging.getLogger(__name__)
+from animacy.utils.logging import INFO, log
 
 class AudioBehavior(Behavior):
     """Audio playback behaviors."""
@@ -33,30 +32,30 @@ class AudioBehavior(Behavior):
 
     def process(self, message:PerformanceMessage) -> PerformanceMessageResult:
         """Process performance events."""
-        logger.info(f"Process performance message {message.id}@{message.timecode}")
+        log(1, INFO, message.id, message.timecode)
         if isinstance(message, PerformanceResetEventMessage) or isinstance(message, PerformanceResetEventMessage):
-            logger.info(f"Process reset message {message.id}@{message.timecode}")
+            log(1002, INFO, message.id, message.timecode)
             self._update(message=message, command="STOP")
             return PerformanceMessageResult.HANDLED
         elif isinstance(message, PerformanceLoadSongMessage):
-            logger.info(f"Process song load message {message.id}@{message.timecode} for song {message.song}")
+            log(1003, INFO, message.id, message.timecode, message.song)
             self._update(message=message, command=f"LOAD {message.song}.wav")
             return PerformanceMessageResult.HANDLED
         elif isinstance(message, PerformanceSongStartMessage):
-            logger.info(f"Process song start message {message.id}@{message.timecode}")
+            log(3, INFO, message.id, message.timecode)
             self._update(message=message, command="START")
         elif isinstance(message, PerformanceSongStopMessage):
-            logger.info(f"Process song stop message {message.id}@{message.timecode}")
+            log(4, INFO, message.id, message.timecode)
             self._update(message=message, command="STOP")
             return PerformanceMessageResult.HANDLED
         elif isinstance(message, PerformanceSongContinueMessage):
-            logger.info(f"Song continue not supported {message.id}@{message.timecode}")
+            log(1006, INFO, message.id, message.timecode)
             return PerformanceMessageResult.SKIPPED
         elif isinstance(message, PerformanceSongPositionMessage):
-            logger.info(f"Song position not supported {message.id}@{message.timecode}")
+            log(1007, INFO, message.id, message.timecode)
             return PerformanceMessageResult.SKIPPED
         elif isinstance(message, PerformanceVolumeMessage):
-            logger.info(f"Volume not suported {message.id}@{message.timecode}")
+            log(1008, INFO, message.id, message.timecode)
             return PerformanceMessageResult.SKIPPED
         return PerformanceMessageResult.SKIPPED
 
@@ -64,4 +63,4 @@ class AudioBehavior(Behavior):
         """Update the driver with a command."""
         song_transition = DriverTransition(self.driver, AudioDriverValue(command), AudioDriverValue(command))
         message.events.append(PerformanceEvent(transition=song_transition, curve=InstantCurve(), start=message.timecode, end=message.timecode))
-        logger.info(f"Song transition to {command}@{message.timecode}")
+        log(1009, INFO, command, message.timecode)

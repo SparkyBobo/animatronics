@@ -9,8 +9,7 @@ Copyright (c) 2026 Sparky Bobo
 from animacy.contracts.midi import *
 from animacy.contracts.performance import *
 
-import logging
-logger = logging.getLogger(__name__)
+from animacy.utils.logging import CRITICAL, log
 
 class ShowMapper(MidiMessageProcessor):
     """Maps MIDI to performance events."""
@@ -98,9 +97,8 @@ class ShowMapper(MidiMessageProcessor):
             perf_msg = PerformanceSystemResetMessage()
 
         if (perf_msg is not None):
-            logger.critical(f"Create performance message {type(perf_msg).__name__ }@{perf_msg.timecode}")
+            log(1704, CRITICAL, type(perf_msg).__name__, perf_msg.timecode)
             self.next.process(perf_msg)
             return MidiMessageResult.HANDLED
 
         return MidiMessageResult.SKIPPED
-

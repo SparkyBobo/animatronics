@@ -16,8 +16,7 @@ import adafruit_pioasm
 DMX_CHANNELS = 512
 DMX_VALUES_INDEX0 = 5  # First channel index in dmx_values array
 
-import logging
-logger = logging.getLogger(__name__)
+from animacy.utils.logging import INFO, log
 
 # A DMX driver
 class DMXDriver:
@@ -57,7 +56,7 @@ class DMXDriver:
         # Initialize DMX state machine with PIO program
         self._init_state_machine()
         
-        logger.info("DMXDriver initialized.")
+        log(1305, INFO)
     
     def _init_state_machine(self):
         """Initialize the DMX-512 PIO state machine"""
@@ -180,5 +179,4 @@ class DMXDriver:
             The last DMX_CHANNELS elements of dmx_values (the channel data)
         """
         return self.dmx_values[-DMX_CHANNELS:]
-
 

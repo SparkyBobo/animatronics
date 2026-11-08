@@ -9,15 +9,14 @@ Copyright (c) 2026 Sparky Bobo
 from animacy.contracts.performance import *
 from animacy.show.status import ShowStatusProcessor
 
-import logging
-logger = logging.getLogger(__name__)
+from animacy.utils.logging import INFO, log
 
 class ShowDispatcher:
     """Processes messages for show."""
 
     def __init__(self) -> None:
         """Initialize show processor."""
-        logger.info("Initialize ShowProcessor.")
+        log(5, INFO)
         self.handlers = []
 
     def subscribe(self, handler: PerformanceMessageProcessor):

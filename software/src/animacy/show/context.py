@@ -32,8 +32,7 @@ from animacy.midi.serial_port import MidiSerialPort
 from animacy.show.mapping import ShowMapper
 import time
 
-import logging
-logger = logging.getLogger(__name__)
+from animacy.utils.logging import CRITICAL, log
 
 CLOCK_INTERVAL = 60.0 / (120 * 24)  # 20.833 ms
 
@@ -42,7 +41,7 @@ class ShowContext(BaseContext):
 
     def __init__(self) -> None:
         """Initialize ShowContext."""
-        logger.critical("Initialize ShowContext.")
+        log(5, CRITICAL)
 
         # The show status is used by many parts of the pipeline to read the clock.
         self.show_status = ShowStatusProcessor()
@@ -96,7 +95,7 @@ class ShowContext(BaseContext):
 
     def run(self) -> None:
         # The main run loop
-        logger.critical("Starting ShowContext...")
+        log(1702, CRITICAL)
 
         # Reset
         reset_message = PerformanceResetEventMessage(timecode=-1)
@@ -149,6 +148,5 @@ class ShowContext(BaseContext):
     @property
     def planner_queue(self) -> PerformanceMessageProcessor:        
         return self.planning_queue
-
 
 
