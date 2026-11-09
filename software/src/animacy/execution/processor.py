@@ -6,7 +6,16 @@ Processes messages for execution.
 Copyright (c) 2026 Sparky Bobo
 """
 
-from animacy.contracts.performance import *
+from animacy.contracts.performance import (
+    PerformanceClockMessage,
+    PerformanceLoadSongMessage,
+    PerformanceMessage,
+    PerformanceMessageProcessor,
+    PerformanceMessageResult,
+    PerformanceResetEventMessage,
+    PerformanceSongPositionMessage,
+    PerformanceSystemResetMessage,
+)
 from animacy.execution.executor import Executor
 from animacy.utils.logging import INFO, log
 
@@ -20,22 +29,24 @@ class ExecutionProcessor:
         self.next = next
         self.executor = executor
 
-    def process(self, message:PerformanceMessage) -> PerformanceMessageResult:
+    def process(self, message: PerformanceMessage) -> PerformanceMessageResult:
         log(1, INFO, message.id, message.timecode)
         result = PerformanceMessageResult.SKIPPED
-        if isinstance(message, (PerformanceSystemResetMessage, PerformanceResetEventMessage)):
+        if isinstance(
+            message, (PerformanceSystemResetMessage, PerformanceResetEventMessage)
+        ):
             self.executor.reset()
             result = PerformanceMessageResult.HANDLED
 
-        if (isinstance(message, PerformanceLoadSongMessage)):
+        if isinstance(message, PerformanceLoadSongMessage):
             self.executor.reset()
             result = PerformanceMessageResult.HANDLED
 
-        if (isinstance(message, PerformanceSongPositionMessage)):
+        if isinstance(message, PerformanceSongPositionMessage):
             self.executor.reset()
             result = PerformanceMessageResult.HANDLED
 
-        if (isinstance(message, PerformanceClockMessage)):
+        if isinstance(message, PerformanceClockMessage):
             self.executor.evaluate()
             result = PerformanceMessageResult.HANDLED
 

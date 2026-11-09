@@ -9,7 +9,11 @@ Copyright (c) 2026 Sparky Bobo
 from unittest.mock import Mock
 
 from animacy.contracts.driver import DriverTransition, PositionDriverValue
-from animacy.contracts.performance import *
+from animacy.contracts.performance import (
+    PerformanceDataMessage,
+    PerformanceEvent,
+    PerformanceMessageResult,
+)
 from animacy.planning.cache import PlanningCache
 from animacy.planning.processor import PlanningProcessor
 
@@ -21,6 +25,7 @@ def test_processor_init():
     assert processor.next == next_processor
     assert processor.cache is cache
 
+
 def test_processor_process():
     next_processor = Mock()
     cache = Mock(wraps=PlanningCache())
@@ -29,9 +34,7 @@ def test_processor_process():
     behavior = Mock()
 
     def append_transition(message):
-        message.events.append(
-            PerformanceEvent(transition=transition, end=10)
-        )
+        message.events.append(PerformanceEvent(transition=transition, end=10))
         return PerformanceMessageResult.HANDLED
 
     behavior.process.side_effect = append_transition
@@ -42,6 +45,7 @@ def test_processor_process():
     behavior.process.assert_called_once_with(message)
     cache.update.assert_called_once_with(transition, 10)
     next_processor.process.assert_called_once_with(message)
+
 
 def test_processor_does_not_dispatch_terminated_messages():
     next_processor = Mock()
@@ -57,6 +61,7 @@ def test_processor_does_not_dispatch_terminated_messages():
     assert processor.process(message) == PerformanceMessageResult.TERMINATE
 
     next_processor.process.assert_not_called()
+
 
 def test_processor_subscribe_and_unsubscribe_handlers():
     processor = PlanningProcessor(next=Mock(), cache=PlanningCache())

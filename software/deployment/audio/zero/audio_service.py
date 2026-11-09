@@ -18,9 +18,7 @@ import serial
 
 SERIAL_PORT = os.environ.get("DABONES_SERIAL_PORT", "/dev/serial0")
 BAUD_RATE = int(os.environ.get("DABONES_BAUD_RATE", "115200"))
-SONG_DIR = Path(
-    os.environ.get("DABONES_SONG_DIR", "/home/pi/dabones/songs")
-).resolve()
+SONG_DIR = Path(os.environ.get("DABONES_SONG_DIR", "/home/pi/dabones/songs")).resolve()
 
 APLAY = os.environ.get("DABONES_APLAY", "/usr/bin/aplay")
 SERIAL_TIMEOUT = 0.2
@@ -138,9 +136,7 @@ class AudioService:
 
             state = self.state()
             filename = (
-                self.selected_file.name
-                if self.selected_file is not None
-                else "none"
+                self.selected_file.name if self.selected_file is not None else "none"
             )
             pid = self.player.pid if self.player is not None else 0
             return f"OK STATUS state={state} file={filename} pid={pid}"
@@ -201,9 +197,9 @@ class AudioService:
                     if discarding:
                         uart.write(b"ERR LINE_TOO_LONG\n")
                     else:
-                        command_line = line.decode(
-                            "utf-8", errors="replace"
-                        ).rstrip("\r")
+                        command_line = line.decode("utf-8", errors="replace").rstrip(
+                            "\r"
+                        )
                         response = self.handle(command_line)
                         log.info("Command: %s -> %s", command_line, response)
                         uart.write((response + "\n").encode("utf-8"))

@@ -12,13 +12,13 @@ from animacy.contracts.performance import PerformanceMessage, PerformanceMessage
 
 logger = logging.getLogger(__name__)
 
+
 class Behavior:
     """Base behavior class."""
 
-    def __init__(self, name: str="UndefinedBehaviour") -> None:
+    def __init__(self, name: str = "UndefinedBehaviour") -> None:
         """Initialize Behavior."""
         self.name = name
 
-    def process(self, event:PerformanceMessage) -> PerformanceMessageResult:
+    def process(self, event: PerformanceMessage) -> PerformanceMessageResult:
         pass
-

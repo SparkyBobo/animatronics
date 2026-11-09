@@ -16,7 +16,13 @@ from animacy.contracts.driver import (
     DriverTransition,
     IntensityDriverValue,
 )
-from animacy.contracts.performance import *
+from animacy.contracts.performance import (
+    Color,
+    PerformanceClockMessage,
+    PerformanceEyeMessage,
+    PerformanceLoadSongMessage,
+    PerformanceSongStartMessage,
+)
 from animacy.curves.linear import LinearCurve
 from animacy.drivers.led import LedDriver
 from animacy.execution.evaluator import ExecutionEvaluator
@@ -42,20 +48,30 @@ def test_e2e_process_queued():
     # Execution layer
     evaluator = Mock(wraps=ExecutionEvaluator(show_status))
     evaluator.status = show_status
-    executor =  Mock(wraps=Executor(evaluator=evaluator))
-    execution_processor =  Mock(wraps=ExecutionProcessor(next=None, executor=executor))
+    executor = Mock(wraps=Executor(evaluator=evaluator))
+    execution_processor = Mock(wraps=ExecutionProcessor(next=None, executor=executor))
     execution_policy = Mock(wraps=ShowClockQueuePolicy(show_status))
-    execution_queue = Mock(wraps=QueueProcessor(next=execution_processor, policy=execution_policy))
+    execution_queue = Mock(
+        wraps=QueueProcessor(next=execution_processor, policy=execution_policy)
+    )
 
     # Planning layer
     planner_cache = Mock(wraps=PlanningCache())
-    planning_processor = Mock(wraps=PlanningProcessor(next=execution_queue, cache=planner_cache))
+    planning_processor = Mock(
+        wraps=PlanningProcessor(next=execution_queue, cache=planner_cache)
+    )
     planning_policy = Mock(wraps=PlanningPolicy(show_status))
-    planning_queue = Mock(wraps=QueueProcessor(next=planning_processor, policy=planning_policy))
+    planning_queue = Mock(
+        wraps=QueueProcessor(next=planning_processor, policy=planning_policy)
+    )
 
     # Behaviour layer
-    left_eye = RgbBehavior(cache=planner_cache, driver=driver, address=1, name="LeftEye")
-    right_eye = RgbBehavior(cache=planner_cache, driver=driver, address=2, name="RightEye")
+    left_eye = RgbBehavior(
+        cache=planner_cache, driver=driver, address=1, name="LeftEye"
+    )
+    right_eye = RgbBehavior(
+        cache=planner_cache, driver=driver, address=2, name="RightEye"
+    )
     eyes_behaviour = EyesBehavior(leds=[left_eye, right_eye], next=planning_processor)
     planning_processor.subscribe(eyes_behaviour)
 
@@ -71,15 +87,17 @@ def test_e2e_process_queued():
 
     # A song load will start reading a midi file and processing the messages.
     # For this test, we will simulate a song with a message that change the color and intensity of the eyes.
-    eye_message = PerformanceEyeMessage(timecode=5, color=Color(red=255, green=0, blue=0), intensity=128, fade=3)
+    eye_message = PerformanceEyeMessage(
+        timecode=5, color=Color(red=255, green=0, blue=0), intensity=128, fade=3
+    )
     show_processor.process(eye_message)
 
     # At this point, all layers should have received load but eye message was queued, not yet planned.
-    assert planning_queue.process.call_count ==  2
-    assert planning_processor.process.call_count ==  1
+    assert planning_queue.process.call_count == 2
+    assert planning_processor.process.call_count == 1
     assert planner_cache.update.call_count == 0
     assert execution_queue.process.call_count == 1
-    assert execution_processor.process.call_count ==  1
+    assert execution_processor.process.call_count == 1
     assert len(eye_message.events) == 0
 
     # Start the show clock and schedulers
@@ -87,11 +105,11 @@ def test_e2e_process_queued():
     show_processor.process(start_message)
 
     # At this point, the eye message should have been dequeued and planned, but not yet executed.
-    assert planning_queue.process.call_count ==  3
-    assert planning_processor.process.call_count ==  3
+    assert planning_queue.process.call_count == 3
+    assert planning_processor.process.call_count == 3
     assert planner_cache.update.call_count == 4
     assert execution_queue.process.call_count == 3
-    assert execution_processor.process.call_count ==  2
+    assert execution_processor.process.call_count == 2
     assert len(eye_message.events) == 4
     assert all(isinstance(event.curve, LinearCurve) for event in eye_message.events)
 
@@ -100,12 +118,12 @@ def test_e2e_process_queued():
     show_processor.process(clock_message)
 
     # At this point, the eye message should have been dequeued and planned, but not yet executed.
-    assert planning_queue.process.call_count ==  4
-    assert planning_processor.process.call_count ==  4
+    assert planning_queue.process.call_count == 4
+    assert planning_processor.process.call_count == 4
     assert planner_cache.update.call_count == 4
     assert execution_queue.process.call_count == 4
-    assert execution_processor.process.call_count ==  3
-    assert eye_message.timecode == 2 # eye fades are scheduled from their start time
+    assert execution_processor.process.call_count == 3
+    assert eye_message.timecode == 2  # eye fades are scheduled from their start time
     assert len(eye_message.events) == 4
     assert all(isinstance(event.curve, LinearCurve) for event in eye_message.events)
     assert eye_message.events[0].start == 2
@@ -122,15 +140,15 @@ def test_e2e_process_queued():
     show_processor.process(clock_message)
 
     # At this point, the eye message should have begun execution, and the driver should have received the starting commands.
-    assert planning_queue.process.call_count ==  5
-    assert planning_processor.process.call_count ==  5
+    assert planning_queue.process.call_count == 5
+    assert planning_processor.process.call_count == 5
     assert planner_cache.update.call_count == 4
     assert execution_queue.process.call_count == 5
-    assert execution_processor.process.call_count ==  5
+    assert execution_processor.process.call_count == 5
 
     # Assert commands were sent to execution
     assert executor.process.call_count == execution_processor.process.call_count
-    assert executor.evaluate.call_count ==  2
+    assert executor.evaluate.call_count == 2
     assert len(executor._mock_wraps.active_messages) == 1
 
     # Assert commands executed by the driver
@@ -159,14 +177,17 @@ def test_e2e_process_queued():
         driver.process.call_args_list[index].args[0].progress == 0.0
         for index in range(4, 8)
     )
-    assert all(planner_cache.get(event.transition) == (event.transition.end_value, event.end) for event in eye_message.events)
+    assert all(
+        planner_cache.get(event.transition) == (event.transition.end_value, event.end)
+        for event in eye_message.events
+    )
 
     # Advance clock
     clock_message = PerformanceClockMessage(timecode=3)
     show_processor.process(clock_message)
 
     assert executor.process.call_count == execution_processor.process.call_count
-    assert executor.evaluate.call_count ==  3
+    assert executor.evaluate.call_count == 3
     assert len(executor._mock_wraps.active_messages) == 1
     assert driver.process.call_count == 12
     assert driver.process.call_args_list[8].args[0].progress == 0.3333333333333333
@@ -179,7 +200,7 @@ def test_e2e_process_queued():
     show_processor.process(clock_message)
 
     assert executor.process.call_count == execution_processor.process.call_count
-    assert executor.evaluate.call_count ==  4
+    assert executor.evaluate.call_count == 4
     assert len(executor._mock_wraps.active_messages) == 1
     assert driver.process.call_count == 16
     assert driver.process.call_args_list[12].args[0].progress == 0.6666666666666666
@@ -192,13 +213,13 @@ def test_e2e_process_queued():
     show_processor.process(clock_message)
 
     assert executor.process.call_count == execution_processor.process.call_count
-    assert executor.evaluate.call_count ==  5
+    assert executor.evaluate.call_count == 5
     assert len(executor._mock_wraps.active_messages) == 0
     assert driver.process.call_count == 20
 
     # Assert commands executed by the driver
     assert executor.process.call_count == execution_processor.process.call_count
-    assert executor.evaluate.call_count ==  5
+    assert executor.evaluate.call_count == 5
     assert len(executor._mock_wraps.active_messages) == 0
     assert driver.process.call_count == 20
     first = driver.process.call_args_list[16].args[0]
@@ -221,4 +242,7 @@ def test_e2e_process_queued():
     assert isinstance(fourth, DriverTransition)
     assert fourth.end_value.intensity == 128
     assert fourth.progress == 1.0
-    assert all(planner_cache.get(event.transition) == (event.transition.end_value, event.end) for event in eye_message.events)
+    assert all(
+        planner_cache.get(event.transition) == (event.transition.end_value, event.end)
+        for event in eye_message.events
+    )

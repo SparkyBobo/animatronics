@@ -20,6 +20,7 @@ def test_policy_init():
     policy = PlanningPolicy(status=Mock())
     assert policy
 
+
 def test_policy_control():
     status = Mock()
     policy = PlanningPolicy(status)
@@ -28,6 +29,7 @@ def test_policy_control():
     status.is_running = False
     status.show_clock = 0
     assert policy.process(message) == PerformanceMessageResult.HANDLED
+
 
 def test_policy_queue_stopped():
     status = Mock()
@@ -38,6 +40,7 @@ def test_policy_queue_stopped():
     status.show_clock = 0
     assert policy.process(message) == PerformanceMessageResult.QUEUED
 
+
 def test_policy_queue_running():
     status = Mock()
     policy = PlanningPolicy(status)
@@ -47,14 +50,16 @@ def test_policy_queue_running():
     status.show_clock = 42
     assert policy.process(message) == PerformanceMessageResult.QUEUED
 
+
 def test_policy_queue_jit():
     status = Mock()
     policy = PlanningPolicy(status)
-    message = PerformanceDataMessage(timecode=192+42, events=[])
+    message = PerformanceDataMessage(timecode=192 + 42, events=[])
 
     status.is_running = True
     status.show_clock = 42
     assert policy.process(message) == PerformanceMessageResult.HANDLED
+
 
 def test_policy_queue_late():
     status = Mock()
@@ -65,10 +70,11 @@ def test_policy_queue_late():
     status.show_clock = 42
     assert policy.process(message) == PerformanceMessageResult.SKIPPED
 
+
 def test_policy_queue_not_too_late():
     status = Mock()
     policy = PlanningPolicy(status)
-    message = PerformanceDataMessage(timecode=192+20, events=[])
+    message = PerformanceDataMessage(timecode=192 + 20, events=[])
 
     status.is_running = True
     status.show_clock = 42

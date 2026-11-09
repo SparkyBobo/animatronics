@@ -13,11 +13,11 @@ import board
 import digitalio
 import rp2pio
 
+from animacy.utils.logging import INFO, log
+
 # DMX Configuration Constants
 DMX_CHANNELS = 512
 DMX_VALUES_INDEX0 = 5  # First channel index in dmx_values array
-
-from animacy.utils.logging import INFO, log
 
 
 # A DMX driver
@@ -49,11 +49,19 @@ class DMXDriver:
 
         # Setup tx timings - See https://support.etcconnect.com/ETC/FAQ/DMX_Speed
         # These timings are close to the Eos family of products "medium" speed.
-        self.dmx_values[0] = 30            # Word 0: Length of MARK BEFORE BREAK in microseconds (8us min)
-        self.dmx_values[1] = 142           # Word 1: Length of SPACE FOR BREAK in microseconds (92us min)
-        self.dmx_values[2] = 128           # Word 2: Length of MARK AFTER BREAK in microseconds (12us min)
-        self.dmx_values[3] = DMX_CHANNELS  # Word 3: Number of channels to send (1-512) + (1 for start code)
-        self.dmx_values[4] = 0             # Word 4: Start Code data byte (usually 0)
+        self.dmx_values[0] = (
+            30  # Word 0: Length of MARK BEFORE BREAK in microseconds (8us min)
+        )
+        self.dmx_values[1] = (
+            142  # Word 1: Length of SPACE FOR BREAK in microseconds (92us min)
+        )
+        self.dmx_values[2] = (
+            128  # Word 2: Length of MARK AFTER BREAK in microseconds (12us min)
+        )
+        self.dmx_values[3] = (
+            DMX_CHANNELS  # Word 3: Number of channels to send (1-512) + (1 for start code)
+        )
+        self.dmx_values[4] = 0  # Word 4: Start Code data byte (usually 0)
 
         # Initialize DMX state machine with PIO program
         self._init_state_machine()
@@ -119,7 +127,7 @@ class DMXDriver:
             exclusive_pin_use=True,
             pull_threshold=16,
             auto_pull=True,
-            out_shift_right=True
+            out_shift_right=True,
         )
 
         # Start background transmission
@@ -181,4 +189,3 @@ class DMXDriver:
             The last DMX_CHANNELS elements of dmx_values (the channel data)
         """
         return self.dmx_values[-DMX_CHANNELS:]
-

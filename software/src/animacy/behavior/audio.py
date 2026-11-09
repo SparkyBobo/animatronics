@@ -7,9 +7,21 @@ Copyright (c) 2026 Sparky Bobo
 """
 
 from animacy.behavior.base import Behavior
-from animacy.contracts.driver import *
-from animacy.contracts.midi import *
-from animacy.contracts.performance import *
+from animacy.contracts.driver import AudioDriverValue, DriverTransition
+from animacy.contracts.midi import MidiMessage, MidiMessageResult
+from animacy.contracts.performance import (
+    PerformanceDataMessage,
+    PerformanceEvent,
+    PerformanceLoadSongMessage,
+    PerformanceMessage,
+    PerformanceMessageResult,
+    PerformanceResetEventMessage,
+    PerformanceSongContinueMessage,
+    PerformanceSongPositionMessage,
+    PerformanceSongStartMessage,
+    PerformanceSongStopMessage,
+    PerformanceVolumeMessage,
+)
 from animacy.curves.instant import InstantCurve
 from animacy.drivers.audio import AudioDriver
 from animacy.utils.logging import INFO, log
@@ -27,10 +39,10 @@ class AudioBehavior(Behavior):
         super().__init__(name)
         self.driver = driver
 
-    def map(self, timecode:int, message:MidiMessage) -> MidiMessageResult:
+    def map(self, timecode: int, message: MidiMessage) -> MidiMessageResult:
         return MidiMessageResult.SKIPPED
 
-    def process(self, message:PerformanceMessage) -> PerformanceMessageResult:
+    def process(self, message: PerformanceMessage) -> PerformanceMessageResult:
         """Process performance events."""
         log(1, INFO, message.id, message.timecode)
         if isinstance(message, PerformanceResetEventMessage):
@@ -60,8 +72,17 @@ class AudioBehavior(Behavior):
             return PerformanceMessageResult.SKIPPED
         return PerformanceMessageResult.SKIPPED
 
-    def _update(self, message:PerformanceDataMessage, command: str) -> None:
+    def _update(self, message: PerformanceDataMessage, command: str) -> None:
         """Update the driver with a command."""
-        song_transition = DriverTransition(self.driver, AudioDriverValue(command), AudioDriverValue(command))
-        message.events.append(PerformanceEvent(transition=song_transition, curve=InstantCurve(), start=message.timecode, end=message.timecode))
+        song_transition = DriverTransition(
+            self.driver, AudioDriverValue(command), AudioDriverValue(command)
+        )
+        message.events.append(
+            PerformanceEvent(
+                transition=song_transition,
+                curve=InstantCurve(),
+                start=message.timecode,
+                end=message.timecode,
+            )
+        )
         log(1009, INFO, command, message.timecode)

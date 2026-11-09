@@ -10,27 +10,49 @@ import logging
 
 import neopixel
 
-from animacy.contracts.driver import *
+from animacy.contracts.driver import (
+    Color,
+    ColorDriverValue,
+    DriverConstraints,
+    DriverTransition,
+    DriverTransitionResult,
+    DriverValue,
+    IntensityDriverValue,
+)
 from animacy.hardware.ports import Ports
 
 logger = logging.getLogger(__name__)
+
 
 # An LED (NeoPixel) driver.
 class LedDriver:
     """Led driver."""
 
-    def __init__(self, count:int = 2) -> None:
+    def __init__(self, count: int = 2) -> None:
         """Initialize LedDriver."""
         # Neopixels
         self.pixel_count = count
         self.pixels = neopixel.NeoPixel(Ports.led.pin, self.pixel_count)
-        self.color_constraints = DriverConstraints(ColorDriverValue(Color(0, 0, 0)), ColorDriverValue(Color(255, 255, 255)), 0.0, 0.0)
-        self.intensity_constraints = DriverConstraints(IntensityDriverValue(0), IntensityDriverValue(255), 0.0, 0.0)
+        self.color_constraints = DriverConstraints(
+            ColorDriverValue(Color(0, 0, 0)),
+            ColorDriverValue(Color(255, 255, 255)),
+            0.0,
+            0.0,
+        )
+        self.intensity_constraints = DriverConstraints(
+            IntensityDriverValue(0), IntensityDriverValue(255), 0.0, 0.0
+        )
 
     def process(self, transition: DriverTransition) -> DriverTransitionResult:
-        target = transition.start_value.interpolate(transition.end_value, transition.progress)
+        target = transition.start_value.interpolate(
+            transition.end_value, transition.progress
+        )
         if isinstance(target, ColorDriverValue):
-            self.pixels[transition.address] = (target.color.red, target.color.green, target.color.blue)
+            self.pixels[transition.address] = (
+                target.color.red,
+                target.color.green,
+                target.color.blue,
+            )
         elif isinstance(target, IntensityDriverValue):
             self.pixels.brightness = target.intensity / 255.0
         self.pixels.show()

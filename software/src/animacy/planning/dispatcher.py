@@ -8,14 +8,23 @@ Copyright (c) 2026 Sparky Bobo
 
 import logging
 
-from animacy.contracts.performance import *
+from animacy.contracts.performance import (
+    PerformanceMessage,
+    PerformanceMessageProcessor,
+    PerformanceMessageResult,
+)
 
 logger = logging.getLogger(__name__)
+
 
 class PlanningDispatcher:
     """Processes the performance control messages."""
 
-    def __init__(self, next: PerformanceMessageProcessor, handlers: PerformanceMessageProcessor = None) -> None:
+    def __init__(
+        self,
+        next: PerformanceMessageProcessor,
+        handlers: PerformanceMessageProcessor = None,
+    ) -> None:
         """Initialize PerformanceMessageDispatcher."""
         self.next = next
         self.handlers = handlers if handlers is not None else []
@@ -29,7 +38,7 @@ class PlanningDispatcher:
         """Unsubscribe a PerformanceMessageProcessor: handler."""
         self.handlers.remove(handler)
 
-    def process(self, message:PerformanceMessage) -> PerformanceMessageResult:
+    def process(self, message: PerformanceMessage) -> PerformanceMessageResult:
         """Dispatch message to all subscribers."""
         for handler in self.handlers:
             result = handler.process(message)

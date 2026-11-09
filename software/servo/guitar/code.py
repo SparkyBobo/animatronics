@@ -21,17 +21,18 @@
 # The Animatroincs Servo Module (ANI-SRV) is a CircuitPython board designed
 # to control servos. This module is the definition of the guitar players
 # leds and motors.
-import servo
-import motion
 
-strum = Motion() # Speed servo
-slide = Motion() # Speed servo
-rotate = Motion() # Torque servo
-fretFinger1 = Motion() # Micro servo
-fretFinger2 = Motion() # Micro servo
-fretFinger3 = Motion() # Micro servo
-fretFingers = [ fretFinger1, fretFinger2, fretFinger3 ]
-footTap = Motion() # Micro servo
+# Motion, RgbLed, and PowerLed are provided by the servo runtime.
+# ruff: noqa: F821
+
+strum = Motion()  # Speed servo
+slide = Motion()  # Speed servo
+rotate = Motion()  # Torque servo
+fretFinger1 = Motion()  # Micro servo
+fretFinger2 = Motion()  # Micro servo
+fretFinger3 = Motion()  # Micro servo
+fretFingers = [fretFinger1, fretFinger2, fretFinger3]
+footTap = Motion()  # Micro servo
 
 leftEye = RgbLed()
 leftRight = RgbLed()

@@ -18,6 +18,7 @@ from animacy.hardware.ports import SerialPort
 
 logger = logging.getLogger(__name__)
 
+
 class Audio(PerformerBase):
     """Audio performer."""
 
@@ -26,7 +27,15 @@ class Audio(PerformerBase):
         super().__init__("Audio", 13)
 
         # Audio has playback
-        self.pizero = AudioDriver(SerialPort(name="PiZero", txpin=board.GP8, rxpin=board.GP9, baudrate=115200, timeout=0.02))
+        self.pizero = AudioDriver(
+            SerialPort(
+                name="PiZero",
+                txpin=board.GP8,
+                rxpin=board.GP9,
+                baudrate=115200,
+                timeout=0.02,
+            )
+        )
         self.playback = AudioBehavior(name="Playback", driver=self.pizero)
 
         # Register

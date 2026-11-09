@@ -25,7 +25,9 @@ from animacy.drivers.servo import ServoDriver
 
 def test_led_driver_writes_color_and_brightness(monkeypatch):
     pixels = MagicMock()
-    monkeypatch.setattr("animacy.drivers.led.neopixel.NeoPixel", Mock(return_value=pixels))
+    monkeypatch.setattr(
+        "animacy.drivers.led.neopixel.NeoPixel", Mock(return_value=pixels)
+    )
     driver = LedDriver(count=4)
 
     driver.process(
@@ -57,7 +59,9 @@ def test_led_driver_constraints_reject_unsupported_values(monkeypatch):
     driver = LedDriver()
 
     assert driver.constraints_for(ColorDriverValue(Color())) == driver.color_constraints
-    assert driver.constraints_for(IntensityDriverValue(10)) == driver.intensity_constraints
+    assert (
+        driver.constraints_for(IntensityDriverValue(10)) == driver.intensity_constraints
+    )
     with pytest.raises(ValueError, match="Unsupported driver value"):
         driver.constraints_for(PositionDriverValue(10))
 

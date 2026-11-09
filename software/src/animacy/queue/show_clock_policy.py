@@ -27,18 +27,17 @@ class ShowClockQueuePolicy:
         """Get the current show clock."""
         return self.status.show_clock
 
-    def process(self, message:PerformanceMessage) -> PerformanceMessageResult:
+    def process(self, message: PerformanceMessage) -> PerformanceMessageResult:
         log(2, INFO, message.id, message.timecode)
-        if (isinstance(message, PerformanceControlMessage)):
+        if isinstance(message, PerformanceControlMessage):
             return PerformanceMessageResult.HANDLED
-        elif (not self.status.is_running):
+        elif not self.status.is_running:
             return PerformanceMessageResult.QUEUED
 
         show_clock = self._get_clock()
-        if (message.timecode == show_clock):
+        if message.timecode == show_clock:
             return PerformanceMessageResult.HANDLED
-        elif (message.timecode < show_clock):
+        elif message.timecode < show_clock:
             return PerformanceMessageResult.SKIPPED
         else:
             return PerformanceMessageResult.QUEUED
-

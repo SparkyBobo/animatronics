@@ -26,7 +26,8 @@ class MidiSerialDriver:
             bits=8,
             parity=None,
             stop=1,
-            timeout=port.timeout)
+            timeout=port.timeout,
+        )
 
     @property
     def uart(self) -> any:

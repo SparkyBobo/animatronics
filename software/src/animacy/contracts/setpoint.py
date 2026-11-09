@@ -5,6 +5,7 @@ Setpoint contract.
 
 Copyright (c) 2026 Sparky Bobo
 """
+
 from __future__ import annotations
 
 from animacy.contracts.driver import DriverValue

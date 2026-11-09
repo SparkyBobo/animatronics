@@ -8,7 +8,12 @@ Copyright (c) 2026 Sparky Bobo
 
 from unittest.mock import Mock
 
-from animacy.contracts.performance import *
+from animacy.contracts.performance import (
+    PerformanceClockMessage,
+    PerformanceDataMessage,
+    PerformanceMessageResult,
+    PerformanceSongPositionMessage,
+)
 from animacy.execution.processor import ExecutionProcessor
 
 
@@ -19,6 +24,7 @@ def test_processor_init():
     assert processor.next == dispatcher
     assert processor.executor == executor
 
+
 def test_processor_execute():
     dispatcher = Mock()
     executor = Mock()
@@ -28,6 +34,7 @@ def test_processor_execute():
     assert processor.process(message) == PerformanceMessageResult.SKIPPED
     executor.process.assert_called_once_with(message)
     dispatcher.process.assert_called_once_with(message)
+
 
 def test_processor_resets_executor_for_song_position():
     dispatcher = Mock()
@@ -41,6 +48,7 @@ def test_processor_resets_executor_for_song_position():
     executor.process.assert_called_once_with(message)
     dispatcher.process.assert_called_once_with(message)
 
+
 def test_processor_evaluates_executor_on_clock():
     dispatcher = Mock()
     executor = Mock()
@@ -52,6 +60,7 @@ def test_processor_evaluates_executor_on_clock():
     executor.evaluate.assert_called_once_with()
     executor.process.assert_called_once_with(message)
     dispatcher.process.assert_called_once_with(message)
+
 
 def test_processor_stops_propagation_when_executor_terminates():
     dispatcher = Mock()

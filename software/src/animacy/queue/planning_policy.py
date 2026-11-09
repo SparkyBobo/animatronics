@@ -30,7 +30,7 @@ class PlanningPolicy(ShowClockQueuePolicy):
         show_clock = self.status.show_clock
         return show_clock + 192
 
-    def process(self, message:PerformanceMessage) -> PerformanceMessageResult:
+    def process(self, message: PerformanceMessage) -> PerformanceMessageResult:
         log(2, INFO, message.id, message.timecode)
         # Since we're running ahead, make sure not to skip messages that are just a bit late
         if (

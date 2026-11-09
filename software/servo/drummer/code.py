@@ -21,14 +21,15 @@
 # The Animatroincs Servo Module (ANI-SRV) is a CircuitPython board designed
 # to control servos. This module is the definition of the drummer
 # leds and motors.
-import servo
-import motion
 
-leftArmPlay = Motion() # Speed servo
-leftArmNote = Motion() # Speed servo
-leftFootPlay = Motion() # Speed servo
-rightFootPlay = Motion() # Speed servo
-mouth = Motion() # Micro servo
+# Motion, RgbLed, and PowerLed are provided by the servo runtime.
+# ruff: noqa: F821
+
+leftArmPlay = Motion()  # Speed servo
+leftArmNote = Motion()  # Speed servo
+leftFootPlay = Motion()  # Speed servo
+rightFootPlay = Motion()  # Speed servo
+mouth = Motion()  # Micro servo
 
 leftEye = RgbLed()
 rightEye = RgbLed()

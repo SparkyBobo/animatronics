@@ -7,7 +7,7 @@ Copyright (c) 2026 Sparky Bobo
 """
 
 from animacy.contracts.driver import DriverTransition
-from animacy.contracts.performance import *
+from animacy.contracts.performance import PerformanceMessage, PerformanceMessageResult
 from animacy.execution.evaluator import ExecutionEvaluator
 from animacy.utils.logging import INFO, log
 
@@ -24,9 +24,9 @@ class Executor:
         """Reset active transitions."""
         self.active_messages = []
 
-    def process(self, message:PerformanceMessage) -> PerformanceMessageResult:
+    def process(self, message: PerformanceMessage) -> PerformanceMessageResult:
         """Process events and execute timed driver transitions."""
-        if (len(message.events)):
+        if len(message.events):
             if message in self.active_messages:
                 return PerformanceMessageResult.HANDLED
             self.active_messages.append(message)
@@ -41,18 +41,24 @@ class Executor:
         length = len(self.active_messages)
 
         # Read the active list and evaluate each message.
-        while (read < length):
+        while read < length:
             active_message = self.active_messages[read]
             read += 1
 
             # If the evaluator performs and action, compact this item into the list
             (transitions, result) = self.evaluator.evaluate(active_message)
             if transitions:
-                log(1401, INFO, len(transitions), active_message.id, active_message.timecode)
+                log(
+                    1401,
+                    INFO,
+                    len(transitions),
+                    active_message.id,
+                    active_message.timecode,
+                )
                 self._dispatch(transitions)
 
             # If the evaluator performs and action, compact this item into the list
-            if (result != PerformanceMessageResult.TERMINATE):
+            if result != PerformanceMessageResult.TERMINATE:
                 self.active_messages[write] = active_message
                 write += 1
 
@@ -63,5 +69,5 @@ class Executor:
     def _dispatch(self, transitions: list[DriverTransition]) -> None:
         """Send transitions to the driver layer."""
         for transition in transitions:
-            if (transition.driver is not None):
+            if transition.driver is not None:
                 transition.driver.process(transition)

@@ -28,7 +28,7 @@ class PerformanceMessageQueue:
         log(1606, INFO)
         self.messages = []
 
-    def queue(self, message:PerformanceMessage) -> None:
+    def queue(self, message: PerformanceMessage) -> None:
         """Queue a message."""
         gc.collect()
         self.messages.append(message)

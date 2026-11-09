@@ -49,7 +49,7 @@ from adafruit_midi.stop import Stop
 from adafruit_midi.timing_clock import TimingClock
 
 # DaBones Imports
-from animacy.midi.messages import *
+from animacy.midi.messages import SongSelect
 
 # Setup status LEDs
 picoLed = digitalio.DigitalInOut(board.LED)

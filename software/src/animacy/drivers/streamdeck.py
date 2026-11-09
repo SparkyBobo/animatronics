@@ -18,8 +18,8 @@ import time
 import adafruit_usb_host_descriptors as descriptors
 import usb.core
 
-#import logging
-#logger = logging.getLogger(__name__)
+# import logging
+# logger = logging.getLogger(__name__)
 
 VENDOR_ID = 0x0FD9
 PRODUCT_ID = 0x0063  # Mini. Use 0x0090 / 0x00B3 / 0x00B8 for other Mini variants
@@ -40,6 +40,7 @@ REPORT_ID_SERIAL = 0x03
 REPORT_ID_SLEEP_DURATION = 0xA3
 
 FEATURE_REPORT_SIZE = 32
+
 
 # A method to find HID endpoints.
 def find_hid_endpoints(device):
@@ -77,6 +78,7 @@ def find_hid_endpoints(device):
 
     return interface_number, ep_in, ep_out, ep_in_max_packet, ep_out_max_packet
 
+
 # A StreamDeck(Mini) driver.
 class StreamDeckMini:
     """StreamDeckMini driver."""
@@ -85,20 +87,32 @@ class StreamDeckMini:
         """Initialize Streamdeck driver."""
         dev = usb.core.find(idVendor=VENDOR_ID, idProduct=PRODUCT_ID)
         if dev is None:
-            raise RuntimeError("Stream Deck Mini not found — check USB host wiring/power")
+            raise RuntimeError(
+                "Stream Deck Mini not found — check USB host wiring/power"
+            )
         self.dev = dev
 
-        self.interface_number, self.ep_in, self.ep_out, self.ep_in_max_packet, self.ep_out_max_packet = (
-            find_hid_endpoints(dev)
-        )
+        (
+            self.interface_number,
+            self.ep_in,
+            self.ep_out,
+            self.ep_in_max_packet,
+            self.ep_out_max_packet,
+        ) = find_hid_endpoints(dev)
         if self.interface_number is None or self.ep_in is None:
             raise RuntimeError("Could not locate HID interface/endpoints")
 
         print(
-            "HID interface", self.interface_number,
-            "ep_in", hex(self.ep_in), "max_packet", self.ep_in_max_packet,
-            "ep_out", hex(self.ep_out) if self.ep_out is not None else None,
-            "max_packet", self.ep_out_max_packet,
+            "HID interface",
+            self.interface_number,
+            "ep_in",
+            hex(self.ep_in),
+            "max_packet",
+            self.ep_in_max_packet,
+            "ep_out",
+            hex(self.ep_out) if self.ep_out is not None else None,
+            "max_packet",
+            self.ep_out_max_packet,
         )
 
         if dev.is_kernel_driver_active(self.interface_number):
@@ -203,7 +217,7 @@ class StreamDeckMini:
 
         buf = self._get_feature(report_id)
         # +0x00 report id, +0x01..0x04 unused, +0x05 ASCII[12]
-        raw = bytes(buf[5:5 + 12])
+        raw = bytes(buf[5 : 5 + 12])
         return raw.split(b"\x00", 1)[0].decode("ascii", "replace")
 
     def get_serial_number(self):
@@ -253,17 +267,17 @@ class StreamDeckMini:
         show_flag = 0x01 if show else 0x00
 
         while offset < total or total == 0:
-            chunk = bmp_bytes[offset: offset + self.CHUNK_PAYLOAD_SIZE]
+            chunk = bmp_bytes[offset : offset + self.CHUNK_PAYLOAD_SIZE]
 
             packet = bytearray(self.OUTPUT_REPORT_SIZE)
-            packet[0] = 0x02          # Report ID
-            packet[1] = 0x01          # Command: Upload Data to Image Memory Bank
+            packet[0] = 0x02  # Report ID
+            packet[1] = 0x01  # Command: Upload Data to Image Memory Bank
             packet[2] = chunk_index & 0xFF
-            packet[3] = 0x00          # Reserved
+            packet[3] = 0x00  # Reserved
             packet[4] = show_flag
             packet[5] = key_index
             # bytes 6-15 reserved, already zero from bytearray init
-            packet[self.HEADER_SIZE:self.HEADER_SIZE + len(chunk)] = chunk
+            packet[self.HEADER_SIZE : self.HEADER_SIZE + len(chunk)] = chunk
 
             self.dev.write(self.ep_out, packet)
 

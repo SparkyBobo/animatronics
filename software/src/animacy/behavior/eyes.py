@@ -10,28 +10,44 @@ import logging
 
 from animacy.behavior.base import Behavior
 from animacy.behavior.rgb import RgbBehavior
-from animacy.contracts.midi import *
-from animacy.contracts.performance import *
-from animacy.contracts.planner import *
+from animacy.contracts.midi import MidiMessage, MidiMessageResult, MidiNoteOn
+from animacy.contracts.performance import (
+    Color,
+    PerformanceEyeMessage,
+    PerformanceMessage,
+    PerformanceMessageProcessor,
+    PerformanceMessageResult,
+    PerformanceResetEventMessage,
+)
 
 logger = logging.getLogger(__name__)
+
 
 class EyesBehavior(Behavior):
     """Eyes behaviors."""
 
-    def __init__(self, leds: list[RgbBehavior], next:PerformanceMessageProcessor, name:str="Eyes") -> None:
+    def __init__(
+        self,
+        leds: list[RgbBehavior],
+        next: PerformanceMessageProcessor,
+        name: str = "Eyes",
+    ) -> None:
         """Initialize EyesBehavior."""
         super().__init__(name)
         self.leds = leds
         self.next = next
 
-    def map(self, timecode:int, message:MidiMessage) -> MidiMessageResult:
-        if (isinstance(message, MidiNoteOn) and message.note == 29):
-            self.next.process(PerformanceEyeMessage(timecode=timecode, color=Color(), intensity=message.velocity, fade=0))
+    def map(self, timecode: int, message: MidiMessage) -> MidiMessageResult:
+        if isinstance(message, MidiNoteOn) and message.note == 29:
+            self.next.process(
+                PerformanceEyeMessage(
+                    timecode=timecode, color=Color(), intensity=message.velocity, fade=0
+                )
+            )
             return MidiMessageResult.HANDLED
         return MidiMessageResult.SKIPPED
 
-    def process(self, message:PerformanceMessage) -> PerformanceMessageResult:
+    def process(self, message: PerformanceMessage) -> PerformanceMessageResult:
         if isinstance(message, (PerformanceResetEventMessage, PerformanceEyeMessage)):
             for led in self.leds:
                 led.process(message)

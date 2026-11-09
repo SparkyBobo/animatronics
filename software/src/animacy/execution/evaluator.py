@@ -9,22 +9,28 @@ Copyright (c) 2026 Sparky Bobo
 import logging
 
 from animacy.contracts.driver import DriverTransition
-from animacy.contracts.performance import *
+from animacy.contracts.performance import (
+    PerformanceDataMessage,
+    PerformanceMessageResult,
+)
 from animacy.contracts.show import ShowStatus
 
 logger = logging.getLogger(__name__)
+
 
 class ExecutionEvaluator:
     """Extracts driver transitions from performance events."""
 
     def __init__(self, status: ShowStatus) -> None:
         """Initialize ExecutionEvaluator."""
-        #logger.info("Initialize ExecutionEvaluator.")
+        # logger.info("Initialize ExecutionEvaluator.")
         self.status = status
 
-    def evaluate(self, message: PerformanceDataMessage) -> tuple[list[tuple[DriverTransition]], PerformanceMessageResult]:
+    def evaluate(
+        self, message: PerformanceDataMessage
+    ) -> tuple[list[tuple[DriverTransition]], PerformanceMessageResult]:
         """Evaluate events and extract their driver transitions."""
-        #logger.info(f"Evaluate performance message {message.id}@{message.timecode}")
+        # logger.info(f"Evaluate performance message {message.id}@{message.timecode}")
         transitions = []
         result = PerformanceMessageResult.TERMINATE
         for event in message.events or []:
@@ -51,5 +57,5 @@ class ExecutionEvaluator:
                 transitions.append(event.transition)
                 result = PerformanceMessageResult.HANDLED
 
-        #logger.info(f"Evaluated performance message with {len(message.events)}: {len(transitions)} transitions, result={result}")
+        # logger.info(f"Evaluated performance message with {len(message.events)}: {len(transitions)} transitions, result={result}")
         return (transitions, result)

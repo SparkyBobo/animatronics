@@ -6,6 +6,7 @@ Shared time-transform progress helpers.
 Copyright (c) 2026 Sparky Bobo
 """
 
+
 def linear_progress(
     start_time: int,
     end_time: int,

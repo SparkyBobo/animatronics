@@ -6,18 +6,18 @@ MIDI Filter utility
 Copyright (c) 2026 Sparky Bobo
 """
 
-from animacy.contracts.midi import *
-import gc
 import mido
+
 
 def keep_message(msg) -> int:
     if msg.type == "note_on":
-        if (msg.channel >= 0 and msg.channel <= 6):
+        if msg.channel >= 0 and msg.channel <= 6:
             return msg.channel
     if msg.type == "note_off":
-        if (msg.channel >= 0 and msg.channel <= 6):
+        if msg.channel >= 0 and msg.channel <= 6:
             return msg.channel
     return -1
+
 
 mid = mido.MidiFile("..\\..\\2.mid")
 output = [
@@ -56,10 +56,8 @@ for track in mid.tracks:
         absolute_tick += msg.time
 
         ch = keep_message(msg)
-        if (ch >= 0):
-            new_tracks[ch].append(
-                msg.copy(time=absolute_tick - last_kept_tick)
-            )
+        if ch >= 0:
+            new_tracks[ch].append(msg.copy(time=absolute_tick - last_kept_tick))
             last_kept_tick = absolute_tick
 
 output[0].save("2-1.mid")
