@@ -6,7 +6,6 @@ Led driver.
 Copyright (c) 2026 Sparky Bobo
 """
 
-import logging
 
 import neopixel
 
@@ -21,7 +20,6 @@ from animacy.contracts.driver import (
 )
 from animacy.hardware.ports import Ports
 
-logger = logging.getLogger(__name__)
 
 
 # An LED (NeoPixel) driver.

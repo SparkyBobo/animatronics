@@ -6,10 +6,8 @@ Linear buffer.
 Copyright (c) 2026 Sparky Bobo
 """
 
-import logging
 from collections.abc import Sequence
 
-logger = logging.getLogger(__name__)
 
 
 class LinearBufferReader:

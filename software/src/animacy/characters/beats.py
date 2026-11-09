@@ -6,7 +6,6 @@ Beats performer.
 Copyright (c) 2026 Sparky Bobo
 """
 
-import logging
 
 from animacy.behavior.eyes import EyesBehavior
 from animacy.behavior.mouth import MouthBehavior
@@ -21,7 +20,6 @@ from animacy.contracts.show import ShowContext
 from animacy.drivers.led import LedDriver
 from animacy.hardware.ports import Ports
 
-logger = logging.getLogger(__name__)
 
 
 class Beats(PerformerBase):

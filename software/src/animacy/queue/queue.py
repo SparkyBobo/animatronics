@@ -11,7 +11,9 @@ from __future__ import annotations
 import gc
 
 from animacy.contracts.performance import PerformanceMessage
-from animacy.utils.logging import INFO, log
+from animacy.utils.logging import INFO, CatalogLogger
+
+logger = CatalogLogger(__name__)
 
 
 class PerformanceMessageQueue:
@@ -19,13 +21,13 @@ class PerformanceMessageQueue:
 
     def __init__(self) -> None:
         """Initialize message queue."""
-        log(5, INFO)
+        logger.log(5, INFO)
         self.next = next
         self.reset()
 
     def reset(self) -> None:
         """Reset the message queue and clear the event queue."""
-        log(1606, INFO)
+        logger.log(1606, INFO)
         self.messages = []
 
     def queue(self, message: PerformanceMessage) -> None:

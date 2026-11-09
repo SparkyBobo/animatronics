@@ -13,7 +13,9 @@ import board
 import digitalio
 import rp2pio
 
-from animacy.utils.logging import INFO, log
+from animacy.utils.logging import INFO, CatalogLogger
+
+logger = CatalogLogger(__name__)
 
 # DMX Configuration Constants
 DMX_CHANNELS = 512
@@ -66,7 +68,7 @@ class DMXDriver:
         # Initialize DMX state machine with PIO program
         self._init_state_machine()
 
-        log(1305, INFO)
+        logger.log(1305, INFO)
 
     def _init_state_machine(self):
         """Initialize the DMX-512 PIO state machine"""

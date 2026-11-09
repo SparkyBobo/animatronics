@@ -6,9 +6,7 @@ LPD8 driver.
 Copyright (c) 2026 Sparky Bobo
 """
 
-import logging
 
-logger = logging.getLogger(__name__)
 
 
 # A driver for an LPD8 drum pad.

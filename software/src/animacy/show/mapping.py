@@ -50,7 +50,9 @@ from animacy.contracts.performance import (
     PerformanceSystemResetMessage,
     PerformanceVolumeMessage,
 )
-from animacy.utils.logging import CRITICAL, log
+from animacy.utils.logging import CRITICAL, CatalogLogger
+
+logger = CatalogLogger(__name__)
 
 
 class ShowMapper(MidiMessageProcessor):
@@ -127,7 +129,7 @@ class ShowMapper(MidiMessageProcessor):
             perf_msg = PerformanceSystemResetMessage(timecode=timecode)
 
         if perf_msg is not None:
-            log(1704, CRITICAL, type(perf_msg).__name__, perf_msg.timecode)
+            logger.log(1704, CRITICAL, type(perf_msg).__name__, perf_msg.timecode)
             self.next.process(perf_msg)
             return MidiMessageResult.HANDLED
 

@@ -20,7 +20,9 @@ from animacy.contracts.driver import (
 )
 from animacy.contracts.service import Service, ServiceResult
 from animacy.hardware.ports import SerialPort
-from animacy.utils.logging import INFO, log
+from animacy.utils.logging import INFO, CatalogLogger
+
+logger = CatalogLogger(__name__)
 
 
 # An audio playback driver.
@@ -29,7 +31,7 @@ class AudioDriver(Service):
 
     def __init__(self, port: SerialPort) -> None:
         """Initialize AudioDriver."""
-        log(5, INFO)
+        logger.log(5, INFO)
         self.uart = busio.UART(
             tx=port.txpin,
             rx=port.rxpin,
@@ -47,7 +49,7 @@ class AudioDriver(Service):
 
     def process(self, transition: DriverTransition) -> DriverTransitionResult:
         if isinstance(transition.end_value, AudioDriverValue):
-            log(1302, INFO, transition.end_value.command)
+            logger.log(1302, INFO, transition.end_value.command)
             self._send_line(transition.end_value.command)
 
     def constraints_for(self, value: DriverValue) -> DriverConstraints:
@@ -61,7 +63,7 @@ class AudioDriver(Service):
         """Process incoming terminal output; call frequently."""
         # If we are disconnected, try to get a response.
         if (self.last_activity + 5.0) < time.monotonic():
-            log(1303, INFO)
+            logger.log(1303, INFO)
             self._send_line("PING")
             self.last_activity = time.monotonic()
 
@@ -71,7 +73,7 @@ class AudioDriver(Service):
             return ServiceResult.IDLE
 
         text = data.decode("ascii").strip()
-        log(1304, INFO, text)
+        logger.log(1304, INFO, text)
         return ServiceResult.ACTIVITY
 
     def _send_line(self, text):

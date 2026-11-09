@@ -20,7 +20,9 @@ from animacy.contracts.performance import (
     PerformanceSongStopMessage,
     PerformanceSystemResetMessage,
 )
-from animacy.utils.logging import INFO, log
+from animacy.utils.logging import INFO, CatalogLogger
+
+logger = CatalogLogger(__name__)
 
 
 class ShowStatusProcessor:
@@ -28,11 +30,11 @@ class ShowStatusProcessor:
 
     def __init__(self) -> None:
         """Initialize show status."""
-        log(5, INFO)
+        logger.log(5, INFO)
         self._reset()
 
     def process(self, message: PerformanceMessage) -> PerformanceMessageResult:
-        log(1, INFO, message.id, message.timecode)
+        logger.log(1, INFO, message.id, message.timecode)
         if isinstance(
             message, (PerformanceSystemResetMessage, PerformanceResetEventMessage)
         ):
@@ -83,13 +85,13 @@ class ShowStatusProcessor:
 
     def _pause(self) -> None:
         """Pause the show status."""
-        log(1714, INFO)
+        logger.log(1714, INFO)
         self.is_running = False
         self.next_clock_tick = time.monotonic()
 
     def _play(self) -> None:
         """Play the show status."""
-        log(1715, INFO)
+        logger.log(1715, INFO)
         self.is_running = True
         self.next_clock_tick = time.monotonic()
 

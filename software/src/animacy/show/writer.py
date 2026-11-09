@@ -16,7 +16,9 @@ from animacy.contracts.performance import (
     PerformanceFileHeaderMessage,
     PerformanceMessageResult,
 )
-from animacy.utils.logging import ERROR, log
+from animacy.utils.logging import ERROR, CatalogLogger
+
+logger = CatalogLogger(__name__)
 
 
 class ShowWriter:
@@ -62,7 +64,7 @@ class ShowWriter:
             self.filename = name
             return True
         except OSError as ex:
-            log(1716, ERROR, self.tempname, ex)
+            logger.log(1716, ERROR, self.tempname, ex)
             if self.file:
                 self.file.close()
                 self.file = None
@@ -72,7 +74,7 @@ class ShowWriter:
         # verify sequence
         self.sequence += 1
         if self.sequence != sequence:
-            log(1717, ERROR, self.sequence, sequence)
+            logger.log(1717, ERROR, self.sequence, sequence)
             return False
         # write to the temp file
         if self.file:
@@ -87,7 +89,7 @@ class ShowWriter:
         self.file.close()
         # verify checksum
         if self.checksum != checksum:
-            log(1718, ERROR, self.checksum, checksum)
+            logger.log(1718, ERROR, self.checksum, checksum)
             return False
         # rename file
         os.rename(self.tempname, self.filename)

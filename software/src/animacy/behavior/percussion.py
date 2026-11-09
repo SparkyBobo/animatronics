@@ -29,7 +29,9 @@ from animacy.contracts.setpoint import Setpoint
 from animacy.curves.ease import ZeroEndpointAccelerationCurve
 from animacy.drivers.servo import ServoDriver
 from animacy.hardware.ports import IOPort
-from animacy.utils.logging import INFO, log
+from animacy.utils.logging import INFO, CatalogLogger
+
+logger = CatalogLogger(__name__)
 
 
 class PercussionBehavior(Behavior):
@@ -111,7 +113,7 @@ class PercussionBehavior(Behavior):
                 end=message.timecode,
             )
         )
-        log(1010, INFO, self.name, message.timecode)
+        logger.log(1010, INFO, self.name, message.timecode)
 
 
 class BassPercussionBehavior(PercussionBehavior):

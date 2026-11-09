@@ -32,7 +32,9 @@ from animacy.contracts.midi import(
     MidiTuneRequest,
     MidiVolumeSet,
 )
-from animacy.utils.logging import INFO, log
+from animacy.utils.logging import INFO, CatalogLogger
+
+logger = CatalogLogger(__name__)
 
 class MidiMessageLogger:
     """Logs the midi messages."""
@@ -43,70 +45,70 @@ class MidiMessageLogger:
 
     def map(self, timecode:int, message:MidiMessage) -> MidiMessageResult:
             if isinstance(message, MidiNoteOn):
-                log(1201, INFO, message.channel, message.note, message.velocity, timecode)
+                logger.log(1201, INFO, message.channel, message.note, message.velocity, timecode)
 
             elif isinstance(message, MidiNoteOff):
-                log(1202, INFO, message.channel, message.note, message.velocity, timecode)
+                logger.log(1202, INFO, message.channel, message.note, message.velocity, timecode)
 
             elif isinstance(message, MidiControlChange):
-                log(1203, INFO, message.channel, message.control, message.value, timecode)
+                logger.log(1203, INFO, message.channel, message.control, message.value, timecode)
                 # class MidiDeviceMode(MidiControlChange):
                 # class MidiAllSoundOff(MidiChannelMessage):
                 # class MidiAllNotesOff(MidiChannelMessage):
 
             elif isinstance(message, MidiProgramChange):
-                log(1204, INFO, message.channel, message.program, timecode)
+                logger.log(1204, INFO, message.channel, message.program, timecode)
 
             elif isinstance(message, MidiPitchBend):
-                log(1205, INFO, message.channel, message.bend, timecode)
+                logger.log(1205, INFO, message.channel, message.bend, timecode)
 
             elif isinstance(message, MidiSongStart):
-                log(1206, INFO, timecode)
+                logger.log(1206, INFO, timecode)
 
             elif isinstance(message, MidiSongStop):
-                log(1207, INFO, timecode)
+                logger.log(1207, INFO, timecode)
 
             elif isinstance(message, MidiSongContinue):
-                log(1208, INFO, timecode)
+                logger.log(1208, INFO, timecode)
 
             elif isinstance(message, MidiClock):
-                log(1209, INFO, timecode)
+                logger.log(1209, INFO, timecode)
 
             elif isinstance(message, MidiFileHeader):
-                log(1210, INFO, message.name, message.length, timecode)
+                logger.log(1210, INFO, message.name, message.length, timecode)
 
             elif isinstance(message, MidiFileContent):
-                log(1211, INFO, len(message.data), timecode)
+                logger.log(1211, INFO, len(message.data), timecode)
 
             elif isinstance(message, MidiFileComplete):
-                log(1212, INFO, timecode)
+                logger.log(1212, INFO, timecode)
 
             elif isinstance(message, MidiFileOpen):
-                log(1213, INFO, message.id, timecode)
+                logger.log(1213, INFO, message.id, timecode)
 
             elif isinstance(message, MidiCancel):
-                log(1214, INFO, timecode)
+                logger.log(1214, INFO, timecode)
 
             elif isinstance(message, MidiNack):
-                log(1215, INFO, timecode)
+                logger.log(1215, INFO, timecode)
 
             elif isinstance(message, MidiAck):
-                log(1216, INFO, timecode)
+                logger.log(1216, INFO, timecode)
 
             elif isinstance(message, MidiVolumeSet):
-                log(1217, INFO, message.level, timecode)
+                logger.log(1217, INFO, message.level, timecode)
 
             elif isinstance(message, MidiSongSelect):
-                log(1218, INFO, message.song, timecode)
+                logger.log(1218, INFO, message.song, timecode)
 
             elif isinstance(message, MidiSongPosition):
-                log(1219, INFO, message.position, timecode)
+                logger.log(1219, INFO, message.position, timecode)
 
             elif isinstance(message, MidiTuneRequest):
-                log(1220, INFO, timecode)
+                logger.log(1220, INFO, timecode)
 
             elif isinstance(message, MidiActiveSensing):
-                log(1221, INFO, timecode)
+                logger.log(1221, INFO, timecode)
 
             elif isinstance(message, MidiReset):
-                log(1222, INFO, timecode)
+                logger.log(1222, INFO, timecode)

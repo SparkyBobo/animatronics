@@ -6,7 +6,6 @@ Audio playback.
 Copyright (c) 2026 Sparky Bobo
 """
 
-import logging
 
 import board
 
@@ -16,7 +15,6 @@ from animacy.contracts.show import ShowContext
 from animacy.drivers.audio import AudioDriver
 from animacy.hardware.ports import SerialPort
 
-logger = logging.getLogger(__name__)
 
 
 class Audio(PerformerBase):

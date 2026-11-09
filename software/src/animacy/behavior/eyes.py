@@ -6,7 +6,6 @@ Eyes behaviors.
 Copyright (c) 2026 Sparky Bobo
 """
 
-import logging
 
 from animacy.behavior.base import Behavior
 from animacy.behavior.rgb import RgbBehavior
@@ -20,7 +19,6 @@ from animacy.contracts.performance import (
     PerformanceResetEventMessage,
 )
 
-logger = logging.getLogger(__name__)
 
 
 class EyesBehavior(Behavior):

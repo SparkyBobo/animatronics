@@ -24,7 +24,9 @@ from animacy.contracts.performance import (
 )
 from animacy.curves.instant import InstantCurve
 from animacy.drivers.audio import AudioDriver
-from animacy.utils.logging import INFO, log
+from animacy.utils.logging import INFO, CatalogLogger
+
+logger = CatalogLogger(__name__)
 
 
 class AudioBehavior(Behavior):
@@ -44,31 +46,31 @@ class AudioBehavior(Behavior):
 
     def process(self, message: PerformanceMessage) -> PerformanceMessageResult:
         """Process performance events."""
-        log(1, INFO, message.id, message.timecode)
+        logger.log(1, INFO, message.id, message.timecode)
         if isinstance(message, PerformanceResetEventMessage):
-            log(1002, INFO, message.id, message.timecode)
+            logger.log(1002, INFO, message.id, message.timecode)
             self._update(message=message, command="STOP")
             return PerformanceMessageResult.HANDLED
         elif isinstance(message, PerformanceLoadSongMessage):
-            log(1003, INFO, message.id, message.timecode, message.song)
+            logger.log(1003, INFO, message.id, message.timecode, message.song)
             self._update(message=message, command=f"LOAD {message.song}.wav")
             return PerformanceMessageResult.HANDLED
         elif isinstance(message, PerformanceSongStartMessage):
-            log(3, INFO, message.id, message.timecode)
+            logger.log(3, INFO, message.id, message.timecode)
             self._update(message=message, command="START")
             return PerformanceMessageResult.HANDLED
         elif isinstance(message, PerformanceSongStopMessage):
-            log(4, INFO, message.id, message.timecode)
+            logger.log(4, INFO, message.id, message.timecode)
             self._update(message=message, command="STOP")
             return PerformanceMessageResult.HANDLED
         elif isinstance(message, PerformanceSongContinueMessage):
-            log(1006, INFO, message.id, message.timecode)
+            logger.log(1006, INFO, message.id, message.timecode)
             return PerformanceMessageResult.SKIPPED
         elif isinstance(message, PerformanceSongPositionMessage):
-            log(1007, INFO, message.id, message.timecode)
+            logger.log(1007, INFO, message.id, message.timecode)
             return PerformanceMessageResult.SKIPPED
         elif isinstance(message, PerformanceVolumeMessage):
-            log(1008, INFO, message.id, message.timecode)
+            logger.log(1008, INFO, message.id, message.timecode)
             return PerformanceMessageResult.SKIPPED
         return PerformanceMessageResult.SKIPPED
 
@@ -85,4 +87,4 @@ class AudioBehavior(Behavior):
                 end=message.timecode,
             )
         )
-        log(1009, INFO, command, message.timecode)
+        logger.log(1009, INFO, command, message.timecode)

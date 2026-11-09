@@ -8,10 +8,13 @@ Copyright (c) 2026 Sparky Bobo
 
 import builtins
 from io import StringIO
+import logging
 
 import pytest
 
 from animacy.utils import logging as catalog_logging
+
+logger = catalog_logging.CatalogLogger("test.catalog")
 
 
 def test_log_skips_catalog_when_level_is_disabled(monkeypatch):
@@ -21,10 +24,10 @@ def test_log_skips_catalog_when_level_is_disabled(monkeypatch):
     monkeypatch.setattr(catalog_logging, "LOG_LEVEL", catalog_logging.WARNING)
     monkeypatch.setattr(builtins, "open", fail_open)
 
-    catalog_logging.log(3, catalog_logging.DEBUG, "unused")
+    logger.log(3, catalog_logging.DEBUG, "unused")
 
 
-def test_log_uses_id_formats_and_prints_catalog_message(monkeypatch, capsys):
+def test_log_uses_id_formats_and_emits_standard_log_record(monkeypatch, caplog):
     monkeypatch.setattr(catalog_logging, "LOG_LEVEL", catalog_logging.INFO)
     monkeypatch.setattr(
         catalog_logging,
@@ -39,17 +42,21 @@ def test_log_uses_id_formats_and_prints_catalog_message(monkeypatch, capsys):
         ),
     )
 
-    catalog_logging.log(3, catalog_logging.INFO, "world")
+    caplog.set_level(logging.INFO)
+    source = catalog_logging.CatalogLogger("test.catalog.caller")
+    source.log(3, catalog_logging.INFO, "world")
 
-    assert capsys.readouterr().out == "Hello world!\n"
+    assert caplog.records[0].name == "test.catalog.caller"
+    assert caplog.records[0].getMessage() == "Hello world!"
 
 
-def test_log_reads_package_catalog(monkeypatch, capsys):
+def test_log_reads_package_catalog(monkeypatch, caplog):
     monkeypatch.setattr(catalog_logging, "LOG_LEVEL", catalog_logging.INFO)
+    caplog.set_level(logging.INFO)
 
-    catalog_logging.log(1, catalog_logging.INFO, 42, "00:01")
+    logger.log(1, catalog_logging.INFO, 42, "00:01")
 
-    assert capsys.readouterr().out == "Process performance message 42@00:01\n"
+    assert caplog.records[0].getMessage() == "Process performance message 42@00:01"
 
 
 def test_log_raises_when_id_is_missing(monkeypatch):
@@ -61,7 +68,7 @@ def test_log_raises_when_id_is_missing(monkeypatch):
     )
 
     with pytest.raises(KeyError, match="Log message ID not found: 3"):
-        catalog_logging.log(3, catalog_logging.INFO)
+        logger.log(3, catalog_logging.INFO)
 
 
 def test_log_rejects_malformed_catalog_entry(monkeypatch):
@@ -73,4 +80,4 @@ def test_log_rejects_malformed_catalog_entry(monkeypatch):
     )
 
     with pytest.raises(ValueError, match="Malformed log catalog entry"):
-        catalog_logging.log(3, catalog_logging.INFO)
+        logger.log(3, catalog_logging.INFO)

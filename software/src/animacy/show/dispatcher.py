@@ -11,7 +11,9 @@ from animacy.contracts.performance import (
     PerformanceMessageProcessor,
     PerformanceMessageResult,
 )
-from animacy.utils.logging import INFO, log
+from animacy.utils.logging import INFO, CatalogLogger
+
+logger = CatalogLogger(__name__)
 
 
 class ShowDispatcher:
@@ -19,7 +21,7 @@ class ShowDispatcher:
 
     def __init__(self) -> None:
         """Initialize show processor."""
-        log(5, INFO)
+        logger.log(5, INFO)
         self.handlers = []
 
     def subscribe(self, handler: PerformanceMessageProcessor):

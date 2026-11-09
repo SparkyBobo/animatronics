@@ -8,8 +8,6 @@ Copyright (c) 2026 Sparky Bobo
 
 from animacy.contracts.midi import MidiMessage, MidiMessageResult, MidiMessageProcessor
 
-import logging
-logger = logging.getLogger(__name__)
 
 class MidiMessageDispatcher:
     """Dispatches the midi messages."""

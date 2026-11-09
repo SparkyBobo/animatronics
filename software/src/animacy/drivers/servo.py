@@ -16,7 +16,9 @@ from animacy.contracts.driver import (
     PositionDriverValue,
 )
 from animacy.hardware.ports import IOPort
-from animacy.utils.logging import INFO, log
+from animacy.utils.logging import INFO, CatalogLogger
+
+logger = CatalogLogger(__name__)
 
 
 # A servo driver.
@@ -25,7 +27,7 @@ class ServoDriver:
 
     def __init__(self, port: IOPort) -> None:
         """Initialize ServoDriver."""
-        log(5, INFO)
+        logger.log(5, INFO)
         self.port = port
         self.pwm = PWMOut(port.pin, frequency=50)
         self.total_period_us = 20000  # 20ms in microseconds
