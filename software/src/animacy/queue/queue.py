@@ -8,12 +8,15 @@ Copyright (c) 2026 Sparky Bobo
 
 from __future__ import annotations
 
-import gc
-
 from animacy.contracts.performance import PerformanceMessage
 from animacy.utils.logging import INFO, CatalogLogger
+from animacy.utils.memory import (
+    QUEUE_COLLECT,
+    MemoryMonitor,
+)
 
 logger = CatalogLogger(__name__)
+memory = MemoryMonitor()
 
 
 class PerformanceMessageQueue:
@@ -32,7 +35,7 @@ class PerformanceMessageQueue:
 
     def queue(self, message: PerformanceMessage) -> None:
         """Queue a message."""
-        gc.collect()
+        memory.collect(QUEUE_COLLECT)
         self.messages.append(message)
 
     def peek(self) -> PerformanceMessage | None:

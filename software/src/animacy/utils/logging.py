@@ -11,10 +11,12 @@ from __future__ import annotations
 import logging
 
 LOG_LEVEL = 2
+MEMORY_LOGGING = True
 
 CRITICAL = ERROR = 1
 WARNING = INFO = 2
 DEBUG = 3
+MEMORY = 4
 
 _module_path = __file__.replace("\\", "/")
 _package_path = _module_path.rsplit("/", 2)[0] if "/" in _module_path else "."
@@ -29,12 +31,16 @@ class CatalogLogger:
 
     def log(self, message_id: int, severity: int, *args: object) -> None:
         """Log a catalog message when its severity is enabled."""
-        if severity not in (CRITICAL, WARNING, DEBUG):
+        if severity not in (CRITICAL, WARNING, DEBUG, MEMORY):
             raise ValueError(f"Invalid log severity: {severity}")
-        if LOG_LEVEL not in (0, CRITICAL, WARNING, DEBUG):
-            raise ValueError(f"Invalid log level: {LOG_LEVEL}")
-        if LOG_LEVEL == 0 or severity > LOG_LEVEL:
-            return
+        if severity == MEMORY:
+            if not MEMORY_LOGGING:
+                return
+        else:
+            if LOG_LEVEL not in (0, CRITICAL, WARNING, DEBUG):
+                raise ValueError(f"Invalid log level: {LOG_LEVEL}")
+            if LOG_LEVEL == 0 or severity > LOG_LEVEL:
+                return
 
         template = None
         with open(_LOG_STRINGS_PATH, "r") as catalog:
@@ -66,5 +72,6 @@ class CatalogLogger:
             CRITICAL: logging.ERROR,
             WARNING: logging.INFO,
             DEBUG: logging.DEBUG,
+            MEMORY: logging.INFO,
         }[severity]
         self.source.log(level, template.format(*args))

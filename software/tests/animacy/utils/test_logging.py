@@ -7,8 +7,8 @@ Copyright (c) 2026 Sparky Bobo
 """
 
 import builtins
-from io import StringIO
 import logging
+from io import StringIO
 
 import pytest
 
