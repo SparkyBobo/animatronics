@@ -6,7 +6,6 @@ String bend behaviors.
 Copyright (c) 2026 Sparky Bobo
 """
 
-import logging
 
 from animacy.behavior.base import Behavior
 from animacy.contracts.driver import DriverTransition, PositionDriverValue
@@ -23,7 +22,6 @@ from animacy.pipeline.processor import (
     PerformanceMessageHandlerResult,
 )
 
-logger = logging.getLogger(__name__)
 
 
 class StringBendBehavior(Behavior):

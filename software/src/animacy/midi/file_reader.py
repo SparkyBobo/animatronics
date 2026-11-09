@@ -20,8 +20,6 @@ from animacy.contracts.midi import(
 )
 from umidiparser import umidiparser
 
-import logging
-logger = logging.getLogger(__name__)
 
 class MidiFileReader:
     """Reads Standard MIDI Files."""

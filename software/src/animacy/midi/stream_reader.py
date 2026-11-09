@@ -57,7 +57,9 @@ from adafruit_midi.stop import Stop
 from adafruit_midi.timing_clock import TimingClock
 from adafruit_midi.active_sensing import ActiveSensing
 
-from animacy.utils.logging import INFO, WARNING, log
+from animacy.utils.logging import INFO, WARNING, CatalogLogger
+
+logger = CatalogLogger(__name__)
 
 class MidiStreamReader(Service):
     """Parses MIDI messages from streams."""
@@ -83,15 +85,15 @@ class MidiStreamReader(Service):
 
         # Voice Messages
         elif isinstance(msg, NoteOff):
-            log(1223, INFO, msg.channel, msg.note, msg.velocity)
+            logger.log(1223, INFO, msg.channel, msg.note, msg.velocity)
             return_msg = MidiNoteOff(channel=msg.channel, note=msg.note, velocity=msg.velocity)
 
         elif isinstance(msg, NoteOn):
-            log(1224, INFO, msg.channel, msg.note, msg.velocity)
+            logger.log(1224, INFO, msg.channel, msg.note, msg.velocity)
             return_msg = MidiNoteOn(channel=msg.channel, note=msg.note, velocity=msg.velocity)
 
         elif isinstance(msg, ControlChange):
-            log(1225, INFO, msg.channel, msg.control, msg.value)
+            logger.log(1225, INFO, msg.channel, msg.control, msg.value)
             if (msg.control == 120):
                 return_msg = MidiAllSoundOff(channel=msg.channel)
             elif (msg.control == 123):
@@ -102,28 +104,28 @@ class MidiStreamReader(Service):
                 return_msg = MidiControlChange(channel=msg.channel, control=msg.control, value=msg.value)
 
         elif isinstance(msg, ProgramChange):
-            log(1226, INFO, msg.channel, msg.patch)
+            logger.log(1226, INFO, msg.channel, msg.patch)
             return_msg = MidiProgramChange(channel=msg.channel, program=msg.patch)
 
         elif isinstance(msg, PitchBend):
-            log(1227, INFO, msg.channel, msg.pitch_bend)
+            logger.log(1227, INFO, msg.channel, msg.pitch_bend)
             return_msg = MidiPitchBend(channel=msg.channel, bend=msg.pitch_bend)
 
         # Real time messages
         elif isinstance(msg, TimingClock):
-            log(1228, INFO)
+            logger.log(1228, INFO)
             return_msg = MidiClock()
 
         elif isinstance(msg, Start):
-            log(1229, INFO)
+            logger.log(1229, INFO)
             return_msg = MidiSongStart()
 
         elif isinstance(msg, Stop):
-            log(1230, INFO)
+            logger.log(1230, INFO)
             return_msg = MidiSongStop()
 
         elif isinstance(msg, Continue):
-            log(1231, INFO)
+            logger.log(1231, INFO)
             return_msg = MidiSongContinue()
 
         # elif isinstance(msg, Reset):
@@ -131,24 +133,24 @@ class MidiStreamReader(Service):
         #     return_msg = MidiReset()
 
         elif isinstance(msg, ActiveSensing):
-            log(1232, INFO)
+            logger.log(1232, INFO)
             return_msg = MidiActiveSensing()
 
         elif isinstance(msg, SongSelect):
-            log(1233, INFO, msg.id)
+            logger.log(1233, INFO, msg.id)
             return_msg = MidiSongSelect(song=msg.id)
 
         elif isinstance(msg, SongPosition):
-            log(1234, INFO, msg.position)
+            logger.log(1234, INFO, msg.position)
             return_msg = MidiSongPosition(position=msg.position)
 
         elif isinstance(msg, TuneRequest):
-            log(1235, INFO)
+            logger.log(1235, INFO)
             return_msg = MidiTuneRequest()
 
         # System Exclusive
         elif isinstance(msg, SystemExclusive):
-            log(1236, INFO, msg.channel)
+            logger.log(1236, INFO, msg.channel)
             manufacturer_id = msg.manufacturer_id[0] if len(msg.manufacturer_id) == 1 else None
             if manufacturer_id in (0x7e, 0x7f):
                 usysex_msg = UniversalSystem.from_data_bytes(msg.data, manufacturer_id)
@@ -179,9 +181,9 @@ class MidiStreamReader(Service):
 
         # Unhandled
         elif isinstance(msg, MIDIBadEvent):
-            log(1237, WARNING, msg.exception_text, msg.data)
+            logger.log(1237, WARNING, msg.exception_text, msg.data)
         elif isinstance(msg, MIDIUnknownEvent):
-            log(1238, WARNING, msg.status)
+            logger.log(1238, WARNING, msg.status)
 
         if (return_msg is not None):
             self.next.map(-1, return_msg)

@@ -9,7 +9,9 @@ Copyright (c) 2026 Sparky Bobo
 from animacy.contracts.driver import DriverTransition
 from animacy.contracts.performance import PerformanceMessage, PerformanceMessageResult
 from animacy.execution.evaluator import ExecutionEvaluator
-from animacy.utils.logging import INFO, log
+from animacy.utils.logging import INFO, CatalogLogger
+
+logger = CatalogLogger(__name__)
 
 
 class Executor:
@@ -48,7 +50,7 @@ class Executor:
             # If the evaluator performs and action, compact this item into the list
             (transitions, result) = self.evaluator.evaluate(active_message)
             if transitions:
-                log(
+                logger.log(
                     1401,
                     INFO,
                     len(transitions),
@@ -64,7 +66,7 @@ class Executor:
 
         # Delete and items at the end not compacted.
         del self.active_messages[write:]
-        log(1402, INFO, len(self.active_messages), write)
+        logger.log(1402, INFO, len(self.active_messages), write)
 
     def _dispatch(self, transitions: list[DriverTransition]) -> None:
         """Send transitions to the driver layer."""

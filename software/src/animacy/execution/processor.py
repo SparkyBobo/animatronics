@@ -17,7 +17,9 @@ from animacy.contracts.performance import (
     PerformanceSystemResetMessage,
 )
 from animacy.execution.executor import Executor
-from animacy.utils.logging import INFO, log
+from animacy.utils.logging import INFO, CatalogLogger
+
+logger = CatalogLogger(__name__)
 
 
 class ExecutionProcessor:
@@ -25,12 +27,12 @@ class ExecutionProcessor:
 
     def __init__(self, next: PerformanceMessageProcessor, executor: Executor) -> None:
         """Initialize execution processor."""
-        log(5, INFO)
+        logger.log(5, INFO)
         self.next = next
         self.executor = executor
 
     def process(self, message: PerformanceMessage) -> PerformanceMessageResult:
-        log(1, INFO, message.id, message.timecode)
+        logger.log(1, INFO, message.id, message.timecode)
         result = PerformanceMessageResult.SKIPPED
         if isinstance(
             message, (PerformanceSystemResetMessage, PerformanceResetEventMessage)

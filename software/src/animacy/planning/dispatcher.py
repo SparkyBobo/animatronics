@@ -6,7 +6,6 @@ Dispatches messages to performance processors.
 Copyright (c) 2026 Sparky Bobo
 """
 
-import logging
 
 from animacy.contracts.performance import (
     PerformanceMessage,
@@ -14,7 +13,6 @@ from animacy.contracts.performance import (
     PerformanceMessageResult,
 )
 
-logger = logging.getLogger(__name__)
 
 
 class PlanningDispatcher:

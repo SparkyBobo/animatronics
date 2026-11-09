@@ -15,7 +15,9 @@ from animacy.contracts.performance import (
 )
 from animacy.contracts.planner import DriverValueCache
 from animacy.drivers.led import LedDriver
-from animacy.utils.logging import INFO, log
+from animacy.utils.logging import INFO, CatalogLogger
+
+logger = CatalogLogger(__name__)
 
 
 class RgbwBehavior(RgbBehavior):
@@ -35,7 +37,7 @@ class RgbwBehavior(RgbBehavior):
     def process(self, message: PerformanceMessage) -> PerformanceMessageResult:
         """Process performance message."""
         if isinstance(message, PerformanceEyeMessage):
-            log(1, INFO, message.id, message.timecode)
+            logger.log(1, INFO, message.id, message.timecode)
             color = Color(
                 red=message.color.red,
                 green=message.color.green,

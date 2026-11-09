@@ -35,6 +35,7 @@ from animacy.contracts.midi import (
     MidiVolumeSet,
 )
 from animacy.midi.logger import MidiMessageLogger
+import animacy.midi.logger as midi_logger_module
 from animacy.utils.logging import INFO
 
 
@@ -66,14 +67,14 @@ from animacy.utils.logging import INFO
     ],
 )
 def test_logger_logs_supported_messages(message, code, args):
-    with patch("animacy.midi.logger.log") as log:
+    with patch.object(midi_logger_module.logger, "log") as log:
         MidiMessageLogger().map(25, message)
 
     log.assert_called_once_with(code, INFO, *args)
 
 
 def test_logger_ignores_unrecognized_message():
-    with patch("animacy.midi.logger.log") as log:
+    with patch.object(midi_logger_module.logger, "log") as log:
         MidiMessageLogger().map(25, object())
 
     log.assert_not_called()

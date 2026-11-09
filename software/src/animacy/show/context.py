@@ -35,7 +35,9 @@ from animacy.show.dispatcher import ShowDispatcher
 from animacy.show.mapping import ShowMapper
 from animacy.show.reader import ShowReader
 from animacy.show.status import ShowStatusProcessor
-from animacy.utils.logging import CRITICAL, log
+from animacy.utils.logging import CRITICAL, CatalogLogger
+
+logger = CatalogLogger(__name__)
 
 CLOCK_INTERVAL = 60.0 / (120 * 24)  # 20.833 ms
 
@@ -45,7 +47,7 @@ class ShowContext(BaseContext):
 
     def __init__(self) -> None:
         """Initialize ShowContext."""
-        log(5, CRITICAL)
+        logger.log(5, CRITICAL)
 
         # The show status is used by many parts of the pipeline to read the clock.
         self.show_status = ShowStatusProcessor()
@@ -113,7 +115,7 @@ class ShowContext(BaseContext):
 
     def run(self) -> None:
         # The main run loop
-        log(1702, CRITICAL)
+        logger.log(1702, CRITICAL)
 
         # Reset
         reset_message = PerformanceResetEventMessage(timecode=-1)

@@ -12,7 +12,9 @@ from animacy.contracts.performance import (
     PerformanceMessageResult,
 )
 from animacy.contracts.show import ShowStatus
-from animacy.utils.logging import INFO, log
+from animacy.utils.logging import INFO, CatalogLogger
+
+logger = CatalogLogger(__name__)
 
 
 class ShowClockQueuePolicy:
@@ -20,7 +22,7 @@ class ShowClockQueuePolicy:
 
     def __init__(self, status: ShowStatus) -> None:
         """Initialize message queue."""
-        log(5, INFO)
+        logger.log(5, INFO)
         self.status = status
 
     def _get_clock(self) -> int:
@@ -28,7 +30,7 @@ class ShowClockQueuePolicy:
         return self.status.show_clock
 
     def process(self, message: PerformanceMessage) -> PerformanceMessageResult:
-        log(2, INFO, message.id, message.timecode)
+        logger.log(2, INFO, message.id, message.timecode)
         if isinstance(message, PerformanceControlMessage):
             return PerformanceMessageResult.HANDLED
         elif not self.status.is_running:

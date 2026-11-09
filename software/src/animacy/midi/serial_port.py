@@ -10,8 +10,6 @@ from animacy.drivers.midi_serial import MidiSerialDriver
 from animacy.hardware.ports import Ports
 import adafruit_midi
 
-import logging
-logger = logging.getLogger(__name__)
 
 class MidiSerialPort:
     """Reads MIDI messages from serial."""

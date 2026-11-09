@@ -12,7 +12,9 @@ from animacy.contracts.midi import (
     MidiMessageProcessor,
     MidiMessageResult,
 )
-from animacy.utils.logging import INFO, log
+from animacy.utils.logging import INFO, CatalogLogger
+
+logger = CatalogLogger(__name__)
 
 
 class PerformerBase(MidiMessageProcessor):
@@ -25,7 +27,7 @@ class PerformerBase(MidiMessageProcessor):
             name: character name.
             midi_channel: MIDI channel number (1-16, 1-based).
         """
-        log(5, INFO)
+        logger.log(5, INFO)
         self.name = name
         self.channel = channel - 1
 

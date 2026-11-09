@@ -25,7 +25,9 @@ from animacy.contracts.performance import (
 from animacy.contracts.planner import DriverValueCache
 from animacy.curves.linear import LinearCurve
 from animacy.drivers.led import LedDriver
-from animacy.utils.logging import INFO, log
+from animacy.utils.logging import INFO, CatalogLogger
+
+logger = CatalogLogger(__name__)
 
 
 class RgbBehavior(Behavior):
@@ -93,7 +95,7 @@ class RgbBehavior(Behavior):
                 end=message.timecode,
             )
         )
-        log(
+        logger.log(
             1011,
             INFO,
             color_transition.start_value,
@@ -120,7 +122,7 @@ class RgbBehavior(Behavior):
                 end=message.timecode,
             )
         )
-        log(
+        logger.log(
             1012,
             INFO,
             intensity_transition.start_value,

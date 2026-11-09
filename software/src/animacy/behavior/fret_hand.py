@@ -6,7 +6,6 @@ Fret hand behaviors.
 Copyright (c) 2026 Sparky Bobo
 """
 
-import logging
 
 from animacy.behavior.base import Behavior
 from animacy.contracts.driver import DriverTransition, PositionDriverValue
@@ -26,7 +25,6 @@ from animacy.curves.ease import ZeroEndpointAccelerationCurve
 from animacy.drivers.servo import ServoDriver
 from animacy.hardware.ports import IOPort
 
-logger = logging.getLogger(__name__)
 
 
 class FretHandBehavior(Behavior):

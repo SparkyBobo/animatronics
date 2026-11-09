@@ -12,7 +12,9 @@ from animacy.contracts.performance import (
 )
 from animacy.contracts.show import ShowStatus
 from animacy.queue.show_clock_policy import ShowClockQueuePolicy
-from animacy.utils.logging import INFO, log
+from animacy.utils.logging import INFO, CatalogLogger
+
+logger = CatalogLogger(__name__)
 
 
 class PlanningPolicy(ShowClockQueuePolicy):
@@ -20,7 +22,7 @@ class PlanningPolicy(ShowClockQueuePolicy):
 
     def __init__(self, status: ShowStatus) -> None:
         """Initialize message queue."""
-        log(5, INFO)
+        logger.log(5, INFO)
         self.status = status
 
     def _get_clock(self) -> int:
@@ -31,7 +33,7 @@ class PlanningPolicy(ShowClockQueuePolicy):
         return show_clock + 192
 
     def process(self, message: PerformanceMessage) -> PerformanceMessageResult:
-        log(2, INFO, message.id, message.timecode)
+        logger.log(2, INFO, message.id, message.timecode)
         # Since we're running ahead, make sure not to skip messages that are just a bit late
         if (
             self.status.is_running
