@@ -27,6 +27,7 @@ test = [
 testpaths = ["tests"]
 addopts = ["--import-mode=importlib"]
 pythonpath = [
+    "lib",
     "src",
     "shims",
 ]
