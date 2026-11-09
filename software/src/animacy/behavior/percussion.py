@@ -8,9 +8,23 @@ Copyright (c) 2026 Sparky Bobo
 
 from animacy.behavior.base import Behavior
 from animacy.contracts.driver import DriverTransition, PositionDriverValue
-from animacy.contracts.midi import *
-from animacy.contracts.performance import *
-from animacy.contracts.planner import *
+from animacy.contracts.midi import (
+    MidiMessage,
+    MidiMessageResult,
+    MidiNoteOff,
+    MidiNoteOn,
+    MidiPitchBend,
+)
+from animacy.contracts.performance import (
+    PerformanceDataMessage,
+    PerformanceEvent,
+    PerformanceMessage,
+    PerformanceMessageProcessor,
+    PerformanceMessageResult,
+    PerformancePercussionStrikeMessage,
+    PerformanceResetEventMessage,
+)
+from animacy.contracts.planner import DriverValueCache
 from animacy.contracts.setpoint import Setpoint
 from animacy.curves.ease import ZeroEndpointAccelerationCurve
 from animacy.drivers.servo import ServoDriver
@@ -21,26 +35,38 @@ from animacy.utils.logging import INFO, log
 class PercussionBehavior(Behavior):
     """Percussion behaviors."""
 
-    def __init__(self, port:IOPort, note:int, setpoints: list[Setpoint], next:PerformanceMessageProcessor, cache: DriverValueCache, name:str) -> None:
+    def __init__(
+        self,
+        port: IOPort,
+        note: int,
+        setpoints: list[Setpoint],
+        next: PerformanceMessageProcessor,
+        cache: DriverValueCache,
+        name: str,
+    ) -> None:
         """Initialize PercussionBehavior."""
         super().__init__(name)
         self.driver = ServoDriver(port)
-        self.next  = next
+        self.next = next
         self.cache = cache
         self.note = note
         self.setpoints = setpoints
 
-    def map(self, timecode:int, message:MidiMessage) -> MidiMessageResult:
-        if (isinstance(message, MidiNoteOn) and message.note == self.note):
-            self.next.process(PerformancePercussionStrikeMessage(timecode=timecode, target=self.name, intensity=message.velocity))
+    def map(self, timecode: int, message: MidiMessage) -> MidiMessageResult:
+        if isinstance(message, MidiNoteOn) and message.note == self.note:
+            self.next.process(
+                PerformancePercussionStrikeMessage(
+                    timecode=timecode, target=self.name, intensity=message.velocity
+                )
+            )
             return MidiMessageResult.HANDLED
-        if (isinstance(message, MidiNoteOff) and message.note == self.note):
+        if isinstance(message, MidiNoteOff) and message.note == self.note:
             return MidiMessageResult.HANDLED
-        if (isinstance(message, MidiPitchBend)):
+        if isinstance(message, MidiPitchBend):
             return MidiMessageResult.HANDLED
         return MidiMessageResult.SKIPPED
 
-    def process(self, message:PerformanceMessage) -> PerformanceMessageResult:
+    def process(self, message: PerformanceMessage) -> PerformanceMessageResult:
         if isinstance(message, PerformanceResetEventMessage):
             self._update(message, attack_pos=self.setpoints[2].value)
             return PerformanceMessageResult.HANDLED
@@ -49,10 +75,14 @@ class PercussionBehavior(Behavior):
             return PerformanceMessageResult.HANDLED
         return PerformanceMessageResult.SKIPPED
 
-    def _update(self, message:PerformanceDataMessage, attack_pos: PositionDriverValue) -> None:
+    def _update(
+        self, message: PerformanceDataMessage, attack_pos: PositionDriverValue
+    ) -> None:
         """Update the driver with a command."""
         prep_transition = DriverTransition(self.driver, attack_pos, attack_pos)
-        play_transition = DriverTransition(self.driver, attack_pos, self.setpoints[2].value)
+        play_transition = DriverTransition(
+            self.driver, attack_pos, self.setpoints[2].value
+        )
 
         # Find out where we were last.
         (position_last_value, position_last_time) = self.cache.get(prep_transition)
@@ -65,41 +95,81 @@ class PercussionBehavior(Behavior):
         target_play = max(message.timecode - play_timecode, target_start)
 
         # Move to the string start, then play through to end string.
-        message.events.append(PerformanceEvent(transition=prep_transition, curve=ZeroEndpointAccelerationCurve(), start=target_start, end=target_play))
-        message.events.append(PerformanceEvent(transition=play_transition, curve=ZeroEndpointAccelerationCurve(), start=target_play, end=message.timecode))
+        message.events.append(
+            PerformanceEvent(
+                transition=prep_transition,
+                curve=ZeroEndpointAccelerationCurve(),
+                start=target_start,
+                end=target_play,
+            )
+        )
+        message.events.append(
+            PerformanceEvent(
+                transition=play_transition,
+                curve=ZeroEndpointAccelerationCurve(),
+                start=target_play,
+                end=message.timecode,
+            )
+        )
         log(1010, INFO, self.name, message.timecode)
 
 
 class BassPercussionBehavior(PercussionBehavior):
     """Bass behaviors."""
-    def __init__(self, port:IOPort, next:PerformanceMessageProcessor, cache: DriverValueCache) -> None:
+
+    def __init__(
+        self, port: IOPort, next: PerformanceMessageProcessor, cache: DriverValueCache
+    ) -> None:
         # Bass has a few setpoints: strike (@surface), attack (@apex), and soft attack (half way)
         setpoints = [
             Setpoint("attack", PositionDriverValue(95)),
             Setpoint("soft", PositionDriverValue(90)),
             Setpoint("strike", PositionDriverValue(85)),
         ]
-        super().__init__(port=port, note=36, setpoints=setpoints, next=next, cache=cache, name="Bass")
+        super().__init__(
+            port=port, note=36, setpoints=setpoints, next=next, cache=cache, name="Bass"
+        )
+
 
 class SnarePercussionBehavior(PercussionBehavior):
     """Snare behaviors."""
-    def __init__(self, port:IOPort, next:PerformanceMessageProcessor, cache: DriverValueCache) -> None:
+
+    def __init__(
+        self, port: IOPort, next: PerformanceMessageProcessor, cache: DriverValueCache
+    ) -> None:
         # Snare has a few setpoints: strike (@surface), attack (@apex), and soft attack (half way)
         setpoints = [
             Setpoint("attack", PositionDriverValue(95)),
             Setpoint("soft", PositionDriverValue(90)),
             Setpoint("strike", PositionDriverValue(85)),
         ]
-        super().__init__(port=port, note=38, setpoints=setpoints, next=next, cache=cache, name="Snare")
+        super().__init__(
+            port=port,
+            note=38,
+            setpoints=setpoints,
+            next=next,
+            cache=cache,
+            name="Snare",
+        )
+
 
 class HitHatPercussionBehavior(PercussionBehavior):
     """Hihat behaviors."""
-    def __init__(self, port:IOPort, next:PerformanceMessageProcessor, cache: DriverValueCache) -> None:
+
+    def __init__(
+        self, port: IOPort, next: PerformanceMessageProcessor, cache: DriverValueCache
+    ) -> None:
         # Hihat has a few setpoints: strike (@surface), attack (@apex), and soft attack (half way)
         setpoints = [
             Setpoint("attack", PositionDriverValue(95)),
             Setpoint("soft", PositionDriverValue(90)),
             Setpoint("strike", PositionDriverValue(85)),
         ]
-        super().__init__(port=port, note=42, setpoints=setpoints, next=next, cache=cache, name="Hihat")
-
+        super().__init__(
+            port=port,
+            note=42,
+            setpoints=setpoints,
+            next=next,
+            cache=cache,
+            name="Hihat",
+        )

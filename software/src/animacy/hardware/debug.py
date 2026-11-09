@@ -5,12 +5,13 @@ CircuitPython pin map utility.
 
 Copyright (c) 2026 Sparky Bobo
 """
+
 import board
 import microcontroller
 
 board_pins = []
 for pin in dir(microcontroller.pin):
-    if (isinstance(getattr(microcontroller.pin, pin), microcontroller.Pin)):
+    if isinstance(getattr(microcontroller.pin, pin), microcontroller.Pin):
         pins = []
         for alias in dir(board):
             if getattr(board, alias) is getattr(microcontroller.pin, pin):

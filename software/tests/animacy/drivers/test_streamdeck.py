@@ -6,8 +6,8 @@ Disabled StreamDeck Mini driver test examples.
 Copyright (c) 2026 Sparky Bobo
 """
 
-#import time
-#from animacy.drivers.streamdeck import StreamDeckMini
+# import time
+# from animacy.drivers.streamdeck import StreamDeckMini
 
 # def test_streamdeck_get_info():
 #     deck = StreamDeckMini()
@@ -29,4 +29,3 @@ Copyright (c) 2026 Sparky Bobo
 #                     print("Key", i, "pressed" if state[i] else "released")
 #             last_state = state
 #         time.sleep(0.01)
-

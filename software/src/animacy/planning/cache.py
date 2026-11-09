@@ -14,6 +14,7 @@ from animacy.contracts.driver import DriverTransition, DriverValue
 
 logger = logging.getLogger(__name__)
 
+
 class PlanningCache:
     """Cache values by driver, value type, and optional address."""
 

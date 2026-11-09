@@ -6,7 +6,11 @@ Processes messages for show.
 Copyright (c) 2026 Sparky Bobo
 """
 
-from animacy.contracts.performance import *
+from animacy.contracts.performance import (
+    PerformanceMessage,
+    PerformanceMessageProcessor,
+    PerformanceMessageResult,
+)
 from animacy.utils.logging import INFO, log
 
 
@@ -27,7 +31,7 @@ class ShowDispatcher:
         """Unsubscribe a PerformanceMessageProcessor: handler."""
         self.handlers.remove(handler)
 
-    def process(self, message:PerformanceMessage) -> PerformanceMessageResult:
+    def process(self, message: PerformanceMessage) -> PerformanceMessageResult:
         """Dispatch message to all subscribers."""
         result = PerformanceMessageResult.SKIPPED
         for handler in self.handlers:
@@ -35,4 +39,3 @@ class ShowDispatcher:
             if result == PerformanceMessageResult.TERMINATE:
                 return result
         return result
-

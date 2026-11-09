@@ -18,7 +18,7 @@ from animacy.utils.logging import INFO, log
 class PerformerBase(MidiMessageProcessor):
     """Base character."""
 
-    def __init__(self, name: str, channel:int) -> None:
+    def __init__(self, name: str, channel: int) -> None:
         """Initialize Character.
 
         Args:
@@ -29,16 +29,15 @@ class PerformerBase(MidiMessageProcessor):
         self.name = name
         self.channel = channel - 1
 
-    def map(self, timecode: int, message:MidiMessage) -> MidiMessageResult:
+    def map(self, timecode: int, message: MidiMessage) -> MidiMessageResult:
         # Allow data through
-        if (not isinstance(message, MidiChannelMessage)):
+        if not isinstance(message, MidiChannelMessage):
             return MidiMessageResult.HANDLED
         # Allow my channels through
-        if (message.channel == self.channel):
+        if message.channel == self.channel:
             return MidiMessageResult.HANDLED
         # Allow global channels through
-        if (message.channel == 15):
+        if message.channel == 15:
             return MidiMessageResult.HANDLED
         # block all others
         return MidiMessageResult.TERMINATE
-

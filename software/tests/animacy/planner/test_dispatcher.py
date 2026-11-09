@@ -18,11 +18,13 @@ def test_dispatch_create():
     assert disp
     assert disp.next == next_processor
 
+
 def test_dispatch_subscribe():
     handler = Mock()
     disp = PlanningDispatcher(next=Mock())
     disp.subscribe(handler)
     assert handler in disp.handlers
+
 
 def test_dispatch_unsubscribe():
     handler = Mock()
@@ -30,6 +32,7 @@ def test_dispatch_unsubscribe():
     disp.subscribe(handler)
     disp.unsubscribe(handler)
     assert not disp.handlers
+
 
 def test_dispatch_process():
     next_processor = Mock()

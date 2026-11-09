@@ -6,9 +6,44 @@ Parses (Adafruit) MIDI messages from streams.
 Copyright (c) 2026 Sparky Bobo
 """
 
-from animacy.contracts.midi import *
-from animacy.contracts.service import *
-from animacy.midi.messages import *
+from animacy.contracts.midi import(
+    MidiAck,
+    MidiActiveSensing,
+    MidiAllNotesOff,
+    MidiAllSoundOff,
+    MidiCancel,
+    MidiClock,
+    MidiControlChange,
+    MidiDeviceMode,
+    MidiFileComplete,
+    MidiFileContent,
+    MidiFileHeader,
+    MidiFileOpen,
+    MidiMessageProcessor,
+    MidiNack,
+    MidiNoteOff,
+    MidiNoteOn,
+    MidiPitchBend,
+    MidiProgramChange,
+    MidiSongContinue,
+    MidiSongPosition,
+    MidiSongSelect,
+    MidiSongStart,
+    MidiSongStop,
+    MidiTuneRequest,
+    MidiVolumeSet,
+)
+from animacy.contracts.service import Service, ServiceResult
+from animacy.midi.messages import(
+    FileContent,
+    FileHeader,
+    FileOpen,
+    SongPosition,
+    SongSelect,
+    TuneRequest,
+    UniversalSystem,
+    VolumeSet,
+)
 from adafruit_midi.midi_message import MIDIBadEvent, MIDIUnknownEvent
 from adafruit_midi.system_exclusive import SystemExclusive
 from adafruit_midi.control_change import ControlChange

@@ -10,10 +10,10 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 # A stepper motor driver.
 class StepperDriver:
     """Stepper driver."""
 
     def __init__(self) -> None:
         """Initialize StepperDriver."""
-

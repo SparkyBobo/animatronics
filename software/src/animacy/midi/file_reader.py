@@ -6,9 +6,19 @@ Reads Standard MIDI Files.
 Copyright (c) 2026 Sparky Bobo
 """
 
-from animacy.contracts.midi import *
-from umidiparser import umidiparser, MidiFile, MidiEvent
-import gc
+from animacy.contracts.midi import(
+    MidiAllNotesOff,
+    MidiAllSoundOff,
+    MidiControlChange,
+    MidiFileInfo,
+    MidiNoteOff,
+    MidiNoteOn,
+    MidiPitchBend,
+    MidiProgramChange,
+    MidiTrackEvent,
+    MidiTrackInfo,
+)
+from umidiparser import umidiparser
 
 import logging
 logger = logging.getLogger(__name__)
@@ -121,7 +131,6 @@ class MidiFileReader:
             file_sequence = -1
             file_name = ''
             file_tempo = -1
-            file_ppqn = -1
             for event in track:
                 if event.status == umidiparser.CHANNEL_PREFIX:
                     channel_prefix = event.channel

@@ -28,17 +28,35 @@ from animacy.contracts.performance import (
 @pytest.mark.parametrize(
     ("message", "expected_result", "expected_command"),
     [
-        (PerformanceResetEventMessage(timecode=4), PerformanceMessageResult.HANDLED, "STOP"),
-        (PerformanceLoadSongMessage(timecode=5, song="song"), PerformanceMessageResult.HANDLED, "LOAD song.wav"),
-        (PerformanceSongStartMessage(timecode=6), PerformanceMessageResult.HANDLED, "START"),
-        (PerformanceSongStopMessage(timecode=7), PerformanceMessageResult.HANDLED, "STOP"),
+        (
+            PerformanceResetEventMessage(timecode=4),
+            PerformanceMessageResult.HANDLED,
+            "STOP",
+        ),
+        (
+            PerformanceLoadSongMessage(timecode=5, song="song"),
+            PerformanceMessageResult.HANDLED,
+            "LOAD song.wav",
+        ),
+        (
+            PerformanceSongStartMessage(timecode=6),
+            PerformanceMessageResult.HANDLED,
+            "START",
+        ),
+        (
+            PerformanceSongStopMessage(timecode=7),
+            PerformanceMessageResult.HANDLED,
+            "STOP",
+        ),
         (PerformanceSongContinueMessage(), PerformanceMessageResult.SKIPPED, None),
         (PerformanceSongPositionMessage(), PerformanceMessageResult.SKIPPED, None),
         (PerformanceVolumeMessage(), PerformanceMessageResult.SKIPPED, None),
         (PerformanceClockMessage(), PerformanceMessageResult.SKIPPED, None),
     ],
 )
-def test_audio_behavior_processes_playback_commands(message, expected_result, expected_command):
+def test_audio_behavior_processes_playback_commands(
+    message, expected_result, expected_command
+):
     behavior = AudioBehavior(driver=Mock(), name="audio")
 
     result = behavior.process(message)

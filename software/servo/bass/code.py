@@ -21,18 +21,19 @@
 # The Animatroincs Servo Module (ANI-SRV) is a CircuitPython board designed
 # to control servos. This module is the definition of the bass players
 # leds and motors.
-import servo
-import motion
 
-pluck1 = Motion() # Micro Servo
-pluck2 = Motion() # Micro Servo
-slide = Motion() # Fast servo
-rotate = Motion() # Torque servo
-fretFinger1 = Motion() # Micro servo
-fretFinger2 = Motion() # Micro servo
-fretFinger3 = Motion() # Micro servo
-fretFingers = [ fretFinger1, fretFinger2, fretFinger3 ]
-footTap = Motion() # Micro Servo
+# Motion, RgbLed, and PowerLed are provided by the servo runtime.
+# ruff: noqa: F821
+
+pluck1 = Motion()  # Micro Servo
+pluck2 = Motion()  # Micro Servo
+slide = Motion()  # Fast servo
+rotate = Motion()  # Torque servo
+fretFinger1 = Motion()  # Micro servo
+fretFinger2 = Motion()  # Micro servo
+fretFinger3 = Motion()  # Micro servo
+fretFingers = [fretFinger1, fretFinger2, fretFinger3]
+footTap = Motion()  # Micro Servo
 
 
 leftEye = RgbLed()

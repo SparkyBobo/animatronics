@@ -6,7 +6,32 @@ Logs messages.
 Copyright (c) 2026 Sparky Bobo
 """
 
-from animacy.contracts.midi import *
+from animacy.contracts.midi import(
+    MidiAck,
+    MidiActiveSensing,
+    MidiCancel,
+    MidiClock,
+    MidiControlChange,
+    MidiFileComplete,
+    MidiFileContent,
+    MidiFileHeader,
+    MidiFileOpen,
+    MidiMessage,
+    MidiMessageResult,
+    MidiNack,
+    MidiNoteOff,
+    MidiNoteOn,
+    MidiPitchBend,
+    MidiProgramChange,
+    MidiReset,
+    MidiSongContinue,
+    MidiSongPosition,
+    MidiSongSelect,
+    MidiSongStart,
+    MidiSongStop,
+    MidiTuneRequest,
+    MidiVolumeSet,
+)
 from animacy.utils.logging import INFO, log
 
 class MidiMessageLogger:

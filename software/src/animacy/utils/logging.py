@@ -41,9 +41,7 @@ def log(message_id: int, severity: int, *args: object) -> None:
 
             id_text, separator, message = record.partition("|")
             if not separator:
-                raise ValueError(
-                    f"Malformed log catalog entry on line {line_number}"
-                )
+                raise ValueError(f"Malformed log catalog entry on line {line_number}")
             try:
                 current_id = int(id_text)
             except ValueError as error:

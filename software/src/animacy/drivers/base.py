@@ -10,10 +10,10 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 # A base driver class
 class Driver:
     """Base hardware driver."""
 
     def __init__(self) -> None:
         """Initialize Driver."""
-

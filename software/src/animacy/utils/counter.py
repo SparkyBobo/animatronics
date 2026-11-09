@@ -1,10 +1,14 @@
-"DriverValue""""
+(
+    "DriverValue"
+    """
 Animacy
 
 Incrementing counter.
 
 Copyright (c) 2026 Sparky Bobo
 """
+)
+
 
 class Counter:
     def __init__(self, start=0):

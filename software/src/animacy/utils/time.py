@@ -18,4 +18,3 @@ class Time:
 
     def __init__(self) -> None:
         """Initialize Time."""
-

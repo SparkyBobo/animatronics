@@ -23,6 +23,7 @@ from animacy.hardware.ports import Ports
 
 logger = logging.getLogger(__name__)
 
+
 class Beats(PerformerBase):
     """Beats performer."""
 
@@ -31,16 +32,30 @@ class Beats(PerformerBase):
         super().__init__("Beats", 4)
 
         # Beats has a mouth, bass foot, cymbal foot, and snare arm
-        self.mouth = MouthBehavior(port=Ports.io0, next=context.planner_queue, cache=context.planner_cache)
-        self.bass = BassPercussionBehavior(port=Ports.io1, next=context.planner_queue, cache=context.planner_cache)
-        self.snare = SnarePercussionBehavior(port=Ports.io2, next=context.planner_queue, cache=context.planner_cache)
-        self.hihat = HitHatPercussionBehavior(port=Ports.io3, next=context.planner_queue, cache=context.planner_cache)
+        self.mouth = MouthBehavior(
+            port=Ports.io0, next=context.planner_queue, cache=context.planner_cache
+        )
+        self.bass = BassPercussionBehavior(
+            port=Ports.io1, next=context.planner_queue, cache=context.planner_cache
+        )
+        self.snare = SnarePercussionBehavior(
+            port=Ports.io2, next=context.planner_queue, cache=context.planner_cache
+        )
+        self.hihat = HitHatPercussionBehavior(
+            port=Ports.io3, next=context.planner_queue, cache=context.planner_cache
+        )
 
         # Beats has standard eyes
         self.led_driver = LedDriver(2)
-        self.left_eye = RgbBehavior(self.led_driver, 1, cache=context.planner_cache, name="LeftEye")
-        self.right_eye = RgbBehavior(self.led_driver, 2, cache=context.planner_cache, name="RightEye")
-        self.eyes = EyesBehavior(leds=[self.left_eye, self.right_eye], next=context.planner_queue)
+        self.left_eye = RgbBehavior(
+            self.led_driver, 1, cache=context.planner_cache, name="LeftEye"
+        )
+        self.right_eye = RgbBehavior(
+            self.led_driver, 2, cache=context.planner_cache, name="RightEye"
+        )
+        self.eyes = EyesBehavior(
+            leds=[self.left_eye, self.right_eye], next=context.planner_queue
+        )
 
         # Register
         context.add_mapping(self)

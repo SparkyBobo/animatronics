@@ -30,13 +30,25 @@ class ShowWriter:
         self.sequence = 0
         self.filename = None
 
-    def process(self, event:PerformanceControlMessage) -> PerformanceMessageResult:
+    def process(self, event: PerformanceControlMessage) -> PerformanceMessageResult:
         if isinstance(event, PerformanceFileHeaderMessage):
-            return PerformanceMessageResult.HANDLED_CONTINUE if self.open(event.name) else PerformanceMessageResult.NOT_HANDLED
+            return (
+                PerformanceMessageResult.HANDLED_CONTINUE
+                if self.open(event.name)
+                else PerformanceMessageResult.NOT_HANDLED
+            )
         if isinstance(event, PerformanceFileContentMessage):
-            return PerformanceMessageResult.HANDLED_CONTINUE if self.write(event.sequence, event.data) else PerformanceMessageResult.NOT_HANDLED
+            return (
+                PerformanceMessageResult.HANDLED_CONTINUE
+                if self.write(event.sequence, event.data)
+                else PerformanceMessageResult.NOT_HANDLED
+            )
         if isinstance(event, PerformanceFileCompleteMessage):
-            return PerformanceMessageResult.HANDLED_CONTINUE if self.close(event.checksum) else PerformanceMessageResult.NOT_HANDLED
+            return (
+                PerformanceMessageResult.HANDLED_CONTINUE
+                if self.close(event.checksum)
+                else PerformanceMessageResult.NOT_HANDLED
+            )
 
     def open(self, name: str) -> bool:
         try:
@@ -51,7 +63,7 @@ class ShowWriter:
             return True
         except OSError as ex:
             log(1716, ERROR, self.tempname, ex)
-            if (self.file):
+            if self.file:
                 self.file.close()
                 self.file = None
             return False
@@ -59,11 +71,11 @@ class ShowWriter:
     def write(self, sequence: int, data: bytes) -> bool:
         # verify sequence
         self.sequence += 1
-        if (self.sequence != sequence):
+        if self.sequence != sequence:
             log(1717, ERROR, self.sequence, sequence)
             return False
         # write to the temp file
-        if (self.file):
+        if self.file:
             self.file.write(data)
             self.checksum = sum(data) & 0xFFFF
             return True
@@ -74,7 +86,7 @@ class ShowWriter:
         self.file.flush()
         self.file.close()
         # verify checksum
-        if (self.checksum != checksum):
+        if self.checksum != checksum:
             log(1718, ERROR, self.checksum, checksum)
             return False
         # rename file

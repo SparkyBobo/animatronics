@@ -8,7 +8,12 @@ Copyright (c) 2026 Sparky Bobo
 
 from __future__ import annotations
 
-from animacy.contracts.performance import *
+from animacy.contracts.performance import (
+    PerformanceDataMessage,
+    PerformanceMessage,
+    PerformanceMessageProcessor,
+    PerformanceMessageResult,
+)
 from animacy.contracts.planner import DriverValueCache
 from animacy.utils.logging import INFO, log
 
@@ -35,7 +40,7 @@ class PlanningProcessor:
     def unsubscribe(self, handler: PerformanceMessageProcessor) -> None:
         self.handlers.remove(handler)
 
-    def process(self, message:PerformanceMessage) -> PerformanceMessageResult:
+    def process(self, message: PerformanceMessage) -> PerformanceMessageResult:
         log(1, INFO, message.id, message.timecode)
         result = PerformanceMessageResult.SKIPPED
         for handler in self.handlers:

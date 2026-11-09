@@ -8,7 +8,15 @@ Copyright (c) 2026 Sparky Bobo
 
 from unittest.mock import Mock
 
-from animacy.contracts.performance import *
+from animacy.contracts.performance import (
+    PerformanceClockMessage,
+    PerformanceDataMessage,
+    PerformanceLoadSongMessage,
+    PerformanceMessageResult,
+    PerformanceResetEventMessage,
+    PerformanceSongPositionMessage,
+    PerformanceSystemResetMessage,
+)
 from animacy.queue.processor import QueueProcessor
 
 
@@ -18,6 +26,7 @@ def test_processor_init():
     processor = QueueProcessor(dispatcher, policy)
     assert processor.next == dispatcher
     assert processor.policy == policy
+
 
 def test_processor_queue():
     dispatcher = Mock()
@@ -29,6 +38,7 @@ def test_processor_queue():
     assert processor.process(message) == PerformanceMessageResult.QUEUED
     assert processor.queue.messages[0] == message
 
+
 def test_processor_live():
     dispatcher = Mock()
     policy = Mock()
@@ -38,6 +48,7 @@ def test_processor_live():
     message = PerformanceDataMessage(timecode=10, events=[])
     assert processor.process(message) == PerformanceMessageResult.HANDLED
     assert not processor.queue.messages
+
 
 def test_processor_dequeue():
     dispatcher = Mock()
@@ -55,6 +66,7 @@ def test_processor_dequeue():
     assert not processor.queue.messages
     assert dispatcher.process.call_count == 2
 
+
 def test_processor_discard():
     dispatcher = Mock()
     policy = Mock()
@@ -71,6 +83,7 @@ def test_processor_discard():
     assert dispatcher.process.call_count == 1
     assert not processor.queue.messages
 
+
 def test_processor_system_reset():
     dispatcher = Mock()
     policy = Mock()
@@ -84,6 +97,7 @@ def test_processor_system_reset():
     reset = PerformanceSystemResetMessage()
     assert processor.process(reset) == PerformanceMessageResult.HANDLED
     assert not processor.queue.messages
+
 
 def test_processor_event_reset():
     dispatcher = Mock()
@@ -99,6 +113,7 @@ def test_processor_event_reset():
     assert processor.process(reset) == PerformanceMessageResult.HANDLED
     assert not processor.queue.messages
 
+
 def test_processor_load_song():
     dispatcher = Mock()
     policy = Mock()
@@ -112,5 +127,3 @@ def test_processor_load_song():
     load_song = PerformanceLoadSongMessage()
     assert processor.process(load_song) == PerformanceMessageResult.HANDLED
     assert not processor.queue.messages
-
-

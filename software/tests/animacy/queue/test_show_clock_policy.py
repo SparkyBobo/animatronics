@@ -20,6 +20,7 @@ def test_policy_init():
     policy = ShowClockQueuePolicy(status=Mock())
     assert policy
 
+
 def test_policy_control():
     status = Mock()
     policy = ShowClockQueuePolicy(status)
@@ -28,6 +29,7 @@ def test_policy_control():
     status.is_running = False
     status.show_clock = 0
     assert policy.process(message) == PerformanceMessageResult.HANDLED
+
 
 def test_policy_queue_stopped():
     status = Mock()
@@ -38,6 +40,7 @@ def test_policy_queue_stopped():
     status.show_clock = 0
     assert policy.process(message) == PerformanceMessageResult.QUEUED
 
+
 def test_policy_queue_running():
     status = Mock()
     policy = ShowClockQueuePolicy(status)
@@ -47,6 +50,7 @@ def test_policy_queue_running():
     status.show_clock = 4
     assert policy.process(message) == PerformanceMessageResult.QUEUED
 
+
 def test_policy_queue_jit():
     status = Mock()
     policy = ShowClockQueuePolicy(status)
@@ -55,6 +59,7 @@ def test_policy_queue_jit():
     status.is_running = True
     status.show_clock = 42
     assert policy.process(message) == PerformanceMessageResult.HANDLED
+
 
 def test_policy_queue_late():
     status = Mock()

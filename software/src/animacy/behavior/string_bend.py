@@ -25,21 +25,32 @@ from animacy.pipeline.processor import (
 
 logger = logging.getLogger(__name__)
 
+
 class StringBendBehavior(Behavior):
     """String bend behaviors."""
 
-    def __init__(self, port:IOPort, power:IOPort, name:str="StringBend") -> None:
+    def __init__(self, port: IOPort, power: IOPort, name: str = "StringBend") -> None:
         """Initialize NeckBehavior."""
         super().__init__(name)
         self.driver = ServoDriver(name, port)
         self.enable_driver = OnOffDriver(f"{name}_power", power)
         # Sring bend has a two setpoints
         self.setpoints = [
-            Setpoint("rest", DriverTransition(self.driver, PositionDriverValue(85), PositionDriverValue(85))),
-            Setpoint("max", DriverTransition(self.driver, PositionDriverValue(95), PositionDriverValue(95)))
+            Setpoint(
+                "rest",
+                DriverTransition(
+                    self.driver, PositionDriverValue(85), PositionDriverValue(85)
+                ),
+            ),
+            Setpoint(
+                "max",
+                DriverTransition(
+                    self.driver, PositionDriverValue(95), PositionDriverValue(95)
+                ),
+            ),
         ]
 
-    def process(self, event:PerformanceDataMessage) -> PerformanceMessageHandlerResult:
+    def process(self, event: PerformanceDataMessage) -> PerformanceMessageHandlerResult:
         if isinstance(event, PerformanceResetEventMessage):
             return PerformanceMessageHandlerResult.HANDLED_CONTINUE
         if isinstance(event, PerformanceBendNoteMessage):

@@ -6,6 +6,7 @@ Curve contracts.
 Copyright (c) 2026 Sparky Bobo
 """
 
+
 # A curve used to computer progress from absolute time.
 class TimeCurve:
     """Map a time window to normalized progress."""

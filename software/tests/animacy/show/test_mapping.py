@@ -10,8 +10,48 @@ from unittest.mock import Mock
 
 import pytest
 
-from animacy.contracts.midi import *
-from animacy.contracts.performance import *
+from animacy.contracts.midi import (
+    MidiAck,
+    MidiActiveSensing,
+    MidiAllNotesOff,
+    MidiAllSoundOff,
+    MidiCancel,
+    MidiClock,
+    MidiControlChange,
+    MidiDeviceMode,
+    MidiFileComplete,
+    MidiFileContent,
+    MidiFileHeader,
+    MidiFileOpen,
+    MidiMessage,
+    MidiMessageResult,
+    MidiNack,
+    MidiNoteOff,
+    MidiNoteOn,
+    MidiPitchBend,
+    MidiProgramChange,
+    MidiReset,
+    MidiSongContinue,
+    MidiSongPosition,
+    MidiSongSelect,
+    MidiSongStart,
+    MidiSongStop,
+    MidiTuneRequest,
+    MidiVolumeSet,
+)
+from animacy.contracts.performance import (
+    PerformanceClockMessage,
+    PerformanceFileCompleteMessage,
+    PerformanceFileContentMessage,
+    PerformanceFileHeaderMessage,
+    PerformanceLoadSongMessage,
+    PerformanceSongContinueMessage,
+    PerformanceSongPositionMessage,
+    PerformanceSongStartMessage,
+    PerformanceSongStopMessage,
+    PerformanceSystemResetMessage,
+    PerformanceVolumeMessage,
+)
 from animacy.show.mapping import ShowMapper
 
 

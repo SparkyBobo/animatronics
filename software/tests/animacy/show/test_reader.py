@@ -32,7 +32,10 @@ def test_reader_skips_non_load_messages():
     file_reader = Mock()
     show_reader = ShowReader(next=Mock(), reader=file_reader)
 
-    assert show_reader.process(PerformanceClockMessage()) == PerformanceMessageResult.SKIPPED
+    assert (
+        show_reader.process(PerformanceClockMessage())
+        == PerformanceMessageResult.SKIPPED
+    )
     file_reader.open.assert_not_called()
 
 

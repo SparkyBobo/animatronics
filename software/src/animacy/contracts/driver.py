@@ -54,9 +54,9 @@ class DriverValue:
         )
         return type(self).from_components(result_components)
 
+
 # A driver position value.
 class PositionDriverValue(DriverValue):
-
     def __init__(self, position: int = 0):
         super().__init__()
         self.position = position
@@ -76,9 +76,9 @@ class PositionDriverValue(DriverValue):
             raise ValueError("PositionDriverValue requires one component")
         return cls(position=components[0])
 
+
 # A driver intensity value.
 class IntensityDriverValue(DriverValue):
-
     def __init__(self, intensity: int = 0):
         super().__init__()
         self.intensity = intensity
@@ -98,9 +98,9 @@ class IntensityDriverValue(DriverValue):
             raise ValueError("IntensityDriverValue requires one component")
         return cls(intensity=components[0])
 
+
 # A driver color value.
 class ColorDriverValue(DriverValue):
-
     def __init__(self, color: Color = None):
         super().__init__()
         self.color = color
@@ -120,9 +120,9 @@ class ColorDriverValue(DriverValue):
             raise ValueError("ColorDriverValue requires four components")
         return cls(color=Color(*components))
 
+
 # An audio value.
 class AudioDriverValue(DriverValue):
-
     def __init__(self, command: str):
         super().__init__()
         self.command = command
@@ -130,8 +130,9 @@ class AudioDriverValue(DriverValue):
     def __str__(self) -> str:
         return f"AudioDriverValue({self.command})"
 
-
-    def interpolate(self: AudioDriverValue, target: AudioDriverValue, progress: float) -> AudioDriverValue:
+    def interpolate(
+        self: AudioDriverValue, target: AudioDriverValue, progress: float
+    ) -> AudioDriverValue:
         return target
 
     def components(self) -> tuple[int, ...]:
@@ -146,11 +147,18 @@ class AudioDriverValue(DriverValue):
             raise ValueError("AudioDriverValue requires one component")
         return cls(command="")
 
+
 # A driver transition between two values.
 class DriverTransition:
     """A value transition routed to a driver without a device address."""
 
-    def __init__(self, driver: Driver=None, start_value: DriverValue=None, end_value: DriverValue=None, progress: float = 0.0):
+    def __init__(
+        self,
+        driver: Driver = None,
+        start_value: DriverValue = None,
+        end_value: DriverValue = None,
+        progress: float = 0.0,
+    ):
         super().__init__()
         self.driver = driver
         self.start_value = start_value
@@ -167,11 +175,19 @@ class DriverTransition:
     def key(self) -> str:
         return f"{id(self.driver)}:{type(self.end_value).__name__}"
 
+
 # A driver transition with an address.
 class AddressableDriverTransition(DriverTransition):
     """A driver transition addressed to one device on a bus."""
 
-    def __init__(self, driver: Driver=None, start_value: DriverValue=None, end_value: DriverValue=None, progress: float = 0.0, address: int = -1):
+    def __init__(
+        self,
+        driver: Driver = None,
+        start_value: DriverValue = None,
+        end_value: DriverValue = None,
+        progress: float = 0.0,
+        address: int = -1,
+    ):
         super().__init__(driver, start_value, end_value, progress)
         self.address = address
 
@@ -179,12 +195,15 @@ class AddressableDriverTransition(DriverTransition):
     def key(self) -> str:
         return f"{id(self.driver)}:{self.address}:{type(self.end_value).__name__}"
 
+
 # A transition result
 class DriverTransitionResult:
     """Driver transition processing result."""
-    SKIPPED = 0         # No action taken
-    EXECUTED = 201      # Action taken
-    CONSTRAINED = 202   # Action constrained by driver limit
+
+    SKIPPED = 0  # No action taken
+    EXECUTED = 201  # Action taken
+    CONSTRAINED = 202  # Action constrained by driver limit
+
 
 # Constraints for a driver.
 class DriverConstraints:
@@ -194,17 +213,23 @@ class DriverConstraints:
     means that the corresponding constraint is unbounded.
     """
 
-    def __init__(self, minimum: DriverValue = None, maximum: DriverValue = None, max_velocity: float | None = None, max_acceleration: float | None = None):
+    def __init__(
+        self,
+        minimum: DriverValue = None,
+        maximum: DriverValue = None,
+        max_velocity: float | None = None,
+        max_acceleration: float | None = None,
+    ):
         super().__init__()
         self.minimum = minimum
         self.maximum = maximum
         self.max_velocity = max_velocity
         self.max_acceleration = max_acceleration
 
+
 # The driver processing protocol.
 class Driver:
-    def process(self, transition: DriverTransition) -> DriverTransitionResult:
-        ...
+    def process(self, transition: DriverTransition) -> DriverTransitionResult: ...
 
     def constraints_for(self, value: DriverValue) -> DriverConstraints:
         """Return constraints for the given typed driver value."""

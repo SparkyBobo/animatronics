@@ -6,10 +6,18 @@ MIDI file reader tests.
 Copyright (c) 2026 Sparky Bobo
 """
 
-from animacy.contracts.midi import *
+from animacy.contracts.midi import(
+    MidiAllNotesOff,
+    MidiAllSoundOff,
+    MidiControlChange,
+    MidiNoteOff,
+    MidiNoteOn,
+    MidiPitchBend,
+    MidiProgramChange,
+    MidiTrackEvent,
+)
 from animacy.midi.file_reader import MidiFileReader
 import mido
-import logging
 
 def test_reader_init():
     reader = MidiFileReader()
@@ -37,8 +45,6 @@ def test_reader_show_1():
 
     assert reader.midi.miditicks_per_quarter == 960
     assert len(reader.midi.tracks) == 7
-
-    logger = logging.getLogger(__name__)
 
     count = 0
     for event in reader.get_events():

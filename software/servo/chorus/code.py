@@ -21,18 +21,19 @@
 # The Animatroincs Servo Module (ANI-SRV) is a CircuitPython board designed
 # to control servos. This module is the definition of the chorus singers'
 # leds and motors.
-import servo
-import motion
 
-mouth1 = Motion() # Micro Servo
-mouth2 = Motion() # Micro Servo
-mouth3 = Motion() # Micro Servo
-mouths = [ mouth1, mouth2, mouth3 ]
+# Motion, RgbLed, and PowerLed are provided by the servo runtime.
+# ruff: noqa: F821
 
-headPan1 = Motion() # Speed Servo
-headPan2 = Motion() # Speed Servo
-headPan3 = Motion() # Speed Servo
-headPan = [ headPan1, headPan2, headPan3 ]
+mouth1 = Motion()  # Micro Servo
+mouth2 = Motion()  # Micro Servo
+mouth3 = Motion()  # Micro Servo
+mouths = [mouth1, mouth2, mouth3]
+
+headPan1 = Motion()  # Speed Servo
+headPan2 = Motion()  # Speed Servo
+headPan3 = Motion()  # Speed Servo
+headPan = [headPan1, headPan2, headPan3]
 
 leftEye1 = RgbLed()
 rightEye1 = RgbLed()
@@ -40,11 +41,17 @@ leftEye2 = RgbLed()
 rightEye2 = RgbLed()
 leftEye3 = RgbLed()
 rightEye3 = RgbLed()
-leftEyes = [ leftEye1, leftEye2, leftEye3 ]
-rightEyes = [ rightEye1, rightEye2, rightEye3 ]
-bothEyes = [ [ leftEye1, rightEye1], [ leftEye2, rightEye2, ] [ leftEye3, rightEye3 ] ]
+leftEyes = [leftEye1, leftEye2, leftEye3]
+rightEyes = [rightEye1, rightEye2, rightEye3]
+bothEyes = [
+    [leftEye1, rightEye1],
+    [
+        leftEye2,
+        rightEye2,
+    ][leftEye3, rightEye3],
+]
 
 upLight1 = PowerLed()
 upLight2 = PowerLed()
 upLight3 = PowerLed()
-upLights = [ upLight1, upLight2, upLight3 ]
+upLights = [upLight1, upLight2, upLight3]
