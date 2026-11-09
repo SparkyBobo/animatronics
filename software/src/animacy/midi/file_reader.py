@@ -6,7 +6,9 @@ Reads Standard MIDI Files.
 Copyright (c) 2026 Sparky Bobo
 """
 
-from animacy.contracts.midi import(
+from umidiparser import umidiparser
+
+from animacy.contracts.midi import (
     MidiAllNotesOff,
     MidiAllSoundOff,
     MidiControlChange,
@@ -18,7 +20,6 @@ from animacy.contracts.midi import(
     MidiTrackEvent,
     MidiTrackInfo,
 )
-from umidiparser import umidiparser
 
 
 class MidiFileReader:
@@ -30,9 +31,8 @@ class MidiFileReader:
         self._file_info = None
         self.selected_track_info = None
         self.selected_track = None
-        pass
 
-    def open(self, filename:str) -> None:
+    def open(self, filename: str) -> None:
         """Open the selected file."""
         self.midi = umidiparser.MidiFile(filename)
         self._file_info = self._get_file_info()
@@ -60,17 +60,17 @@ class MidiFileReader:
         """
         return self.selected_track_info
 
-    def select_track(self, channel:int) -> MidiTrackInfo:
+    def select_track(self, channel: int) -> MidiTrackInfo:
         """
         Returns the MIDI track info for the selected track.
         """
-        if (not self.midi):
+        if not self.midi:
             return None
 
         self.selected_track = None
         self.selected_track_info = None
         for track in self.midi.tracks:
-            track_name = ''
+            track_name = ""
             track_channel = -1
             for event in track:
                 if event.status == umidiparser.INSTRUMENT_NAME:
@@ -78,9 +78,11 @@ class MidiFileReader:
                 elif event.status == umidiparser.CHANNEL_PREFIX:
                     track_channel = event.channel
 
-            if (channel == track_channel):
+            if channel == track_channel:
                 self.selected_track = track
-                self.selected_track_info = MidiTrackInfo(name=track_name, channel=track_channel)
+                self.selected_track_info = MidiTrackInfo(
+                    name=track_name, channel=track_channel
+                )
                 return self.selected_track_info
 
         return None
@@ -91,34 +93,36 @@ class MidiFileReader:
         events = self.selected_track if self.selected_track is not None else self.midi
         for event in events:
             absolute_ticks += event.delta_miditicks
-            #logger.info(f"Midi read pre-map event freemem={gc.mem_free()}, alloc={gc.mem_alloc()}")
-
-
             if event.status == umidiparser.NOTE_OFF:
-                track_msg = MidiNoteOff(channel = event.channel, note = event.note, velocity = event.velocity)
+                track_msg = MidiNoteOff(
+                    channel=event.channel, note=event.note, velocity=event.velocity
+                )
             elif event.status == umidiparser.NOTE_ON:
-                track_msg = MidiNoteOn(channel = event.channel, note = event.note, velocity = event.velocity)
+                track_msg = MidiNoteOn(
+                    channel=event.channel, note=event.note, velocity=event.velocity
+                )
             elif event.status == umidiparser.CONTROL_CHANGE:
-                if (event.control < 120):
-                    track_msg = MidiControlChange(channel = event.channel, control = event.control, value = event.value)
-                elif (event.control == 120):
-                    track_msg = MidiAllSoundOff(channel = event.channel)
-                elif (event.control == 123):
-                    track_msg = MidiAllNotesOff(channel = event.channel)
+                if event.control < 120:
+                    track_msg = MidiControlChange(
+                        channel=event.channel, control=event.control, value=event.value
+                    )
+                elif event.control == 120:
+                    track_msg = MidiAllSoundOff(channel=event.channel)
+                elif event.control == 123:
+                    track_msg = MidiAllNotesOff(channel=event.channel)
                 else:
                     continue
             elif event.status == umidiparser.PROGRAM_CHANGE:
-                track_msg = MidiProgramChange(channel = event.channel, program = event.program)
+                track_msg = MidiProgramChange(
+                    channel=event.channel, program=event.program
+                )
             elif event.status == umidiparser.PITCHWHEEL:
-                track_msg = MidiPitchBend(channel = event.channel, bend = event.pitch)
+                track_msg = MidiPitchBend(channel=event.channel, bend=event.pitch)
             else:
-                continue # skip
+                continue  # skip
 
-            timecode = round(
-                absolute_ticks * 24 / self.midi.miditicks_per_quarter
-            )
+            timecode = round(absolute_ticks * 24 / self.midi.miditicks_per_quarter)
             yield MidiTrackEvent(timecode=timecode, message=track_msg)
-
 
     def _get_file_info(self) -> MidiFileInfo:
         """
@@ -127,7 +131,7 @@ class MidiFileReader:
         for track in self.midi.tracks:
             channel_prefix = -1
             file_sequence = -1
-            file_name = ''
+            file_name = ""
             file_tempo = -1
             for event in track:
                 if event.status == umidiparser.CHANNEL_PREFIX:
@@ -139,7 +143,12 @@ class MidiFileReader:
                 elif event.status == umidiparser.SET_TEMPO:
                     file_tempo = event.tempo
 
-            if (channel_prefix == 0):
-                return MidiFileInfo(sequence=file_sequence, name=file_name, tempo=file_tempo, miditicks_per_quarter=self.midi.miditicks_per_quarter)
+            if channel_prefix == 0:
+                return MidiFileInfo(
+                    sequence=file_sequence,
+                    name=file_name,
+                    tempo=file_tempo,
+                    miditicks_per_quarter=self.midi.miditicks_per_quarter,
+                )
 
         return None

@@ -10,6 +10,12 @@
 004|Process song stop message {}@{}
 005|Initialize
 
+# 900-999: Memory checkpoints
+900|Memory after ShowReader initialization: allocated={} bytes, free={} bytes
+901|Memory before MIDI load: allocated={} bytes, free={} bytes
+902|Memory after MIDI load: allocated={} bytes, free={} bytes
+903|Memory around queue garbage collection: before allocated={} bytes, free={} bytes; after allocated={} bytes, free={} bytes
+
 # 1000-1099: src/animacy/behavior/
 # behavior/audio.py
 1002|Process reset message {}@{}
@@ -103,3 +109,4 @@
 1716|ShowWriter: failed to open file {} due to {}
 1717|ShowWriter: expected sequence {} but got {}
 1718|ShowWriter: expected checksum {} but got {}
+

@@ -15,8 +15,15 @@ from animacy.contracts.performance import (
 from animacy.contracts.service import ServiceResult
 from animacy.midi.file_reader import MidiFileReader
 from animacy.utils.logging import CRITICAL, DEBUG, INFO, CatalogLogger
+from animacy.utils.memory import (
+    AFTER_MIDI_LOAD,
+    AFTER_SHOW_READER_INIT,
+    BEFORE_MIDI_LOAD,
+    MemoryMonitor,
+)
 
 logger = CatalogLogger(__name__)
+memory = MemoryMonitor()
 
 
 class ShowReader:
@@ -26,6 +33,7 @@ class ShowReader:
         """Initialize ShowReader."""
         self.next = next
         self.reader = reader
+        memory.record(AFTER_SHOW_READER_INIT)
 
     def process(self, message: PerformanceMessage) -> PerformanceMessageResult:
         logger.log(1, DEBUG, message.id, message.timecode)
@@ -34,7 +42,9 @@ class ShowReader:
         result = PerformanceMessageResult.SKIPPED
         if isinstance(message, PerformanceLoadSongMessage):
             logger.log(1706, INFO, message.song)
+            memory.record(BEFORE_MIDI_LOAD)
             self.reader.open(f"{message.song}.mid")
+            memory.record(AFTER_MIDI_LOAD)
             return PerformanceMessageResult.HANDLED
         return result
 
